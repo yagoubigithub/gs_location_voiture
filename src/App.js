@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 
 //css
 import './App.css'
+import Voiture from './components/Voiture';
 
 
 class App extends Component {
@@ -28,6 +29,7 @@ class App extends Component {
             <Switch>
               <Route exact path="/" component={Connexion} />
               <Route path="/home" component={Home} />
+              <Route path="/voiture" component={Voiture} />
           
             </Switch>
           </div>
