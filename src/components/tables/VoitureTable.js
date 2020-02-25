@@ -156,6 +156,21 @@ class VoitureTable extends Component {
         accessor: 'nom',
         Cell: props =>
           (<div className="cell" >{props.value}</div>)
+      }, {
+        Header: 'Modéle',
+        accessor: 'modele',
+        Cell: props =>
+          (<div className="cell" >{props.value}</div>)
+      }, {
+        Header: 'Marque',
+        accessor: 'marque',
+        Cell: props =>
+          (<div className="cell" >{props.value}</div>)
+      }, {
+        Header: 'Matricule',
+        accessor: 'matricule',
+        Cell: props =>
+          (<div className="cell" >{props.value}</div>)
       }]
 
       
