@@ -4,9 +4,10 @@
   "private": true,
   "build": {
     "appId": "com.gs_client_descktop",
-    "asar": false,
+   
     "extraResources": [
-      "**/db/**/*"
+      "**/db/**/*",
+      "data.sqlite"
     ]
   },
   "main": "public/electron.js",

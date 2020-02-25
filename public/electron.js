@@ -52,27 +52,33 @@ installExtension(REACT_DEVELOPER_TOOLS)
     }
    
     const sqlite = require("sqlite3").verbose();
-     db = new sqlite.Database(':memory:', (error)=>{
+     db = new sqlite.Database('data.sqlite', (error)=>{
         if(error) return console.log(error);
         console.log("Connnect to sqlite3")
     })
 
     db.serialize(function() {
 
-        
+     
         db.run(`CREATE TABLE IF NOT EXISTS voiture (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nom TEXT NOT NULL
+    nom TEXT NOT NULL,
+    matricule TEXT,
+    marque TEXT,
+    modele TEXT
    
 )`);
        
-        var stmt = db.prepare("INSERT INTO voiture(nom) VALUES (?)");
-        for (var i = 0; i < 10; i++) {
-            stmt.run("Ipsum " + i);
+
+     /*  
+        for (var i = 0; i < 2; i++) {
+            db.run(`
+            INSERT INTO voiture(nom , matricule , marque , modele) VALUES ('nom${i}','matricule${i}','marque${i}','modele${i}') `);
+           
         }
-        stmt.finalize();
+     */
 
-
+    
         ipcMain.on('voiture', (event, value)=>{
     
             if(value.id !== undefined) {
@@ -82,12 +88,13 @@ installExtension(REACT_DEVELOPER_TOOLS)
               console.log("send request from database")
               const voitures = [];
               
-              db.serialize(function() {
-                db.all("SELECT *  FROM voiture", function(err, rows) {
+             
+                db.all("SELECT * FROM voiture ", function(err, rows) {
+                    if(err)  mainWindow.webContents.send("voiture",err);
                     mainWindow.webContents.send("voiture",rows);
                 });
                
-              });
+              
              
             }
         })

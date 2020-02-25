@@ -73,8 +73,6 @@ const mapStateToProps = (state) => {
  
 
   return {
- 
-  
     auth : state.auth,
     voitures : state.voiture.voitures
 
