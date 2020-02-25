@@ -12,6 +12,7 @@ import VoitureTable from './tables/VoitureTable'
 import { connect } from 'react-redux';
 
 import LoadingComponent from '../utils/loadingComponent';
+import { getAllVoiture } from '../store/actions/voitureAction';
 
 
 
@@ -20,18 +21,19 @@ import LoadingComponent from '../utils/loadingComponent';
 
 class Voiture extends Component {
   state = {
-    personnes: []
+    voitures: []
   }
 
 
   componentWillMount() {
-  //  this.props.getAllPersonne();
+    this.props.getAllVoiture();
   }
 
   componentWillReceiveProps(nexProps) {
 
-    if (nexProps.voiture !== undefined) {
-      this.setState({ voiture: nexProps.voiture });
+    if (nexProps.voitures !== undefined) {
+      
+      this.setState({ voitures: nexProps.voitures });
     }
   }
   render() {
@@ -42,9 +44,9 @@ class Voiture extends Component {
       <div>
         <LoadingComponent loading={this.props.loading !== undefined ? this.props.loading : false} />
         <Tabs >
-        <Tab index={0} title="Tab 1">
-          <h1>Tab 1</h1>
-          <input type="text" placeholder="tab 1"/>
+        <Tab index={0} title="Liste des Voiture">
+         
+         <VoitureTable rows={this.state.voitures} />
         </Tab>
  
         <Tab index={1} title="Tab 2" 
@@ -68,13 +70,23 @@ class Voiture extends Component {
   }
 }
 const mapStateToProps = (state) => {
+ 
 
   return {
  
   
-    auth : state.auth
+    auth : state.auth,
+    voitures : state.voiture.voitures
+
    
   }
 }
 
-export default connect(mapStateToProps)(Voiture);
+const mapActionToProps = (dispatch) =>{
+  return  {
+    getAllVoiture : ()=>dispatch(getAllVoiture())
+
+  }
+
+}
+export default connect(mapStateToProps,mapActionToProps)(Voiture);

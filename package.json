@@ -29,6 +29,7 @@
     "react-tabs-css": "^1.0.2",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
+    "sqlite": "^3.0.3",
     "wait-on": "^3.3.0",
     "yagoubi-upload-images": "^1.2.6"
   },
@@ -59,6 +60,8 @@
   },
   "devDependencies": {
     "electron": "^7.1.2",
-    "electron-builder": "^21.2.0"
+    "electron-builder": "^21.2.0",
+    "electron-devtools-installer": "^2.2.4",
+    "electron-rebuild": "^1.10.0"
   }
 }
