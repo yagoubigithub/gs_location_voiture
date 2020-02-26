@@ -53,10 +53,10 @@ const VoitureReducer = (state = initStat, action) =>{
 
           }
        
-          case 'SEARCH_IN_PERSONNE' :
+          case 'SEARCH_VOITURE' :
               return {
                 ...state,
-                personnes : action.payload,
+                voitures : action.payload,
                 error :  null
               }
         case "ADD_TO_CORBEILLE_PERSONNE" : 

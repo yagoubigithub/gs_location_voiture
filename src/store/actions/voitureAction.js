@@ -132,35 +132,32 @@ export const getAllVoiture = () =>{
 export const searchVoiture =(data) =>{
   return (dispatch ,getState) =>{
     
+  
     dispatch({
-      type : "LOADING_PERSONNE"
+      type : "LOADING_VOITURE"
   })
+  ipcRenderer.send("voiture:search", {...data});
+
+  ipcRenderer.on('voiture', function (event,data) {
    
-
-    axios.post('/personne/search.php',{
-     ...data
-     
-    }).then(res=>{
-      dispatch({
-        type : "STOP_LOADING_PERSONNE"
-    });
-
-      dispatch({
-        type : "SEARCH_IN_PERSONNE",
-        payload : res.data
-    })
-    
-  })
-  .catch(error=>{
-      
     dispatch({
-      type : "STOP_LOADING_PERSONNE"
+      type : "STOP_LOADING_VOITURE"
   });
-      dispatch({
-          type : "ERROR_PERSONNE",
-          payload : error
-      })
-  })
+  if(Array.isArray(data)){
+    dispatch({
+        type : "SEARCH_VOITURE",
+        payload : data
+    });
+  }else{
+    dispatch({
+      type : "ERROR_VOITURE",
+      payload :data
+  });
+  }
+});
+    
+
+  
   }
 }
 

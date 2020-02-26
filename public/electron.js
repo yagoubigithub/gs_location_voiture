@@ -59,7 +59,7 @@ app.on('ready', () => {
 
     db.serialize(function () {
 
-        //  db.run('DROP TABLE voiture');
+         //db.run('DROP TABLE voiture');
 
         db.run(`CREATE TABLE IF NOT EXISTS voiture (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -90,7 +90,7 @@ app.on('ready', () => {
            }
         */
 
-
+       
         //get voiture
         ipcMain.on('voiture', (event, value) => {
 
@@ -111,6 +111,7 @@ app.on('ready', () => {
             }
         })
 
+        //AJOUTER VOITURE
         ipcMain.on('voiture:ajouter', (event, value) => {
 
             if (value.nom !== undefined) {
@@ -152,6 +153,24 @@ app.on('ready', () => {
             }
         })
 
+
+        //SEARCH VOITURE
+
+        ipcMain.on('voiture:search', (event, value) => {
+
+           
+            if (value.nom !== undefined) {
+                // get one voiture
+
+
+                
+                db.all("SELECT * FROM voiture WHERE nom LIKE '%" + value.nom + "%'", function (err, rows) {
+                    if (err) mainWindow.webContents.send("voiture", err);
+                    
+                    mainWindow.webContents.send("voiture", rows);
+                });
+            } 
+        })
 
     });
 
