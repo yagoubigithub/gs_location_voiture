@@ -22,7 +22,7 @@ import SaveIcon from "@material-ui/icons/Save";
 import {connect} from 'react-redux';
 
 import {ajouterVoiture} from '../store/actions/voitureAction'
-import Voiture from "./Voiture";
+
 import LoadingComponent from "../utils/loadingComponent";
 
 

@@ -59,7 +59,7 @@ app.on('ready', () => {
 
     db.serialize(function () {
 
-         //db.run('DROP TABLE voiture');
+       // db.run('DROP TABLE voiture');
 
         db.run(`CREATE TABLE IF NOT EXISTS voiture (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -83,15 +83,8 @@ app.on('ready', () => {
 
    
 )`);
-        /*  
-           for (var i = 0; i < 2; i++) {
-               db.run(`
-               INSERT INTO voiture(nom , matricule , marque , modele) VALUES ('nom${i}','matricule${i}','marque${i}','modele${i}') `);
-              
-           }
-        */
+     
 
-       
         //get voiture
         ipcMain.on('voiture', (event, value) => {
 
@@ -118,7 +111,7 @@ app.on('ready', () => {
             if (value.nom !== undefined) {
                 // ajouter
                 db.run(`
-               INSERT INTO voiture(nom , modele , marque , annee , coleur , matricule , disponibilite) VALUES ('${value.nom}','${value.modele}','${value.marque}','${value.annee}','${value.coleur}','${value.matricule}','disponible') `, function (err) {
+               INSERT INTO voiture(nom , modele , marque , annee , coleur , matricule , disponibilite , status) VALUES ('${value.nom}','${value.modele}','${value.marque}','${value.annee}','${value.coleur}','${value.matricule}','disponible', 'undo') `, function (err) {
                     const lastId = this.lastID;
 
 
@@ -163,18 +156,41 @@ app.on('ready', () => {
 
         ipcMain.on('voiture:search', (event, value) => {
 
-           
+
             if (value.nom !== undefined) {
                 // get one voiture
 
 
-                
+
                 db.all("SELECT * FROM voiture WHERE nom LIKE '%" + value.nom + "%'", function (err, rows) {
                     if (err) mainWindow.webContents.send("voiture", err);
-                    
+
                     mainWindow.webContents.send("voiture", rows);
                 });
-            } 
+            }
+        })
+
+
+        //delete voiture
+
+        ipcMain.on('voiture:delete', (event, value) => {
+
+
+            if (value.id !== undefined) {
+                // get one voiture
+
+
+
+                db.run(`UPDATE voiture  SET status = '${value.status}' WHERE id = ${value.id};` , function (err) {
+                    if (err) mainWindow.webContents.send("voiture:delete", err);
+
+                    db.all("SELECT * FROM voiture", function (err, rows) {
+                        if (err) mainWindow.webContents.send("voiture", err);
+    
+                        mainWindow.webContents.send("voiture", rows);
+                    });
+                });
+            }
         })
 
     });

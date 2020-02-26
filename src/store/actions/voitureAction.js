@@ -197,42 +197,33 @@ export const searchCorbeillePersonne=(data) =>{
 }
 
 
-//delete a personne(mettre dans le corbeille)
+//delete (mettre dans le corbeille)
 export const addToCorbeille = (id) =>{
-  return (dispatch ,getState)=>{
+  return (dispatch , getState)=>{
 
-    //axios if multi-post
     dispatch({
-      type : "LOADING_PERSONNE"
+      type : "LOADING_VOITURE"
   })
-    axios.get('/personne/delete.php?status=corbeille&id=' + id).then(res=>{
-      dispatch({
-        type : "STOP_LOADING_PERSONNE"
-    });
-    if(Array.isArray(res.data)){
-      dispatch({
-          type : "ADD_TO_CORBEILLE_PERSONNE",
-          payload : res.data
-      });
-    }else{
-      dispatch({
-        type : "ERROR_PERSONNE",
-        payload : res.data
-    });
-    }
-  })
-  .catch(error=>{
+  ipcRenderer.send("voiture:delete", {id, status :  "corbeille"});
+
+  ipcRenderer.on('voiture:delete', function (event,data) {
+   
     dispatch({
-      type : "STOP_LOADING_PERSONNE"
+      type : "STOP_LOADING_VOITURE"
   });
-      dispatch({
-          type : "ERROR_PERSONNE",
-          payload : error
-      });
-  })
+  if(Array.isArray(data)){
+    dispatch({
+        type : "ADD_TO_CORBEILLE_VOITURE",
+        payload : data
+    });
+  }else{
+    dispatch({
+      type : "ERROR_VOITURE",
+      payload :data
+  });
+  }
+});
     
-
-    //send to electron if one post
 
   }
 }

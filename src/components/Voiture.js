@@ -23,7 +23,11 @@ import AjouterVoiture from './AjouterVoiture';
 
 class Voiture extends Component {
   state = {
-    voitures: []
+    voitures: [],
+    voitureCorebeille : [],
+    voitureDisponible : [],
+     voitureEnPane : [],
+     voitureLocation : [],
   }
 
 
@@ -34,8 +38,39 @@ class Voiture extends Component {
   componentWillReceiveProps(nexProps) {
 
     if (nexProps.voitures !== undefined) {
+      const voitures = [];
+      const voitureDisponible = [];
+      const voitureEnPane = [];
+      const voitureLocation = [];
+      const voitureCorebeille = [];
+
+      nexProps.voitures.map(voiture=>{
+       
+        if( voiture.status === "undo"){
+          voitures.push(voiture);
+
+        }
+        if(voiture.disponibilite === "disponible" && voiture.status === "undo"){
+          voitureDisponible.push(voiture);
+
+        }
+        if(voiture.disponibilite === "enPane" && voiture.status === "undo"){
+          voitureEnPane.push(voiture);
+
+        }
+        if(voiture.disponibilite === "enLocation" && voiture.status === "undo"){
+          voitureLocation.push(voiture);
+
+        }
+        if(voiture.status === "corbeille")
+        {
+          voitureCorebeille.push(voiture);
+        }
+
+
+      })
       
-      this.setState({ voitures: nexProps.voitures });
+      this.setState({ voitures,voitureCorebeille,voitureDisponible,voitureEnPane,voitureLocation });
     }
   }
   render() {
@@ -52,10 +87,14 @@ class Voiture extends Component {
          <VoitureTable rows={this.state.voitures} />
         </Tab>
  
-        <Tab index={1} title="Tab 2" 
+        <Tab index={1} title="Voiture disponible" 
         >
-          <h2>Tab 2</h2>
-          <p>orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
+         <VoitureTable rows={this.state.voitureDisponible} />
+         
+        </Tab>
+        <Tab index={2} title="Corbeille" 
+        >
+         <VoitureTable rows={this.state.voitureCorebeille} />
          
         </Tab>
       </Tabs>
