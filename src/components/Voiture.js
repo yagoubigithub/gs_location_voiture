@@ -13,6 +13,8 @@ import { connect } from 'react-redux';
 
 import LoadingComponent from '../utils/loadingComponent';
 import { getAllVoiture } from '../store/actions/voitureAction';
+import SousNavVoiture from './SousNavVoiture';
+import AjouterVoiture from './AjouterVoiture';
 
 
 
@@ -43,6 +45,7 @@ class Voiture extends Component {
     return (
       <div>
         <LoadingComponent loading={this.props.loading !== undefined ? this.props.loading : false} />
+        <SousNavVoiture />
         <Tabs >
         <Tab index={0} title="Liste des Voiture">
          
@@ -60,7 +63,7 @@ class Voiture extends Component {
 
 
 
-      
+      <Route path="/voiture/ajouter" component={AjouterVoiture} />
 
 
     

@@ -24,12 +24,12 @@ const VoitureReducer = (state = initStat, action) =>{
                             ...state,
                             error :  action.payload
                         }
-            case 'AJOUTER_PERSONNE' :
+            case 'AJOUTER_VOITURE' :
                 return {
                     ...state,
-                    personnes : action.payload,
+                    voitures : action.payload,
                     error :  null,
-                    personneCreated :  true
+                    voitureCreated :  true
 
                 }
                 case 'ERROR_AJOUTER_PERSONNE' :

@@ -3,49 +3,34 @@ import axios from 'axios';
 const electron = window.require("electron");
 const {ipcRenderer}  = electron;
 
-export const ajouterPersonne = (data) =>{
+export const ajouterVoiture = (data) =>{
     return (dispatch ,getState)=>{
     
       
       dispatch({
-        type : "LOADING_PERSONNE"
+        type : "LOADING_VOITURE"
     })
+    ipcRenderer.send("voiture:ajouter", {...data});
 
-      //axios if multi-post
-      axios.post('/personne/create.php',{
-        ...data
-        
-       }).then(res=>{
-        dispatch({
-          type : "STOP_LOADING_PERSONNE"
-      })
-         if(res.data.error){
-          dispatch({
-            type : "ERROR_AJOUTER_PERSONNE",
-            payload : res.data.error
-        })
-         }else{
-         
-          dispatch({
-            type : "AJOUTER_PERSONNE",
-            payload : res.data
-        })
-         }
-     })
-     .catch(error=>{ 
-      dispatch({
-        type : "STOP_LOADING_PERSONNE"
-    });
-         dispatch({
-             type : "ERROR_AJOUTER_PERSONNE",
-             payload : error
-         })
-     });
+    ipcRenderer.on('voiture:ajouter', function (event,data) {
      
-
-
-
-      //send to electron if one post
+      dispatch({
+        type : "STOP_LOADING_VOITURE"
+    });
+    if(Array.isArray(data)){
+      dispatch({
+          type : "AJOUTER_VOITURE",
+          payload : data
+      });
+    }else{
+      dispatch({
+        type : "ERROR_VOITURE",
+        payload : data
+    });
+    }
+});
+      
+   
 
     }
 }

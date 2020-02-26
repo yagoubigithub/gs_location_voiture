@@ -135,14 +135,12 @@ class VoitureTable extends Component {
 
         Header: '  ',
         accessor: 'id',
-        width: 120,
+        width: 80,
         sortable: false,
         filterable: false,
         Cell: props => <div className="cell">
 
-          <IconButton size="small">
-            <PrintIconf className="black" fontSize="small"></PrintIconf>
-          </IconButton>
+          
           <IconButton size="small" onClick={() => this.add_To_Corbeille(props.value)}>
             <DeleteIcon className="red" fontSize="small"></DeleteIcon>
           </IconButton>
@@ -168,6 +166,11 @@ class VoitureTable extends Component {
           (<div className="cell" >{props.value}</div>)
       }, {
         Header: 'Matricule',
+        accessor: 'matricule',
+        Cell: props =>
+          (<div className="cell" >{props.value}</div>)
+      }, {
+        Header: 'Disponibilt',
         accessor: 'matricule',
         Cell: props =>
           (<div className="cell" >{props.value}</div>)
