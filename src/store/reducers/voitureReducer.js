@@ -3,8 +3,15 @@ const initStat = {
     error :null
 };
 const VoitureReducer = (state = initStat, action) =>{
+    console.log(action.type)
     switch(action.type){
+        case 'LOADING_VOITURE' : 
+        return{
+            ...state,
+            loading : true,
+            error : null,
 
+        }
             case 'READ_ONE_VOITURE' : 
                 return {
                     ...state,
@@ -39,13 +46,7 @@ const VoitureReducer = (state = initStat, action) =>{
                                 error : action.payload
                     }
                     
-          case 'LOADING_VOITURE' : 
-          return{
-              ...state,
-              loading : true,
-              error : null,
-
-          }
+        
           case 'STOP_LOADING_VOITURE' : 
           return{
               ...state,

@@ -204,14 +204,7 @@ class VoitureTable extends Component {
             recherche
             */}
 
-          <form onSubmit={this.handleSearch} className="search-form">
-            <input onChange={this.handleSearchChange} type="text" name="nom" placeholder="Nom" />
-
-            <button type="submit" >
-              <SearchIcon />
-            </button>
-
-          </form>
+         
 
           <Collapse in={this.state.rowsSelected.length > 0}>
             <IconButton >

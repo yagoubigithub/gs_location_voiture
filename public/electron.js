@@ -159,13 +159,10 @@ app.on('ready', () => {
 
             if (value.nom !== undefined) {
                 // get one voiture
-
-
-
                 db.all("SELECT * FROM voiture WHERE nom LIKE '%" + value.nom + "%'", function (err, rows) {
-                    if (err) mainWindow.webContents.send("voiture", err);
+                    if (err) mainWindow.webContents.send("voiture:search", err);
 
-                    mainWindow.webContents.send("voiture", rows);
+                    mainWindow.webContents.send("voiture:search", rows);
                 });
             }
         })

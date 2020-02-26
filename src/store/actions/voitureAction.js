@@ -12,7 +12,7 @@ export const ajouterVoiture = (data) =>{
     })
     ipcRenderer.send("voiture:ajouter", {...data});
 
-    ipcRenderer.on('voiture:ajouter', function (event,data) {
+    ipcRenderer.once('voiture:ajouter', function (event,data) {
      
       dispatch({
         type : "STOP_LOADING_VOITURE"
@@ -104,7 +104,8 @@ export const getAllVoiture = () =>{
     })
     ipcRenderer.send("voiture", {});
 
-    ipcRenderer.on('voiture', function (event,data) {
+    
+    ipcRenderer.once('voiture', function (event,data) {
      
       dispatch({
         type : "STOP_LOADING_VOITURE"
@@ -133,12 +134,13 @@ export const searchVoiture =(data) =>{
   return (dispatch ,getState) =>{
     
   
+  
     dispatch({
       type : "LOADING_VOITURE"
-  })
+  });
   ipcRenderer.send("voiture:search", {...data});
 
-  ipcRenderer.on('voiture', function (event,data) {
+  ipcRenderer.once('voiture:search', function (event,data) {
    
     dispatch({
       type : "STOP_LOADING_VOITURE"
@@ -206,7 +208,7 @@ export const addToCorbeille = (id) =>{
   })
   ipcRenderer.send("voiture:delete", {id, status :  "corbeille"});
 
-  ipcRenderer.on('voiture:delete', function (event,data) {
+  ipcRenderer.once('voiture:delete', function (event,data) {
    
     dispatch({
       type : "STOP_LOADING_VOITURE"

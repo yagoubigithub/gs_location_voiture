@@ -12,12 +12,13 @@ import VoitureTable from './tables/VoitureTable'
 import { connect } from 'react-redux';
 
 import LoadingComponent from '../utils/loadingComponent';
-import { getAllVoiture } from '../store/actions/voitureAction';
+import { getAllVoiture, searchVoiture } from '../store/actions/voitureAction';
 import SousNavVoiture from './SousNavVoiture';
 import AjouterVoiture from './AjouterVoiture';
 
 
-
+//icons
+import SearchIcon from '@material-ui/icons/Search';
 
 
 
@@ -66,12 +67,23 @@ class Voiture extends Component {
         {
           voitureCorebeille.push(voiture);
         }
-
-
       })
       
-      this.setState({ voitures,voitureCorebeille,voitureDisponible,voitureEnPane,voitureLocation });
+      this.setState({ voitures,voitureCorebeille,voitureDisponible,voitureEnPane,voitureLocation,loading : nexProps.loading });
     }
+   
+  }
+
+  handleSearchChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+
+  }
+  handleSearch = (e) => {
+    e.preventDefault();
+    const data = { nom : this.state.nom };
+    this.props.searchVoiture(data)
   }
   render() {
     if(this.props.auth.user ===  undefined){
@@ -79,8 +91,16 @@ class Voiture extends Component {
     }
     return (
       <div>
-        <LoadingComponent loading={this.props.loading !== undefined ? this.props.loading : false} />
+        <LoadingComponent loading={this.state.loading !== undefined ? this.state.loading : false} />
         <SousNavVoiture />
+        <form onSubmit={this.handleSearch} className="search-form">
+            <input onChange={this.handleSearchChange} type="text" name="nom" placeholder="Nom" />
+
+            <button type="submit" >
+              <SearchIcon />
+            </button>
+
+          </form>
         <Tabs >
         <Tab index={0} title="Liste des Voiture">
          
@@ -112,11 +132,11 @@ class Voiture extends Component {
   }
 }
 const mapStateToProps = (state) => {
- 
-
+  console.log(state)
   return {
     auth : state.auth,
-    voitures : state.voiture.voitures
+    voitures : state.voiture.voitures,
+    loading : state.voiture.loading
 
    
   }
@@ -124,7 +144,8 @@ const mapStateToProps = (state) => {
 
 const mapActionToProps = (dispatch) =>{
   return  {
-    getAllVoiture : ()=>dispatch(getAllVoiture())
+    getAllVoiture : ()=>dispatch(getAllVoiture()),
+    searchVoiture: (data) => dispatch(searchVoiture(data)),
 
   }
 
