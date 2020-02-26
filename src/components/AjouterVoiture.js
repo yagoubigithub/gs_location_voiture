@@ -29,7 +29,9 @@ import LoadingComponent from "../utils/loadingComponent";
 
 class AjouterVoiture extends Component {
   state = {
-    open: true
+    open: true,
+    nom : "",
+    modele : "", marque : "",annee :  "" , coleur : "", matricule :  "", images : []
   };
   ajouter = () =>{
     const data = {...this.state}
@@ -39,9 +41,13 @@ class AjouterVoiture extends Component {
     }else{
          this.props.ajouterVoiture(data);
     }
-
-   
-    
+  }
+  componentWillReceiveProps (nextProps){
+      if(nextProps.voitureCreated){
+         //
+         this.setState({nom : "",modele : "", marque : "",annee :  "" , coleur : "", matricule :  "", images : []})
+         
+      }
 
   }
   handleChange = (e) =>{
@@ -85,14 +91,14 @@ class AjouterVoiture extends Component {
             <Grid container >
                 <Grid item xs={2}></Grid>
               <Grid item xs={6}>
-                <TextField placeholder="Nom *" name="nom" variant="outlined" onChange={this.handleChange} fullWidth margin="normal" />
-                <TextField placeholder="Modéle" name="modele" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
-                <TextField placeholder="Marque" name="marque" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
-                <TextField placeholder="L'année" name="annee" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
-                <TextField placeholder="Coleur" name="coleur" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
-                <TextField placeholder="Matricule" name="matricule" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+                <TextField placeholder="Nom *" value={this.state.nom}  name="nom" variant="outlined" onChange={this.handleChange} fullWidth margin="normal" />
+                <TextField placeholder="Modéle" value={this.state.modele} name="modele" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+                <TextField placeholder="Marque" value={this.state.marque} name="marque" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+                <TextField placeholder="L'année" value={this.state.annee} name="annee" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+                <TextField placeholder="Coleur" value={this.state.coleur} name="coleur" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+                <TextField placeholder="Matricule" value={this.state.matricule} name="matricule" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
                 
-                <UploadImage placeholder="Images" multiple  onChange={this.handleChangeImage} />
+                <UploadImage placeholder="Images"  multiple  onChange={this.handleChangeImage} />
                 <br />
               </Grid>
              
@@ -113,7 +119,8 @@ const mapActionToProps = (dispatch) =>{
 }
 const mapStateToProps = (state) => {
     return {
-        loading : state.voiture.loading
+        loading : state.voiture.loading,
+        voitureCreated : state.voiture.voitureCreated
     }
 }
 export default connect(mapStateToProps,mapActionToProps)(AjouterVoiture)  ;

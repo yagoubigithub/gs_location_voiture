@@ -69,7 +69,8 @@ app.on('ready', () => {
     modele TEXT,
     annee TEXT,
     coleur TEXT,
-    disponibilite TEXT
+    disponibilite TEXT,
+    status TEXT
 
    
 )`);
@@ -144,6 +145,10 @@ app.on('ready', () => {
                         });
                     }
 
+                    db.all("SELECT * FROM voiture ", function (err, rows) {
+                        if (err) mainWindow.webContents.send("voiture", err);
+                        mainWindow.webContents.send("voiture:ajouter", rows);
+                    });
                 });
 
 
