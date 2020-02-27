@@ -39,6 +39,16 @@ const VoitureReducer = (state = initStat, action) =>{
                     voitureCreated :  true
 
                 }
+
+                case 'MODIFIER_VOITURE' :
+                return {
+                    ...state,
+                    voitures : action.payload.voitures,
+                    voiture : action.payload.voiture,
+                    error :  null,
+                    voitureEdited :  true
+
+                }
                 case 'ERROR_AJOUTER_PERSONNE' :
                     return {
                                  ...state,

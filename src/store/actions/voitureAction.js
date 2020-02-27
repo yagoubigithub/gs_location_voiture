@@ -36,61 +36,66 @@ export const ajouterVoiture = (data) =>{
 }
 
 
-export const modifierPersonne  = id =>{
+export const modifierVoiture  = (voiture) =>{
   return (dispatch,getState) =>{
+    dispatch({
+      type : "LOADING_VOITURE"
+  })
+  ipcRenderer.send("voiture:modifier", {...voiture});
 
-
+  ipcRenderer.once('voiture:modifier', function (event,voitures) {
    
-
-
-
-    //send to electron if one post
+    dispatch({
+      type : "STOP_LOADING_VOITURE"
+  });
+  if(Array.isArray(voitures)){
+    dispatch({
+        type : "MODIFIER_VOITURE",
+        payload : {voitures, voiture}
+    });
+  }else{
+    dispatch({
+      type : "ERROR_VOITURE",
+      payload : voitures
+  });
+  }
+});
 
   
   }
 }
 
 
-export const getPersonne = (id) =>{
+export const getVoiture = (id) =>{
     return (dispatch ,getState)=>{
 
+    
+  
       dispatch({
-        type : "LOADING_PERSONNE"
+        type : "LOADING_VOITURE"
     })
-  
-      //axios if multi-post
-      axios.get(`/personne/read.php?id=${id}`,{
-        id :id
-        
-       }).then(res=>{
-        dispatch({
-          type : "STOP_LOADING_PERSONNE"
-      })
-         if(res.data.error){
-          dispatch({
-            type : "ERROR_PERSONNE",
-            payload : res.data.error
-        })
-         }else{
-         
-          dispatch({
-            type : "READ_ONE_PERSONNE",
-            payload : res.data
-        })
-         }
-     })
-     .catch(error=>{ 
-      dispatch({
-        type : "STOP_LOADING_PERSONNE"
-    });
-         dispatch({
-             type : "ERROR_PERSONNE",
-             payload : error
-         })
-     });
+    ipcRenderer.send("voiture", {id});
 
-      //send to electron if one post
-  
+    
+    ipcRenderer.once('voiture', function (event,data) {
+     
+      dispatch({
+        type : "STOP_LOADING_VOITURE"
+    });
+    if(data.nom){
+      dispatch({
+          type : "READ_ONE_VOITURE",
+          payload : data
+      });
+    }else{
+      dispatch({
+        type : "ERROR_VOITURE",
+        payload :data
+    });
+    }
+});
+      
+
 
     }
 }

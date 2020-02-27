@@ -59,7 +59,7 @@ app.on('ready', () => {
 
     db.serialize(function () {
 
-       // db.run('DROP TABLE voiture');
+      //  db.run('DROP TABLE voiture');
 
         db.run(`CREATE TABLE IF NOT EXISTS voiture (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -90,6 +90,23 @@ app.on('ready', () => {
 
             if (value.id !== undefined) {
                 // get one voiture
+                db.get("SELECT * FROM voiture WHERE id=" + value.id, function (err, row) {
+
+                    if (err) mainWindow.webContents.send("voiture", err);
+
+                    db.all("SELECT * FROM images WHERE voiture_id=" + value.id, function (err, rows) {
+
+                        if (err) mainWindow.webContents.send("voiture", err);
+                        row.images = [...rows]
+                        console.log(row)
+    
+                        
+                        mainWindow.webContents.send("voiture", row);
+                    });
+                  
+                });
+
+            
             } else {
                 //  get all voiture
 
@@ -195,6 +212,58 @@ app.on('ready', () => {
 
 
 
+// modifier voiture
+
+ 
+ ipcMain.on('voiture:modifier', (event, value) => {
+
+    if (value.nom !== undefined) {
+        // modifier
+
+        console.log(value)
+        db.run(`
+       UPDATE voiture SET nom='${value.nom}' , modele='${value.modele}' , marque='${value.marque}' , annee='${value.annee}' , coleur='${value.coleur}' , matricule='${value.matricule}' WHERE  id=${value.id}  `, function (err) {
+           
+
+/*
+            // ajouter les images
+            if (value.images !== undefined) {
+                value.images.forEach((imagePath, index) => {
+
+                    //TODO DELETE OLD IMAGES
+
+                    const d = new Date();
+                    const imageName = `${d.getTime()}${Math.random() * 100}`;
+
+
+
+
+                    // copy image.
+                    fs.copyFile(imagePath, path.join(__dirname, "images", imageName + ".png").toString(), (err) => {
+                        if (err) throw err;
+
+                        db.run(`
+                             INSERT INTO images(image , voiture_id ) VALUES ('${imageName}.png','${value.id}') `)
+                        console.log(`image was copied to ${imageName}.txt`);
+
+
+                    });
+
+                });
+            }
+*/
+            db.all("SELECT * FROM voiture ", function (err, rows) {
+                if (err) mainWindow.webContents.send("voiture", err);
+                mainWindow.webContents.send("voiture:modifier", rows);
+            });
+        });
+
+
+        /*
+        
+                      */
+    }
+})
 
 
     Menu.setApplicationMenu(mainMenu);

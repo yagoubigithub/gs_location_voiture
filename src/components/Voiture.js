@@ -19,6 +19,7 @@ import AjouterVoiture from './AjouterVoiture';
 
 //icons
 import SearchIcon from '@material-ui/icons/Search';
+import ModifierVoiture from './ModifierVoiture';
 
 
 
@@ -93,6 +94,7 @@ class Voiture extends Component {
       <div>
         <LoadingComponent loading={this.state.loading !== undefined ? this.state.loading : false} />
         <SousNavVoiture />
+        <Route path="/voiture/modifier/:id" component={ModifierVoiture} />
         <form onSubmit={this.handleSearch} className="search-form">
             <input onChange={this.handleSearchChange} type="text" name="nom" placeholder="Nom" />
 

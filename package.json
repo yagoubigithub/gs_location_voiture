@@ -4,7 +4,6 @@
   "private": true,
   "build": {
     "appId": "com.gs_client_descktop",
-   
     "extraResources": [
       "**/db/**/*",
       "data.sqlite"

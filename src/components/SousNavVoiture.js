@@ -21,9 +21,7 @@ import { getAllVoiture } from '../store/actions/voitureAction';
                 <Grid item xs={2}>
                     <NavLink className="sous-nav-link" to="/voiture/print">Imprimer</NavLink>
                 </Grid>
-                <Grid item xs={2}>
-                    <NavLink className="sous-nav-link" to="/voiture/corbeille">Corbeille</NavLink>
-                </Grid>
+              
                 </Grid>
                 
             </div>
