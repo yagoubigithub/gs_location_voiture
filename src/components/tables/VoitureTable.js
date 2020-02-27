@@ -9,11 +9,11 @@ import 'react-table/react-table.css'
 //Mui
 import IconButton from "@material-ui/core/IconButton";
 import Checkbox from '@material-ui/core/Checkbox';
-import { Dialog, Collapse } from '@material-ui/core';
+import { Dialog, Collapse, Grid, DialogContent } from '@material-ui/core';
 
 //redux
 import { connect } from 'react-redux';
-import { searchVoiture, addToCorbeille } from '../../store/actions/voitureAction';
+import { searchVoiture, addToCorbeille, getVoiture } from '../../store/actions/voitureAction';
 
 //icons
 
@@ -22,22 +22,33 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import PermMediaIcon from '@material-ui/icons/PermMedia';
 import SearchIcon from '@material-ui/icons/Search';
+import LoadingComponent from '../../utils/loadingComponent';
 
 
 
 class VoitureTable extends Component {
   state = {
+    openGallerie : false,
     addToCorbeilleDialog: false,
     voitureDeletedId: null,
     rowsSelected: [],
-    selectedAll: false
+    selectedAll: false,
+    images : []
 
   }
+  componentWillReceiveProps(nextProps){
+    if (nextProps.voiture) {
+      this.setState({ ...nextProps.voiture });
+    }
+  }
+
+  
 
   handleSearch = (e) => {
     e.preventDefault();
     const data = { ...this.state };
     delete data.addToCorbeilleDialog;
+    delete data.open;
     delete data.voitureDeletedId;
     delete data.rowsSelected;
     delete data.selectedAll;
@@ -99,7 +110,9 @@ class VoitureTable extends Component {
     this.setState({ selectedAll, rowsSelected })
   }
 
-
+handleCloseOpenGallerieVoiture = ()=>{
+  this.setState({openGallerie : !this.state.openGallerie})
+}
   render() {
 
     const columns = [
@@ -140,7 +153,7 @@ class VoitureTable extends Component {
         sortable: false,
         filterable: false,
         Cell: props => <div className="cell">
-          <IconButton size="small" >
+          <IconButton size="small" onClick={()=>{this.handleCloseOpenGallerieVoiture();this.props.getVoiture(props.value)}}>
             <PermMediaIcon className="black" fontSize="small"></PermMediaIcon>
           </IconButton>
 
@@ -198,6 +211,31 @@ class VoitureTable extends Component {
           <button onClick={this.handleOpenCloseaddToCorbeilleDialog}>Cancel</button>
 
         </Dialog>
+
+
+        <Dialog scroll="paper" open={this.state.openGallerie} onClose={this.handleCloseOpenGallerieVoiture}>
+        <DialogContent dividers={true}>
+          <LoadingComponent
+            loading={
+              this.props.loading !== undefined ? this.props.loading : false
+            }
+          />
+          <div>
+            <Grid container>
+              {this.state.images.map(image => {
+                return (
+                  <Grid item xs={4} key={image.image}>
+                    <img
+                      style={{ maxHeight: 200, width: "100%", height: "100%" }}
+                      src={`../../images/${image.image}`}
+                    />
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </div>
+        </DialogContent>
+      </Dialog>
         <div className="table-container">
 
           {/*
@@ -233,7 +271,16 @@ class VoitureTable extends Component {
 const mapActionToProps = dispatch => {
   return {
     searchVoiture: (data) => dispatch(searchVoiture(data)),
-    addToCorbeille: (id) => dispatch(addToCorbeille(id))
+    addToCorbeille: (id) => dispatch(addToCorbeille(id)),
+    
+    getVoiture: id => dispatch(getVoiture(id))
   }
 }
-export default connect(null, mapActionToProps)(VoitureTable);
+
+const mapStateToProps = state => {
+  return {
+    loading: state.voiture.loading,
+    voiture: state.voiture.voiture
+  };
+};
+export default connect(mapStateToProps, mapActionToProps)(VoitureTable);

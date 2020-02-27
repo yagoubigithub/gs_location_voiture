@@ -100,6 +100,9 @@ export const getVoiture = (id) =>{
     }
 }
 
+
+
+
 export const getAllVoiture = () =>{
     return (dispatch ,getState)=>{
 
