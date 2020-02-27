@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 //css
 import './App.css'
 import Voiture from './components/Voiture';
+import Client from './components/Client';
 
 
 class App extends Component {
@@ -30,7 +31,7 @@ class App extends Component {
               <Route exact path="/" component={Connexion} />
               <Route path="/home" component={Home} />
               <Route path="/voiture" component={Voiture} />
-          
+              <Route path="/client" component={Client} />
             </Switch>
           </div>
         </div>

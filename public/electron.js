@@ -266,6 +266,82 @@ app.on('ready', () => {
 })
 
 
+/************************************************************************************************ */
+
+//Client
+
+ db.run('DROP TABLE client');
+
+db.run(`CREATE TABLE IF NOT EXISTS client (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nom TEXT NOT NULL,
+    prenom TEXT,
+    telephone TEXT,
+    email TEXT,
+    adresse TEXT,
+    confiance TEXT,
+    status TETX
+   
+)`);
+
+   //get voiture
+   ipcMain.on('client', (event, value) => {
+
+    if (value.id !== undefined) {
+        // get one voiture
+        db.get("SELECT * FROM client WHERE id=" + value.id, function (err, row) {
+
+            if (err) mainWindow.webContents.send("client", err);
+            mainWindow.webContents.send("client", row);
+           
+          
+        });
+
+    
+    } else {
+        //  get all client
+
+
+
+        db.all("SELECT * FROM client ", function (err, rows) {
+            if (err) mainWindow.webContents.send("client", err);
+            mainWindow.webContents.send("client", rows);
+            
+        });
+
+
+
+    }
+})
+
+
+
+        //AJOUTER CLIENT
+        ipcMain.on('client:ajouter', (event, value) => {
+
+            if (value.nom !== undefined) {
+                // ajouter
+                db.run(`
+               INSERT INTO client(nom , prenom , telephone , email , adresse , confiance  , status) VALUES ('${value.nom}','${value.prenom}','${value.telephone}','${value.email}','${value.adresse}','confiance', 'undo') `, function (err) {
+                    
+
+
+                  
+
+                    db.all("SELECT * FROM client ", function (err, rows) {
+                        if (err) mainWindow.webContents.send("client:ajouter", err);
+                        mainWindow.webContents.send("client:ajouter", rows);
+                    });
+                });
+
+
+                /*
+                
+                              */
+            }
+        })
+
+
     Menu.setApplicationMenu(mainMenu);
 
     mainWindow.on('closed', () => {
