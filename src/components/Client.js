@@ -96,13 +96,13 @@ class Client extends Component {
 <Tabs >
         <Tab index={0} title="Liste des Client">
          
-         <ClientTable rows={this.state.clients} />
+         <ClientTable rows={this.state.clients}  />
         </Tab>
  
         
         <Tab index={1} title="Corbeille" 
         >
-         <ClientTable rows={this.state.clientCorebeille} />
+         <ClientTable rows={this.state.clientCorebeille} type="corbeille" />
          
         </Tab>
       </Tabs>

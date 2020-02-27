@@ -78,6 +78,12 @@ const ClientReducer = (state = initStat, action) =>{
                       clients : action.payload,
                       error : null
                   }
+                  case 'UNDO_DELETE_CLIENT' :
+                    return {
+                        ...state,
+                        clients : action.payload,
+                        error : null
+                    }
        
         default :
         return state;

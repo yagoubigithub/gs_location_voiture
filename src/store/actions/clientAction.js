@@ -250,41 +250,31 @@ export const addToCorbeille = (id) =>{
 
 
 //undo delete
-export const undoDeletePersonne = (id) =>{
+export const undoDeleteClient = (id) =>{
   return (dispatch ,getState)=>{
 
-    //axios if multi-post
     dispatch({
-      type : "LOADING_PERSONNE"
+      type : "LOADING_CLIENT"
   })
-    axios.get('/personne/delete.php?status=undo&id=' + id).then(res=>{
-      dispatch({
-        type : "STOP_LOADING_PERSONNE"
-    });
-    if(Array.isArray(res.data)){
-      dispatch({
-          type : "UNDO_DELETE_PERSONNE",
-          payload : res.data
-      });
-    }else{
-      dispatch({
-        type : "ERROR_PERSONNE",
-        payload : res.data
-    });
-    }
-  })
-  .catch(error=>{
-    dispatch({
-      type : "STOP_LOADING_PERSONNE"
-  });
-      dispatch({
-          type : "ERROR_PERSONNE",
-          payload : error
-      });
-  })
-    
+  ipcRenderer.send("client:delete", {id, status :  "undo"});
 
-    //send to electron if one post
+  ipcRenderer.once('client:delete', function (event,data) {
+   
+    dispatch({
+      type : "STOP_LOADING_CLIENT"
+  });
+  if(Array.isArray(data)){
+    dispatch({
+        type : "UNDO_DELETE_CLIENT",
+        payload : data
+    });
+  }else{
+    dispatch({
+      type : "ERROR_CLIENT",
+      payload :data
+  });
+  }
+});
 
   }
 }
