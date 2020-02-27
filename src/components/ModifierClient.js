@@ -66,7 +66,9 @@ class AjouterClient extends Component {
 
   }
   modifier = () =>{
+   
     const data = {...this.state}
+    console.log(data);
     delete data.open;
     delete data.confianceDialog;
     if(data.nom === undefined || !data.nom.trim().length > 0){
@@ -99,6 +101,9 @@ handleOpenCloseConfianceDialog = () =>{
   
   console.log(this.state.confiance)
   this.setState({confianceDialog : !this.state.confianceDialog})
+}
+handleClose = () =>{
+  this.props.removeClientEdited();
 }
 
  
@@ -142,11 +147,11 @@ handleOpenCloseConfianceDialog = () =>{
             <Grid container >
                 <Grid item xs={2}></Grid>
               <Grid item xs={6}>
-                <TextField placeholder="Nom *" onBlur={this.handleCloseSnack} value={this.state.nom}  name="nom" variant="outlined" onChange={this.handleChange} fullWidth margin="normal" />
-                <TextField placeholder="Prénom" onBlur={this.handleCloseSnack} value={this.state.prenom} name="prenom" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
-                <TextField placeholder="Télephone" onBlur={this.handleCloseSnack} value={this.state.telephone} name="telephone" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
-                <TextField placeholder="Adresse" onBlur={this.handleCloseSnack} value={this.state.adresse} name="adresse" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
-                <TextField placeholder="Email" onBlur={this.handleCloseSnack} value={this.state.email} name="email" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+                <TextField placeholder="Nom *"  value={this.state.nom}  name="nom" variant="outlined" onChange={this.handleChange} fullWidth margin="normal" />
+                <TextField placeholder="Prénom"  value={this.state.prenom} name="prenom" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+                <TextField placeholder="Télephone"  value={this.state.telephone} name="telephone" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+                <TextField placeholder="Adresse"  value={this.state.adresse} name="adresse" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+                <TextField placeholder="Email"  value={this.state.email} name="email" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
                 <FormControlLabel
         control={
           <Checkbox checked={this.state.confianceChecked}   onChange={this.handleChackBoxChange}  />
