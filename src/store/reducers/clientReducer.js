@@ -71,6 +71,13 @@ const ClientReducer = (state = initStat, action) =>{
                 clients : action.payload,
                 error :  null
               }
+
+              case 'ADD_TO_CORBEILLE_CLIENT' :
+                  return {
+                      ...state,
+                      clients : action.payload,
+                      error : null
+                  }
        
         default :
         return state;

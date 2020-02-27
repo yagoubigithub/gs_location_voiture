@@ -370,6 +370,29 @@ ipcMain.on('client:modifier', (event, value) => {
     }
 })
 
+    //delete client
+
+    ipcMain.on('client:delete', (event, value) => {
+
+
+        if (value.id !== undefined) {
+            // get one voiture
+
+
+
+            db.run(`UPDATE client  SET status = '${value.status}' WHERE id = ${value.id};` , function (err) {
+                if (err) mainWindow.webContents.send("client:delete", err);
+
+                db.all("SELECT * FROM client", function (err, rows) {
+                    if (err) mainWindow.webContents.send("client:delete", err);
+
+                    mainWindow.webContents.send("client:delete", rows);
+                });
+            });
+        }
+    })
+
+
     Menu.setApplicationMenu(mainMenu);
 
     mainWindow.on('closed', () => {

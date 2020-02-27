@@ -4,7 +4,7 @@ import { Route,Redirect } from 'react-router-dom';
 
 
 
-
+import { Tab, Tabs } from "react-tabs-css";
 import { connect } from 'react-redux';
 
 import LoadingComponent from '../utils/loadingComponent';
@@ -26,6 +26,7 @@ import ModifierClient from './ModifierClient';
 class Client extends Component {
   state = {
     clients: [],
+    clientCorebeille : []
     
   }
 
@@ -37,9 +38,19 @@ class Client extends Component {
   componentWillReceiveProps(nexProps) {
 
     if (nexProps.clients !== undefined) {
-     
+      const clients = [];
+      const clientCorebeille = [];
+     nexProps.clients.map(client=>{
+       if(client.status === "undo"){
+         clients.push(client)
 
-      this.setState({  clients :nexProps.clients});
+       }
+       if(client.status === "corbeille"){
+         clientCorebeille.push(client)
+       }
+     })
+
+      this.setState({  clients ,clientCorebeille});
     }
    
   }
@@ -80,9 +91,21 @@ class Client extends Component {
 
       <Route path="/client/ajouter" component={AjouterClient} />
 
-<ClientTable rows={this.state.clients} />
 
-    
+
+<Tabs >
+        <Tab index={0} title="Liste des Client">
+         
+         <ClientTable rows={this.state.clients} />
+        </Tab>
+ 
+        
+        <Tab index={1} title="Corbeille" 
+        >
+         <ClientTable rows={this.state.clientCorebeille} />
+         
+        </Tab>
+      </Tabs>
      
       </div>
     )

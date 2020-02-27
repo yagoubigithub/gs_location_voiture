@@ -11,9 +11,10 @@ import IconButton from "@material-ui/core/IconButton";
 import Checkbox from '@material-ui/core/Checkbox';
 import { Dialog, Collapse, Grid, DialogContent } from '@material-ui/core';
 
+
 //redux
 import { connect } from 'react-redux';
-import { searchVoiture, addToCorbeille, getVoiture } from '../../store/actions/voitureAction';
+import { searchClient, addToCorbeille } from '../../store/actions/clientAction';
 
 //icons
 
@@ -76,20 +77,12 @@ class ClientTable extends Component {
     const rowsSelected = [...this.state.rowsSelected];
 
     if (this.checkRowIsSelected(id)) {
-
       //unselect
-
-
       rowsSelected.splice(rowsSelected.findIndex(item => id == item), 1)
-
     } else {
       //select
-
       rowsSelected.push(id);
-
-
     }
-
     this.setState({ rowsSelected })
 
   }
@@ -210,36 +203,14 @@ class ClientTable extends Component {
     return (
       <Fragment>
         <Dialog open={this.state.addToCorbeilleDialog} onClose={this.handleOpenCloseaddToCorbeilleDialog}>
-          <h2>Deleted</h2>
+          <h2>Suprimer</h2>
           <button onClick={() => { this.props.addToCorbeille(this.state.clientDeletedId); this.handleOpenCloseaddToCorbeilleDialog() }}>Delete</button>
           <button onClick={this.handleOpenCloseaddToCorbeilleDialog}>Cancel</button>
 
         </Dialog>
 
 
-        <Dialog scroll="paper" open={this.state.openGallerie} onClose={this.handleCloseOpenGallerieVoiture}>
-        <DialogContent dividers={true}>
-          <LoadingComponent
-            loading={
-              this.props.loading !== undefined ? this.props.loading : false
-            }
-          />
-          <div>
-            <Grid container>
-              {this.state.images.map(image => {
-                return (
-                  <Grid item xs={4} key={image.image}>
-                    <img
-                      style={{ maxHeight: 200, width: "100%", height: "100%" }}
-                      src={`../../images/${image.image}`}
-                    />
-                  </Grid>
-                );
-              })}
-            </Grid>
-          </div>
-        </DialogContent>
-      </Dialog>
+     
         <div className="table-container">
 
           {/*
@@ -274,17 +245,16 @@ class ClientTable extends Component {
 
 const mapActionToProps = dispatch => {
   return {
-    searchVoiture: (data) => dispatch(searchVoiture(data)),
+    searchClient: (data) => dispatch(searchClient(data)),
     addToCorbeille: (id) => dispatch(addToCorbeille(id)),
     
-    getVoiture: id => dispatch(getVoiture(id))
+  
   }
 }
 
 const mapStateToProps = state => {
   return {
-    loading: state.voiture.loading,
-    voiture: state.voiture.voiture
+    loading: state.client.loading
   };
 };
 export default connect(mapStateToProps, mapActionToProps)(ClientTable);

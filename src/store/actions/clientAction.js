@@ -222,23 +222,23 @@ export const addToCorbeille = (id) =>{
   return (dispatch , getState)=>{
 
     dispatch({
-      type : "LOADING_VOITURE"
+      type : "LOADING_CLIENT"
   })
-  ipcRenderer.send("voiture:delete", {id, status :  "corbeille"});
+  ipcRenderer.send("client:delete", {id, status :  "corbeille"});
 
-  ipcRenderer.once('voiture:delete', function (event,data) {
+  ipcRenderer.once('client:delete', function (event,data) {
    
     dispatch({
-      type : "STOP_LOADING_VOITURE"
+      type : "STOP_LOADING_CLIENT"
   });
   if(Array.isArray(data)){
     dispatch({
-        type : "ADD_TO_CORBEILLE_VOITURE",
+        type : "ADD_TO_CORBEILLE_CLIENT",
         payload : data
     });
   }else{
     dispatch({
-      type : "ERROR_VOITURE",
+      type : "ERROR_CLIENT",
       payload :data
   });
   }
