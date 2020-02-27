@@ -43,10 +43,10 @@ const ClientReducer = (state = initStat, action) =>{
                 case 'MODIFIER_CLIENT' :
                 return {
                     ...state,
-                    voitures : action.payload.voitures,
-                    voiture : action.payload.voiture,
+                    clients : action.payload.clients,
+                    client : action.payload.client,
                     error :  null,
-                    voitureEdited :  true
+                    clientEdited :  true
 
                 }
                
@@ -56,6 +56,12 @@ const ClientReducer = (state = initStat, action) =>{
           return{
               ...state,
               loading : false
+
+          }
+          case 'REMOVE_CLIENT_EDITED' : 
+          return{
+              ...state,
+              clientEdited : false
 
           }
        

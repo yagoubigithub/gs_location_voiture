@@ -270,7 +270,7 @@ app.on('ready', () => {
 
 //Client
 
- db.run('DROP TABLE client');
+ //db.run('DROP TABLE client');
 
 db.run(`CREATE TABLE IF NOT EXISTS client (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -341,6 +341,34 @@ db.run(`CREATE TABLE IF NOT EXISTS client (
             }
         })
 
+
+
+// modifier client
+
+ 
+ipcMain.on('client:modifier', (event, value) => {
+
+    if (value.nom !== undefined) {
+        // modifier
+
+    
+        db.run(`
+       UPDATE client SET nom='${value.nom}' , prenom='${value.prenom}' , telephone='${value.telephone}' , email='${value.email}' , adresse='${value.adresse}' , confiance='${value.confiance}' WHERE  id=${value.id}  `, function (err) {
+           
+
+        if (err) mainWindow.webContents.send("client:modifier", err);
+            db.all("SELECT * FROM client ", function (err, rows) {
+                if (err) mainWindow.webContents.send("client:modifier", err);
+                mainWindow.webContents.send("client:modifier", rows);
+            });
+        });
+
+
+        /*
+        
+                      */
+    }
+})
 
     Menu.setApplicationMenu(mainMenu);
 

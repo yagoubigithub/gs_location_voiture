@@ -20,8 +20,7 @@ import { searchVoiture, addToCorbeille, getVoiture } from '../../store/actions/v
 import PrintIconf from '@material-ui/icons/Print';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import PermMediaIcon from '@material-ui/icons/PermMedia';
-import SearchIcon from '@material-ui/icons/Search';
+
 import LoadingComponent from '../../utils/loadingComponent';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';

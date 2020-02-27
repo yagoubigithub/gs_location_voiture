@@ -18,6 +18,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import ModifierVoiture from './ModifierVoiture';
 import ClientTable from './tables/ClientTable';
 import AjouterClient from './AjouterClient';
+import ModifierClient from './ModifierClient';
 
 
 
@@ -62,7 +63,7 @@ class Client extends Component {
       <div>
         <LoadingComponent loading={this.state.loading !== undefined ? this.state.loading : false} />
         <SousNavClient />
-        <Route path="/client/modifier/:id" component={ModifierVoiture} />
+        <Route path="/client/modifier/:id" component={ModifierClient} />
         
         <form onSubmit={this.handleSearch} className="search-form">
             <input onChange={this.handleSearchChange} type="text" name="nom" placeholder="Nom" />

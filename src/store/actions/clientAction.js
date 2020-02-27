@@ -36,27 +36,27 @@ export const ajouterClient = (data) =>{
 }
 
 
-export const modifierVoiture  = (voiture) =>{
+export const modifierClient  = (client) =>{
   return (dispatch,getState) =>{
     dispatch({
-      type : "LOADING_VOITURE"
+      type : "LOADING_CLIENT"
   })
-  ipcRenderer.send("voiture:modifier", {...voiture});
+  ipcRenderer.send("client:modifier", {...client});
 
-  ipcRenderer.once('voiture:modifier', function (event,voitures) {
+  ipcRenderer.once('client:modifier', function (event,clients) {
    
     dispatch({
-      type : "STOP_LOADING_VOITURE"
+      type : "STOP_LOADING_CLIENT"
   });
-  if(Array.isArray(voitures)){
+  if(Array.isArray(clients)){
     dispatch({
-        type : "MODIFIER_VOITURE",
-        payload : {voitures, voiture}
+        type : "MODIFIER_CLIENT",
+        payload : {clients, client}
     });
   }else{
     dispatch({
-      type : "ERROR_VOITURE",
-      payload : voitures
+      type : "ERROR_CLIENT",
+      payload : clients
   });
   }
 });
@@ -65,31 +65,41 @@ export const modifierVoiture  = (voiture) =>{
   }
 }
 
+export const removeClientEdited = () =>{
+  return (dispatch ,getState)=>{
 
-export const getVoiture = (id) =>{
+    
+  
+    dispatch({
+      type : "REMOVE_CLIENT_EDITED"
+  });
+}}
+
+
+export const getClient = (id) =>{
     return (dispatch ,getState)=>{
 
     
   
       dispatch({
-        type : "LOADING_VOITURE"
+        type : "LOADING_CLIENT"
     })
-    ipcRenderer.send("voiture", {id});
+    ipcRenderer.send("client", {id});
 
     
-    ipcRenderer.once('voiture', function (event,data) {
+    ipcRenderer.once('client', function (event,data) {
      
       dispatch({
-        type : "STOP_LOADING_VOITURE"
+        type : "STOP_LOADING_CLIENT"
     });
     if(data.nom){
       dispatch({
-          type : "READ_ONE_VOITURE",
+          type : "READ_ONE_CLIENT",
           payload : data
       });
     }else{
       dispatch({
-        type : "ERROR_VOITURE",
+        type : "ERROR_CLIENT",
         payload :data
     });
     }
