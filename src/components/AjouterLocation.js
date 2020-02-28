@@ -39,7 +39,8 @@ class AjouterLocation extends Component {
   state = {
     open: true,
     nom_client: "",
-
+    number_unite : 1,
+    unite : "j",
     clients: [],
     voitures: [],
     client_selected: {},
@@ -59,6 +60,10 @@ class AjouterLocation extends Component {
   componentDidMount() {
     this.props.getAllClient();
     this.props.getAllVoiture();
+    const date_entre = getCurrentDateTime(new Date().getTime());;
+    const date_sortie = getCurrentDateTime(new Date(date_entre).getTime() + 1 * 24 * 60 *60*100);
+
+    this.setState({date_entre, date_sortie})
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.clients) {
@@ -84,11 +89,7 @@ class AjouterLocation extends Component {
       this.setState({ voitures });
     }
   }
-  handleChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  };
+  
   handleClientClose = () => {
     this.setState({
       clientDialog: !this.state.clientDialog
@@ -128,10 +129,50 @@ class AjouterLocation extends Component {
     const data = { nom: this.state.nom_voiture };
     this.props.searchVoiture(data);
   };
-  
+  handleNumberChange = (e) =>{
+   
+    const unite = this.state.unite;
+    const number_unite = e.target.value;
+
+    if(unite === "j"){
+         const date_entre = this.state.date_entre;
+    const date_sortie = getCurrentDateTime(new Date(date_entre).getTime() + number_unite * 24 * 60 *60*1000);
+
+    this.setState({date_entre, date_sortie,[e.target.name] : number_unite})
+    }else{
+        const date_entre = this.state.date_entre;
+        const date_sortie = getCurrentDateTime(new Date(date_entre).getTime() + number_unite  * 60 *60*1000);
+    
+        this.setState({date_entre, date_sortie,[e.target.name] : number_unite})   
+    }
+
+  }
+  handleUniteChange = e =>{
+      const unite = e.target.value;
+
+      const number_unite = this.state.number_unite;
+
+    if(unite === "j"){
+         const date_entre = this.state.date_entre;
+    const date_sortie = getCurrentDateTime(new Date(date_entre).getTime() + number_unite * 24 * 60 *60*1000);
+
+    this.setState({date_entre, date_sortie,[e.target.name] : unite})
+    }else{
+        const date_entre = this.state.date_entre;
+        const date_sortie = getCurrentDateTime(new Date(date_entre).getTime() + number_unite  * 60 *60*1000);
+    
+        this.setState({date_entre, date_sortie,[e.target.name] : unite})   
+    }
+
+  }
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
   render() {
-      const currentDateTime = getCurrentDateTime();
-      console.log(currentDateTime)
+      
+     
     return (
       <Dialog fullScreen open={this.state.open}>
         <Dialog
@@ -309,14 +350,18 @@ class AjouterLocation extends Component {
               margin="normal"
               style={{ flex: 1 }}
               
-              onChange={this.handleChange}
+              onChange={this.handleNumberChange}
               type={"number"}
-              defaultValue={1}
+              value={this.state.number_unite}
+              name="number_unite"
             />
              <FormControl >
         <InputLabel id="unite-du-temps-select-label">Unité du temps</InputLabel>
         <Select
           labelId="unite-du-temps-select-label"
+          defaultValue="j"
+          onChange={this.handleUniteChange}
+          name="unite"
          
         >
           <MenuItem value={"h"}>Heurs</MenuItem>
@@ -334,9 +379,10 @@ class AjouterLocation extends Component {
               
               margin="normal"
               style={{ flex: 1 }}
-              defaultValue={currentDateTime}
+              value={this.state.date_entre}
               onChange={this.handleChange}
               type="datetime-local"
+              name="date_entre"
              
             />
 
@@ -344,9 +390,10 @@ class AjouterLocation extends Component {
               
               margin="normal"
               style={{ flex: 1 }}
-              defaultValue={currentDateTime}
+              value={this.state.date_sortie}
               onChange={this.handleChange}
               type="datetime-local"
+              name="date_sortie"
               
             />
 
