@@ -17,6 +17,7 @@ import { connect } from 'react-redux';
 import './App.css'
 import Voiture from './components/Voiture';
 import Client from './components/Client';
+import Location from './components/Location';
 
 
 class App extends Component {
@@ -32,6 +33,7 @@ class App extends Component {
               <Route path="/home" component={Home} />
               <Route path="/voiture" component={Voiture} />
               <Route path="/client" component={Client} />
+              <Route path="/location" component={Location} />
             </Switch>
           </div>
         </div>

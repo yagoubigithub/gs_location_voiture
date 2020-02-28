@@ -393,6 +393,21 @@ ipcMain.on('client:modifier', (event, value) => {
     })
 
 
+     //SEARCH CLIENT
+
+     ipcMain.on('client:search', (event, value) => {
+
+
+        if (value.nom !== undefined) {
+            // get one voiture
+            db.all("SELECT * FROM client WHERE nom LIKE '%" + value.nom + "%'", function (err, rows) {
+                if (err) mainWindow.webContents.send("client:search", err);
+
+                mainWindow.webContents.send("client:search", rows);
+            });
+        }
+    })
+
     Menu.setApplicationMenu(mainMenu);
 
     mainWindow.on('closed', () => {

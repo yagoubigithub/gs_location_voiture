@@ -35,9 +35,9 @@ class ClientTable extends Component {
     images: []
   };
   componentWillReceiveProps(nextProps) {
-    if (nextProps.voiture) {
-      this.setState({ ...nextProps.voiture });
-    }
+   
+      this.setState({ loading : nextProps.loading});
+    
   }
 
   handleSearch = e => {

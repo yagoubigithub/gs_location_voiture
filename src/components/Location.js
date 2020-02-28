@@ -8,49 +8,49 @@ import { Tab, Tabs } from "react-tabs-css";
 import { connect } from 'react-redux';
 
 import LoadingComponent from '../utils/loadingComponent';
-import { getAllClient, searchClient } from '../store/actions/clientAction';
-import SousNavClient from './SousNavClient';
-import AjouterVoiture from './AjouterVoiture';
+import { getAllLocation, searchLocation } from '../store/actions/locationAction';
+
 
 
 //icons
 import SearchIcon from '@material-ui/icons/Search';
-import ModifierVoiture from './ModifierVoiture';
-import ClientTable from './tables/ClientTable';
+
 import AjouterClient from './AjouterClient';
 import ModifierClient from './ModifierClient';
+import SousNavLocation from './SousNavLocation';
+import LocationTable from './tables/LocationTable';
 
 
 
 
-class Client extends Component {
+class Location extends Component {
   state = {
-    clients: [],
-    clientCorebeille : []
+    locations: [],
+    locationCorebeille : []
     
   }
 
 
   componentWillMount() {
-    this.props.getAllClient();
+    this.props.getAllLocation();
   }
 
   componentWillReceiveProps(nexProps) {
 
-    if (nexProps.clients !== undefined) {
-      const clients = [];
-      const clientCorebeille = [];
-     nexProps.clients.map(client=>{
-       if(client.status === "undo"){
-         clients.push(client)
+    if (nexProps.locations !== undefined) {
+      const locations = [];
+      const locationCorebeille = [];
+     nexProps.locations.map(location=>{
+       if(location.status === "undo"){
+         locations.push(location)
 
        }
-       if(client.status === "corbeille"){
-         clientCorebeille.push(client)
+       if(location.status === "corbeille"){
+         locationCorebeille.push(location)
        }
      })
 
-      this.setState({  clients ,clientCorebeille,loading : nexProps.loading});
+      this.setState({  locations ,locationCorebeille,loading : nexProps.loading});
     }
    
   }
@@ -73,36 +73,34 @@ class Client extends Component {
     return (
       <div>
         <LoadingComponent loading={this.state.loading !== undefined ? this.state.loading : false} />
-        <SousNavClient />
-        <Route path="/client/modifier/:id" component={ModifierClient} />
+        <SousNavLocation />
+        <Route path="/location/modifier/:id" component={ModifierClient} />
         
         <form onSubmit={this.handleSearch} className="search-form">
             <input onChange={this.handleSearchChange} type="text" name="nom" placeholder="Nom" />
-
             <button type="submit" >
               <SearchIcon />
             </button>
-
           </form>
      
       
 
 
 
-      <Route path="/client/ajouter" component={AjouterClient} />
+      <Route path="/location/ajouter" component={AjouterClient} />
 
 
 
 <Tabs >
-        <Tab index={0} title="Liste des Client">
+        <Tab index={0} title="Les locations">
          
-         <ClientTable rows={this.state.clients}  />
+         <LocationTable rows={this.state.locations}  />
         </Tab>
  
         
         <Tab index={1} title="Corbeille" 
         >
-         <ClientTable rows={this.state.clientCorebeille} type="corbeille" />
+         <LocationTable rows={this.state.locationCorebeille} type="corbeille" />
          
         </Tab>
       </Tabs>
@@ -115,8 +113,8 @@ const mapStateToProps = (state) => {
   console.log(state)
   return {
     auth : state.auth,
-    clients : state.client.clients,
-    loading : state.client.loading
+    locations : state.location.locations,
+    loading : state.location.loading
 
    
   }
@@ -124,10 +122,10 @@ const mapStateToProps = (state) => {
 
 const mapActionToProps = (dispatch) =>{
   return  {
-    getAllClient : ()=>dispatch(getAllClient()),
-    searchClient: (data) => dispatch(searchClient(data)),
+    getAllLocation : ()=>dispatch(getAllLocation()),
+    searchLocation: (data) => dispatch(searchLocation(data)),
 
   }
 
 }
-export default connect(mapStateToProps,mapActionToProps)(Client);
+export default connect(mapStateToProps,mapActionToProps)(Location);
