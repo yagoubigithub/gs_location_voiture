@@ -22,7 +22,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import {connect} from 'react-redux';
 
-import {ajouterClient,getAllClient} from '../store/actions/clientAction'
+import {ajouterClient,getAllClient, searchClient} from '../store/actions/clientAction'
 
 import LoadingComponent from "../utils/loadingComponent";
 
@@ -33,12 +33,9 @@ import ClientTable from './tables/ClientTable'
 class AjouterLocation extends Component {
   state = {
     open: true,
-    nom : "",
+    nom_client : "",
    
-    prenom :"",
-    telephone :"",
-    email :"",
-    adresse :"",
+   
     clients : [],
     client_selected : {
 
@@ -60,7 +57,16 @@ class AjouterLocation extends Component {
   componentWillReceiveProps (nextProps){
       if(nextProps.clients){
          //
-         this.setState({ clients :nextProps.clients})
+         const clients = [];
+        
+        nextProps.clients.map(client=>{
+          if(client.status === "undo"){
+            clients.push(client)
+   
+          }
+         
+        })
+        this.setState({clients})
          
       }
 
@@ -78,11 +84,30 @@ class AjouterLocation extends Component {
 getClientData =  ( client_selected )=>{
  this.setState({client_selected})
 }
+handleSearchClientChange =(e)=>{
+this.setState({
+    [e.target.name]: e.target.value
+})
+}
+
+handleSearchClient = (e) =>{
+    e.preventDefault();
+    const data = { nom : this.state.nom_client };
+    this.props.searchClient(data)
+}
   render() {
     return (
       <Dialog fullScreen open={this.state.open}>
 
-<Dialog open={this.state.clientDialog} onClose={this.handleClientClose}>
+<Dialog open={this.state.clientDialog} maxWidth="lg" onClose={this.handleClientClose}>
+<form onSubmit={this.handleSearchClient} className="search-form">
+            <input onChange={this.handleSearchClientChange} type="text" name="nom_client" placeholder="Nom" />
+
+            <button type="submit" >
+             search
+            </button>
+
+          </form>
                     <ClientTable sendData={this.getClientData} type="choose-one" rows={this.state.clients} />
 
 
@@ -99,7 +124,7 @@ getClientData =  ( client_selected )=>{
                 <CloseIcon />
               </IconButton>
             </Link>
-            <h4 style={{ textAlign: "center" }}>Ajouter une location</h4>
+            <h4 style={{ textAlign: "center" }}>Ajouter  location</h4>
             <Button
               color="primary"
               variant="contained"
@@ -163,7 +188,8 @@ getClientData =  ( client_selected )=>{
 const mapActionToProps = (dispatch) =>{
     return {
         ajouterClient : (data)=> dispatch(ajouterClient(data)),
-        getAllClient :  ()=>dispatch(getAllClient())
+        getAllClient :  ()=>dispatch(getAllClient()),
+        searchClient: (data) => dispatch(searchClient(data)),
     }
 
 }

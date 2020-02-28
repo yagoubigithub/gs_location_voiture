@@ -50,7 +50,7 @@ class ClientTable extends Component {
     delete data.rowsSelected;
     delete data.selectedAll;
     delete data.clientSelected;
-    console.log(data);
+    
     this.props.searchVoiture(data);
   };
 
@@ -265,11 +265,11 @@ columns.unshift(
       {
         Header: "  ",
         accessor: "id",
-        width: 100,
+        width: 50,
         sortable: false,
         filterable: false,
         Cell: props => {
-        return (<input type="radio" name="select-client" checked={props.value === this.state.clientSelected.id} onChange={()=>this.handleSelectOneChange(props.original)} />)
+        return (  <div className="cell"><input type="radio" name="select-client" checked={props.value === this.state.clientSelected.id} onChange={()=>this.handleSelectOneChange(props.original)} /></div>)
         }
       }
      )
