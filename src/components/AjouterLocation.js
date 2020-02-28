@@ -11,10 +11,11 @@ import Grid from "@material-ui/core/Grid";
 
 import Button from "@material-ui/core/Button";
 
+import {getCurrentDateTime} from '../utils/methods'
 
 //icons
 import CloseIcon from "@material-ui/icons/Close";
-import { TextField } from "@material-ui/core";
+import { TextField, FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 import AddIcon from "@material-ui/icons/Add";
 
@@ -127,7 +128,10 @@ class AjouterLocation extends Component {
     const data = { nom: this.state.nom_voiture };
     this.props.searchVoiture(data);
   };
+  
   render() {
+      const currentDateTime = getCurrentDateTime();
+      console.log(currentDateTime)
     return (
       <Dialog fullScreen open={this.state.open}>
         <Dialog
@@ -296,6 +300,56 @@ class AjouterLocation extends Component {
             </Button>
 
             <br />
+          </Grid>
+
+          <Grid item xs={2}></Grid>
+          <Grid item xs={7}>
+          <TextField
+              
+              margin="normal"
+              style={{ flex: 1 }}
+              
+              onChange={this.handleChange}
+              type={"number"}
+              defaultValue={1}
+            />
+             <FormControl >
+        <InputLabel id="unite-du-temps-select-label">Unité du temps</InputLabel>
+        <Select
+          labelId="unite-du-temps-select-label"
+         
+        >
+          <MenuItem value={"h"}>Heurs</MenuItem>
+          <MenuItem value={"j"}>Jours</MenuItem>
+          
+        </Select>
+      </FormControl>
+
+      
+          </Grid>
+          
+          <Grid item xs={2}></Grid>
+          <Grid item xs={8}>
+          <TextField
+              
+              margin="normal"
+              style={{ flex: 1 }}
+              defaultValue={currentDateTime}
+              onChange={this.handleChange}
+              type="datetime-local"
+             
+            />
+
+<TextField
+              
+              margin="normal"
+              style={{ flex: 1 }}
+              defaultValue={currentDateTime}
+              onChange={this.handleChange}
+              type="datetime-local"
+              
+            />
+
           </Grid>
         </Grid>
       </Dialog>
