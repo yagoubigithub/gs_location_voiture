@@ -40,7 +40,16 @@ class ClientTable extends Component {
       this.setState({ loading : nextProps.loading});
     
   }
-
+  componentWillUnmount(){
+    switch(this.props.type){
+      case "choose-one":
+          const clientSelected = {...this.state.clientSelected};
+          this.props.sendData(clientSelected);
+      break;
+      default :
+      break;
+    }
+  }
   handleSearch = e => {
     e.preventDefault();
     const data = { ...this.state };
@@ -104,16 +113,7 @@ class ClientTable extends Component {
 
     })
   }
-  componentWillUnmount(){
-    switch(this.props.type){
-      case "choose-one":
-          const clientSelected = {...this.state.clientSelected};
-          this.props.sendData(clientSelected);
-      break;
-      default :
-      break;
-    }
-  }
+ 
   render() {
     const columns = [
      

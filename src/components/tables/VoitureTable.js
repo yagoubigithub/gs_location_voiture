@@ -33,12 +33,23 @@ class VoitureTable extends Component {
     voitureDeletedId: null,
     rowsSelected: [],
     selectedAll: false,
-    images : []
+    images : [],
+    voitureSelected :{}
 
   }
   componentWillReceiveProps(nextProps){
     if (nextProps.voiture) {
       this.setState({ ...nextProps.voiture });
+    }
+  }
+  componentWillUnmount(){
+    switch(this.props.type){
+      case "choose-one":
+          const voitureSelected = {...this.state.voitureSelected};
+          this.props.sendData(voitureSelected);
+      break;
+      default :
+      break;
     }
   }
 
@@ -52,6 +63,7 @@ class VoitureTable extends Component {
     delete data.voitureDeletedId;
     delete data.rowsSelected;
     delete data.selectedAll;
+    delete data.voitureSelected;
     console.log(data);
     this.props.searchVoiture(data)
 
@@ -75,20 +87,13 @@ class VoitureTable extends Component {
   }
   handeleCheckCheckboxRow = (e, id) => {
     const rowsSelected = [...this.state.rowsSelected];
-
     if (this.checkRowIsSelected(id)) {
-
       //unselect
-
-
       rowsSelected.splice(rowsSelected.findIndex(item => id == item), 1)
 
     } else {
       //select
-
       rowsSelected.push(id);
-
-
     }
 
     this.setState({ rowsSelected })
@@ -113,59 +118,17 @@ class VoitureTable extends Component {
 handleCloseOpenGallerieVoiture = ()=>{
   this.setState({openGallerie : !this.state.openGallerie})
 }
+
+handleSelectOneChange =  (voitureSelected) =>{
+  this.setState({
+    voitureSelected
+
+  })
+}
   render() {
 
     const columns = [
       {
-        Header: <div style={{ backgroundColor: '#E4E4E4', border: "1px solid rgba(0,0,0,0.45)" }}>
-          <Checkbox
-            key={"check-all-voiture-key"}
-            id="check-all-voiture-id"
-            style={{ padding: 3 }}
-            checked={this.state.selectedAll}
-            onChange={this.handleSelectAllVoitureChange}
-            color="primary"
-          />
-        </div>,
-        sortable: false,
-        filterable: false,
-        accessor: 'id',
-        width: 50,
-
-        Cell: props => <div className="cell">
-          <Checkbox
-            value={props.value}
-            key={`key-checkbox-table-voiture-${props.value}`}
-            id={`id-checkbox-table-voiture-${props.value}`}
-            onChange={e => this.handeleCheckCheckboxRow(e, props.value)}
-            checked={this.checkRowIsSelected(props.value)}
-            style={{ padding: 3 }}
-
-          />
-        </div>
-      },
-
-      {
-
-        Header: '  ',
-        accessor: 'id',
-        width: 100,
-        sortable: false,
-        filterable: false,
-        Cell: props => <div className="cell">
-          <IconButton size="small" onClick={()=>{this.handleCloseOpenGallerieVoiture();this.props.getVoiture(props.value)}}>
-            <PermMediaIcon className="black" fontSize="small"></PermMediaIcon>
-          </IconButton>
-
-          <IconButton size="small" onClick={() => this.add_To_Corbeille(props.value)}>
-            <DeleteIcon className="red" fontSize="small"></DeleteIcon>
-          </IconButton>
-          <IconButton size="small">
-            <Link to={`/voiture/modifier/${props.value}`}>  <EditIcon className="black" fontSize="small"></EditIcon></Link>
-          </IconButton>
-
-        </div>
-      }, {
         Header: 'Nom',
         accessor: 'nom',
         Cell: props =>
@@ -202,7 +165,74 @@ handleCloseOpenGallerieVoiture = ()=>{
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
       }]
 
+      if( this.props.type !== "choose-one" ){
+        columns.unshift(
+          {
+            Header: <div style={{ backgroundColor: '#E4E4E4', border: "1px solid rgba(0,0,0,0.45)" }}>
+              <Checkbox
+                key={"check-all-voiture-key"}
+                id="check-all-voiture-id"
+                style={{ padding: 3 }}
+                checked={this.state.selectedAll}
+                onChange={this.handleSelectAllVoitureChange}
+                color="primary"
+              />
+            </div>,
+            sortable: false,
+            filterable: false,
+            accessor: 'id',
+            width: 50,
+    
+            Cell: props => <div className="cell">
+              <Checkbox
+                value={props.value}
+                key={`key-checkbox-table-voiture-${props.value}`}
+                id={`id-checkbox-table-voiture-${props.value}`}
+                onChange={e => this.handeleCheckCheckboxRow(e, props.value)}
+                checked={this.checkRowIsSelected(props.value)}
+                style={{ padding: 3 }}
+    
+              />
+            </div>
+          },
+    
+          {
+    
+            Header: '  ',
+            accessor: 'id',
+            width: 100,
+            sortable: false,
+            filterable: false,
+            Cell: props => <div className="cell">
+              <IconButton size="small" onClick={()=>{this.handleCloseOpenGallerieVoiture();this.props.getVoiture(props.value)}}>
+                <PermMediaIcon className="black" fontSize="small"></PermMediaIcon>
+              </IconButton>
+    
+              <IconButton size="small" onClick={() => this.add_To_Corbeille(props.value)}>
+                <DeleteIcon className="red" fontSize="small"></DeleteIcon>
+              </IconButton>
+              <IconButton size="small">
+                <Link to={`/voiture/modifier/${props.value}`}>  <EditIcon className="black" fontSize="small"></EditIcon></Link>
+              </IconButton>
+    
+            </div>
+          }
+        )
+      }else{
 
+        columns.unshift(
+          {
+            Header: "  ",
+            accessor: "id",
+            width: 50,
+            sortable: false,
+            filterable: false,
+            Cell: props => {
+            return (  <div className="cell"><input type="radio" name="select-voiture" checked={props.value === this.state.voitureSelected.id} onChange={()=>this.handleSelectOneChange(props.original)} /></div>)
+            }
+          }
+        )
+      }
     return (
       <Fragment>
         <Dialog open={this.state.addToCorbeilleDialog} onClose={this.handleOpenCloseaddToCorbeilleDialog}>
@@ -258,7 +288,7 @@ handleCloseOpenGallerieVoiture = ()=>{
             className="table"
             data={this.props.rows}
             columns={columns}
-            defaultPageSize={20}
+            defaultPageSize={this.props.type=== "choose-one" ? 5 :20}
 
           />
         </div>
