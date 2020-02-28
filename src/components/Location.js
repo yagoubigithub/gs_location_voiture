@@ -19,6 +19,7 @@ import AjouterClient from './AjouterClient';
 import ModifierClient from './ModifierClient';
 import SousNavLocation from './SousNavLocation';
 import LocationTable from './tables/LocationTable';
+import AjouterLocation from './AjouterLocation';
 
 
 
@@ -87,7 +88,7 @@ class Location extends Component {
 
 
 
-      <Route path="/location/ajouter" component={AjouterClient} />
+      <Route path="/location/ajouter" component={AjouterLocation} />
 
 
 

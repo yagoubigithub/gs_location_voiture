@@ -32,7 +32,8 @@ class ClientTable extends Component {
     clientDeletedId: null,
     rowsSelected: [],
     selectedAll: false,
-    images: []
+    images: [],
+    clientSelected : {}
   };
   componentWillReceiveProps(nextProps) {
    
@@ -48,6 +49,7 @@ class ClientTable extends Component {
     delete data.clientDeletedId;
     delete data.rowsSelected;
     delete data.selectedAll;
+    delete data.clientSelected;
     console.log(data);
     this.props.searchVoiture(data);
   };
@@ -96,80 +98,25 @@ class ClientTable extends Component {
     this.setState({ selectedAll, rowsSelected });
   };
 
+  handleSelectOneChange =  (clientSelected) =>{
+    this.setState({
+      clientSelected
+
+    })
+  }
+  componentWillUnmount(){
+    switch(this.props.type){
+      case "choose-one":
+          const clientSelected = {...this.state.clientSelected};
+          this.props.sendData(clientSelected);
+      break;
+      default :
+      break;
+    }
+  }
   render() {
     const columns = [
-      {
-        Header: (
-          <div
-            style={{
-              backgroundColor: "#E4E4E4",
-              border: "1px solid rgba(0,0,0,0.45)"
-            }}
-          >
-            <Checkbox
-              key={"check-all-client-key"}
-              id="check-all-client-id"
-              style={{ padding: 3 }}
-              checked={this.state.selectedAll}
-              onChange={this.handleSelectAllClientChange}
-              color="primary"
-            />
-          </div>
-        ),
-        sortable: false,
-        filterable: false,
-        accessor: "id",
-        width: 50,
-
-        Cell: props => (
-          <div className="cell">
-            <Checkbox
-              value={props.value}
-              key={`key-checkbox-table-client-${props.value}`}
-              id={`id-checkbox-table-client-${props.value}`}
-              onChange={e => this.handeleCheckCheckboxRow(e, props.value)}
-              checked={this.checkRowIsSelected(props.value)}
-              style={{ padding: 3 }}
-            />
-          </div>
-        )
-      },
-
-      {
-        Header: "  ",
-        accessor: "id",
-        width: 100,
-        sortable: false,
-        filterable: false,
-        Cell: props => {
-          if (this.props.type === "corbeille") {
-            return  <div className="cell"><IconButton
-            size="small"
-            onClick={() => this.props.undoDeleteClient(props.value)}
-          >
-            <UndoIcon className="black" fontSize="small"></UndoIcon>
-          </IconButton></div> ;
-          } else {
-            return (
-              <div className="cell">
-              
-                <IconButton
-                  size="small"
-                  onClick={() => this.add_To_Corbeille(props.value)}
-                >
-                  <DeleteIcon className="red" fontSize="small"></DeleteIcon>
-                </IconButton>
-                <IconButton size="small">
-                  <Link to={`/client/modifier/${props.value}`}>
-                    {" "}
-                    <EditIcon className="black" fontSize="small"></EditIcon>
-                  </Link>
-                </IconButton>
-              </div>
-            );
-          }
-        }
-      },
+     
       {
         Header: "Nom",
         accessor: "nom",
@@ -238,6 +185,95 @@ class ClientTable extends Component {
       }
     ];
 
+   if( this.props.type !== "choose-one" ){
+columns.unshift(
+  {
+    Header: (
+      <div
+        style={{
+          backgroundColor: "#E4E4E4",
+          border: "1px solid rgba(0,0,0,0.45)"
+        }}
+      >
+        <Checkbox
+          key={"check-all-client-key"}
+          id="check-all-client-id"
+          style={{ padding: 3 }}
+          checked={this.state.selectedAll}
+          onChange={this.handleSelectAllClientChange}
+          color="primary"
+        />
+      </div>
+    ),
+    sortable: false,
+    filterable: false,
+    accessor: "id",
+    width: 50,
+
+    Cell: props => (
+      <div className="cell">
+        <Checkbox
+          value={props.value}
+          key={`key-checkbox-table-client-${props.value}`}
+          id={`id-checkbox-table-client-${props.value}`}
+          onChange={e => this.handeleCheckCheckboxRow(e, props.value)}
+          checked={this.checkRowIsSelected(props.value)}
+          style={{ padding: 3 }}
+        />
+      </div>
+    )
+  },
+
+  {
+    Header: "  ",
+    accessor: "id",
+    width: 100,
+    sortable: false,
+    filterable: false,
+    Cell: props => {
+      if (this.props.type === "corbeille") {
+        return  <div className="cell"><IconButton
+        size="small"
+        onClick={() => this.props.undoDeleteClient(props.value)}
+      >
+        <UndoIcon className="black" fontSize="small"></UndoIcon>
+      </IconButton></div> ;
+      } else {
+        return (
+          <div className="cell">
+          
+            <IconButton
+              size="small"
+              onClick={() => this.add_To_Corbeille(props.value)}
+            >
+              <DeleteIcon className="red" fontSize="small"></DeleteIcon>
+            </IconButton>
+            <IconButton size="small">
+              <Link to={`/client/modifier/${props.value}`}>
+                {" "}
+                <EditIcon className="black" fontSize="small"></EditIcon>
+              </Link>
+            </IconButton>
+          </div>
+        );
+      }
+    }
+  }
+)
+   }else{
+     columns.unshift(
+      {
+        Header: "  ",
+        accessor: "id",
+        width: 100,
+        sortable: false,
+        filterable: false,
+        Cell: props => {
+        return (<input type="radio" name="select-client" checked={props.value === this.state.clientSelected.id} onChange={()=>this.handleSelectOneChange(props.original)} />)
+        }
+      }
+     )
+   }
     return (
       <Fragment>
         <Dialog
@@ -262,21 +298,21 @@ class ClientTable extends Component {
           {/*
             recherche
             */}
-
-          <Collapse in={this.state.rowsSelected.length > 0}>
+            {this.props.type!== "choose-one" ?  <Collapse in={this.state.rowsSelected.length > 0}>
             <IconButton>
               <PrintIconf className="black" fontSize="large"></PrintIconf>
             </IconButton>
             <IconButton>
               <DeleteIcon className="red" fontSize="large"></DeleteIcon>
             </IconButton>
-          </Collapse>
+          </Collapse> :null}
+        
           <LoadingComponent loading={this.state.loading !== undefined ? this.state.loading : false} />
           <ReactTable
             className="table"
             data={this.props.rows}
             columns={columns}
-            defaultPageSize={20}
+            defaultPageSize={this.props.type=== "choose-one" ? 5 :20}
           />
         </div>
       </Fragment>
