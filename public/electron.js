@@ -415,7 +415,7 @@ ipcMain.on('client:modifier', (event, value) => {
 //LOCATION
 
 
- db.run('DROP TABLE location');
+// db.run('DROP TABLE location');
 
  db.run(`CREATE TABLE IF NOT EXISTS location (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -485,6 +485,67 @@ ipcMain.on('client:modifier', (event, value) => {
 
     }
 })
+
+/*********************************************************************************** */
+
+//Entreprise
+
+ //db.run('DROP TABLE entreprise');
+
+ db.run(`CREATE TABLE IF NOT EXISTS entreprise (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nom TEXT NOT NULL,
+    telephone TEXT,
+    email TEXT,
+    adresse TEXT
+   
+)`);
+
+   //get entrepise
+   ipcMain.on('entreprise', (event, value) => {
+
+    
+
+
+
+        db.all("SELECT * FROM entreprise ", function (err, rows) {
+            if (err) mainWindow.webContents.send("entreprise", err);
+            mainWindow.webContents.send("entreprise", rows);
+            
+        });
+
+
+
+    
+})
+
+
+
+        //AJOUTER entreprise
+        ipcMain.on('entreprise:ajouter', (event, value) => {
+
+            if (value.entreprise.nom !== undefined) {
+                // ajouter
+                db.run(`
+               INSERT INTO entreprise(nom  , telephone , email , adresse ) VALUES ('${value.entreprise.nom}','${value.entreprise.telephone}','${value.entreprise.email}','${value.entreprise.adresse}') `, function (err) {
+                    
+
+                
+                  
+
+                    db.all("SELECT * FROM entreprise ", function (err, rows) {
+                        if (err) mainWindow.webContents.send("entreprise:ajouter", err);
+                        mainWindow.webContents.send("entreprise:ajouter", rows);
+                    });
+                });
+
+
+                /*
+                
+                              */
+            }
+        })
+
 
     Menu.setApplicationMenu(mainMenu);
 

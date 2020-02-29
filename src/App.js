@@ -18,6 +18,7 @@ import './App.css'
 import Voiture from './components/Voiture';
 import Client from './components/Client';
 import Location from './components/Location';
+import Entreprise from './components/auth/Entreprise';
 
 
 class App extends Component {
@@ -29,7 +30,8 @@ class App extends Component {
       
           <div className={"content"}>
             <Switch>
-              <Route exact path="/" component={Connexion} />
+            <Route exact path="/" component={Entreprise} />
+              <Route  path="/connexion" component={Connexion} />
               <Route path="/home" component={Home} />
               <Route path="/voiture" component={Voiture} />
               <Route path="/client" component={Client} />
