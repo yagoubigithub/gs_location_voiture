@@ -29,8 +29,8 @@ import LoadingComponent from "../../utils/loadingComponent";
     }
     handleSubmit = (e)=>{
         e.preventDefault();
-        const  username = this.state.username ? this.state.username : "admin";
-        const password = this.state.password ? this.state.password : "admin";
+        const  username = this.state.username ? this.state.username : "";
+        const password = this.state.password ? this.state.password : "";
         this.props.connexion({ username,password});
     }
     render() {

@@ -500,6 +500,14 @@ ipcMain.on('client:modifier', (event, value) => {
     adresse TEXT
    
 )`);
+//db.run('DROP TABLE user');
+
+db.run(`CREATE TABLE IF NOT EXISTS user (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT ,
+    password TEXT
+   
+)`);
 
    //get entrepise
    ipcMain.on('entreprise', (event, value) => {
@@ -511,6 +519,65 @@ ipcMain.on('client:modifier', (event, value) => {
         db.all("SELECT * FROM entreprise ", function (err, rows) {
             if (err) mainWindow.webContents.send("entreprise", err);
             mainWindow.webContents.send("entreprise", rows);
+            
+        });
+
+
+
+    
+})
+
+
+
+        //AJOUTER entreprise
+        ipcMain.on('entreprise:ajouter', (event, value) => {
+console.log(value)
+            if (value.entreprise !== undefined) {
+                // ajouter
+                db.run(`
+               INSERT INTO entreprise(nom  , telephone , email , adresse ) VALUES ('${value.entreprise.nom}','${value.entreprise.telephone}','${value.entreprise.email}','${value.entreprise.adresse}') `, function (err) {
+                    
+
+                
+                db.run(`
+                INSERT INTO user(username  , password  ) VALUES ('${value.user.username}','${value.user.password}') `, function (err) {
+
+                 
+                   
+ 
+                     db.all("SELECT * FROM entreprise ", function (err, rows) {
+                         if (err) mainWindow.webContents.send("entreprise:ajouter", err);
+                         mainWindow.webContents.send("entreprise:ajouter", rows);
+                     });
+                 });
+ 
+
+                  
+                });
+
+
+                /*
+                
+                              */
+            }
+        })
+
+
+        //user
+
+ 
+
+   //get user
+   ipcMain.on('user', (event, value) => {
+
+    
+
+
+
+        db.all(`SELECT * FROM user WHERE username='${value.username}' AND password='${value.password}'`, function (err, rows) {
+            console.log(rows)
+            if (err) mainWindow.webContents.send("user", err);
+            mainWindow.webContents.send("user", rows);
             
         });
 

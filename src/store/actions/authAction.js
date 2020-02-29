@@ -1,4 +1,5 @@
-import axios from 'axios';
+const electron = window.require("electron");
+const {ipcRenderer}  = electron;
 
 export const connexion = (data) =>{
     return (dispatch ,getState)=>{
@@ -6,12 +7,19 @@ export const connexion = (data) =>{
       dispatch({
         type : "LOADING_AUTH"
     })
-    if(data.password === "admin" && data.username === "admin"){
+    ipcRenderer.send("user", {...data});
+    
+    ipcRenderer.once('user', function (event,data) {
+      dispatch({
+        type : "STOP_LOADING_AUTH"
+    });
+    console.log(data);
+    if(data[0].username !== undefined){
       dispatch({
         type : "AUTH_SUCCESS",
         payload : {
-          username : "admin",
-          password :  "admin"
+          username : data.username,
+          password :  data.password
         }
     });
     }else{
@@ -19,44 +27,16 @@ export const connexion = (data) =>{
         type : "AUTH_ERROR",
         payload : "username ou mot de passe invalid"
     });
-    dispatch({
-      type : "STOP_LOADING_AUTH"
-  });
+    }
+      
+    });
+    if(data.password === "admin" && data.username === "admin"){
+    
+    }else{
+      
+   
     }
     
-      /*
-        //axios if multi-post
-        dispatch({
-            type : "LOADING_AUTH"
-        })
-          axios.post('/personne/auth.php',{
-              ...data
-          }).then(res=>{
-            dispatch({
-              type : "STOP_LOADING_AUTH"
-          });
-          if(res.data.error){
-            dispatch({
-                type : "AUTH_ERROR",
-                payload : res.data.error
-            });
-          }else{
-              dispatch({
-                type : "AUTH_SUCCESS",
-                payload : res.data
-            });
-          }
-            
-        })
-        .catch(error=>{
-          dispatch({
-            type : "STOP_LOADING_AUTH"
-        });
-            dispatch({
-                type : "AUTH_ERROR",
-                payload : error.message
-            });
-        })
-        */
+     
     }
 }
