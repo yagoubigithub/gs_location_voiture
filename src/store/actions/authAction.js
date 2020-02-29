@@ -14,12 +14,12 @@ export const connexion = (data) =>{
         type : "STOP_LOADING_AUTH"
     });
     console.log(data);
-    if(data[0].username !== undefined){
+    if(data[0] !== undefined){
       dispatch({
         type : "AUTH_SUCCESS",
         payload : {
-          username : data.username,
-          password :  data.password
+          username : data[0].username,
+          password :  data[0].password
         }
     });
     }else{

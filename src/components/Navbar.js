@@ -21,7 +21,7 @@ class Navbar extends Component {
           
           <NavLink  activeClassName="nav-active" to="/home" className="nav-link">
             {" "}
-            Espace commun
+            Statistique
           </NavLink>
           <NavLink activeClassName="nav-active" to="/voiture" className="nav-link">
         Voiture{" "}

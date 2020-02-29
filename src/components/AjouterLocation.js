@@ -103,7 +103,7 @@ class AjouterLocation extends Component {
       const voitures = [];
 
       nextProps.voitures.map(voiture => {
-        if (voiture.status === "undo") {
+        if (voiture.status === "undo" && voiture.disponibilite === "disponible") {
           voitures.push(voiture);
         }
       });

@@ -39,8 +39,8 @@ import LoadingComponent from "../../utils/loadingComponent";
 
                 <form onSubmit={this.handleSubmit}>
                     <span>{this.props.auth.error}</span>
-                    <input onChange={this.handleChange} name="username" type="text" placeholder="Username" defaultValue="admin"/>
-                    <input onChange={this.handleChange} name="password" type="password" placeholder="Mot de passe" defaultValue="admin"/>
+                    <input onChange={this.handleChange} name="username" type="text" placeholder="Username" />
+                    <input onChange={this.handleChange} name="password" type="password" placeholder="Mot de passe" />
                     <input type="submit" />
                     
                 </form>  

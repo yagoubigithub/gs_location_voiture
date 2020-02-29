@@ -415,7 +415,7 @@ ipcMain.on('client:modifier', (event, value) => {
 //LOCATION
 
 
-// db.run('DROP TABLE location');
+db.run('DROP TABLE location');
 
  db.run(`CREATE TABLE IF NOT EXISTS location (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -439,13 +439,17 @@ ipcMain.on('client:modifier', (event, value) => {
                INSERT INTO location(client_id , voiture_id , date_entree , date_sortie , remise , prix_totale  , status) VALUES (${value.client.id},${value.voiture.id},'${value.date_entree}','${value.date_sortie}', ${value.remise},'${value.prix_totale}', 'undo') `, function (err) {
                     
 
-               
-                  
-
+                db.run(`UPDATE voiture  SET disponibilite = 'loué' WHERE id = ${value.voiture.id};` , function (err) {
+                    if (err) mainWindow.webContents.send("client:delete", err);
+    
+                   
                     db.all("SELECT c.nom client_nom , c.prenom client_prenom , v.nom voiture_nom , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale ,l.status status FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id  ", function (err, rows) {
                         if (err) mainWindow.webContents.send("location:ajouter", err);
                         mainWindow.webContents.send("location:ajouter", rows);
                     });
+                });
+                  
+
                 });
 
 
@@ -461,7 +465,7 @@ ipcMain.on('client:modifier', (event, value) => {
 
     if (value.id !== undefined) {
         // get one voiture
-        db.get("SELECT c.nom client_nom , c.prenom client_prenom , v.nom voiture_nom , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale  FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id WHERE id=" + value.id, function (err, row) {
+        db.get("SELECT c.nom client_nom , c.prenom client_prenom , v.nom voiture_nom , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale ,l.status status FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id WHERE id=" + value.id, function (err, row) {
 
             if (err) mainWindow.webContents.send("location", err);
             mainWindow.webContents.send("location", row);
@@ -475,7 +479,7 @@ ipcMain.on('client:modifier', (event, value) => {
 
 
 
-        db.all("SELECT c.nom client_nom , c.prenom client_prenom , v.nom voiture_nom , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale  FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id ", function (err, rows) {
+        db.all("SELECT c.nom client_nom , c.prenom client_prenom , v.nom voiture_nom , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale,l.status status  FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id ", function (err, rows) {
             if (err) mainWindow.webContents.send("location", err);
             mainWindow.webContents.send("location", rows);
             
