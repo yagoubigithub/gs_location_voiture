@@ -24,11 +24,12 @@ import AddIcon from "@material-ui/icons/Add";
 import { connect } from "react-redux";
 
 import {
-  ajouterClient,
+  
   getAllClient,
   searchClient
 } from "../store/actions/clientAction";
 import { searchVoiture, getAllVoiture } from "../store/actions/voitureAction";
+import {  ajouterLocation } from "../store/actions/locationAction";
 
 import LoadingComponent from "../utils/loadingComponent";
 
@@ -46,24 +47,44 @@ class AjouterLocation extends Component {
     client_selected: {},
     voiture_selected: {},
     clientDialog: false,
-    voitureDialog: false
+    voitureDialog: false,
+    remise : 0
   };
   ajouter = () => {
     const data = { ...this.state };
     delete data.open;
-    if (data.nom === undefined || !data.nom.trim().length > 0) {
-      alert("le champ Nom obligatoire");
-    } else {
-      this.props.ajouterClient(data);
+    delete data.clientDialog;
+    delete data.clients;
+    delete data.nom_client;
+    delete data.voitureDialog;
+    delete data.voitures;
+    if (data.client_selected.nom === undefined) {
+      alert("le champ Client obligatoire");
+      return;
     }
+
+    if (data.voiture_selected.nom === undefined) {
+        alert("le champ Voiture obligatoire");
+        return;
+    }
+
+    const location = {voiture : data.voiture_selected, client :  data.client_selected , date_sortie : data.date_sortie, date_entree : data.date_entree, remise :data.remise}
+
+    // calcule prix totale
+    const timeBetweenSOrtieENtree = new Date(data.date_entree).getTime() - new Date(data.date_sortie).getTime();
+
+   const  prix_totale =  (data.voiture_selected.prix / 24 / 60 /60 /100) * timeBetweenSOrtieENtree
+    location.prix_totale = prix_totale.toFixed(2);
+  this.props.ajouterLocation(location)
   };
   componentDidMount() {
     this.props.getAllClient();
     this.props.getAllVoiture();
-    const date_entre = getCurrentDateTime(new Date().getTime());;
-    const date_sortie = getCurrentDateTime(new Date(date_entre).getTime() + 1 * 24 * 60 *60*100);
+    const date_sortie = getCurrentDateTime(new Date().getTime());;
+    const date_entree = getCurrentDateTime(new Date(date_sortie).getTime() + 1 * 24 * 60 *60*1000);
+    
 
-    this.setState({date_entre, date_sortie})
+    this.setState({date_sortie, date_entree})
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.clients) {
@@ -135,15 +156,15 @@ class AjouterLocation extends Component {
     const number_unite = e.target.value;
 
     if(unite === "j"){
-         const date_entre = this.state.date_entre;
-    const date_sortie = getCurrentDateTime(new Date(date_entre).getTime() + number_unite * 24 * 60 *60*1000);
+         const date_sortie = this.state.date_sortie;
+    const date_entree = getCurrentDateTime(new Date(date_sortie).getTime() + number_unite * 24 * 60 *60*1000);
 
-    this.setState({date_entre, date_sortie,[e.target.name] : number_unite})
+    this.setState({date_sortie, date_entree,[e.target.name] : number_unite})
     }else{
-        const date_entre = this.state.date_entre;
-        const date_sortie = getCurrentDateTime(new Date(date_entre).getTime() + number_unite  * 60 *60*1000);
+        const date_sortie = this.state.date_sortie;
+        const date_entree = getCurrentDateTime(new Date(date_sortie).getTime() + number_unite  * 60 *60*1000);
     
-        this.setState({date_entre, date_sortie,[e.target.name] : number_unite})   
+        this.setState({date_sortie, date_entree,[e.target.name] : number_unite})   
     }
 
   }
@@ -153,15 +174,15 @@ class AjouterLocation extends Component {
       const number_unite = this.state.number_unite;
 
     if(unite === "j"){
-         const date_entre = this.state.date_entre;
-    const date_sortie = getCurrentDateTime(new Date(date_entre).getTime() + number_unite * 24 * 60 *60*1000);
+         const date_sortie = this.state.date_sortie;
+    const date_entree = getCurrentDateTime(new Date(date_sortie).getTime() + number_unite * 24 * 60 *60*1000);
 
-    this.setState({date_entre, date_sortie,[e.target.name] : unite})
+    this.setState({date_sortie, date_entree,[e.target.name] : unite})
     }else{
-        const date_entre = this.state.date_entre;
-        const date_sortie = getCurrentDateTime(new Date(date_entre).getTime() + number_unite  * 60 *60*1000);
+        const date_sortie = this.state.date_sortie;
+        const date_entree = getCurrentDateTime(new Date(date_sortie).getTime() + number_unite  * 60 *60*1000);
     
-        this.setState({date_entre, date_sortie,[e.target.name] : unite})   
+        this.setState({date_sortie, date_entree,[e.target.name] : unite})   
     }
 
   }
@@ -354,6 +375,7 @@ class AjouterLocation extends Component {
               type={"number"}
               value={this.state.number_unite}
               name="number_unite"
+              inputProps={{ min: "0", step: "1" }}
             />
              <FormControl >
         <InputLabel id="unite-du-temps-select-label">Unité du temps</InputLabel>
@@ -379,10 +401,10 @@ class AjouterLocation extends Component {
               
               margin="normal"
               style={{ flex: 1 }}
-              value={this.state.date_entre}
+              value={this.state.date_sortie}
               onChange={this.handleChange}
               type="datetime-local"
-              name="date_entre"
+              name="date_sortie"
              
             />
 
@@ -390,13 +412,23 @@ class AjouterLocation extends Component {
               
               margin="normal"
               style={{ flex: 1 }}
-              value={this.state.date_sortie}
+              value={this.state.date_entree}
               onChange={this.handleChange}
               type="datetime-local"
-              name="date_sortie"
+              name="date_entree"
               
             />
-
+ <TextField
+              
+              margin="normal"
+              style={{ flex: 1 }}
+              
+              onChange={this.handleChange}
+              type={"number"}
+              value={this.state.remise}
+              name="remise"
+              inputProps={{ min: "0", step: "1" }}
+            />
           </Grid>
         </Grid>
       </Dialog>
@@ -405,7 +437,7 @@ class AjouterLocation extends Component {
 }
 const mapActionToProps = dispatch => {
   return {
-    ajouterClient: data => dispatch(ajouterClient(data)),
+    ajouterLocation: data => dispatch(ajouterLocation(data)),
     getAllClient: () => dispatch(getAllClient()),
     searchClient: data => dispatch(searchClient(data)),
     getAllVoiture: () => dispatch(getAllVoiture()),

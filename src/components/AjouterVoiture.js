@@ -31,7 +31,7 @@ class AjouterVoiture extends Component {
   state = {
     open: true,
     nom : "",
-    modele : "", marque : "",annee :  "" , coleur : "", matricule :  "", images : []
+    modele : "", marque : "",annee :  "" , coleur : "", matricule :  "", prix : 0, images : []
   };
   ajouter = () =>{
     const data = {...this.state}
@@ -45,7 +45,7 @@ class AjouterVoiture extends Component {
   componentWillReceiveProps (nextProps){
       if(nextProps.voitureCreated){
          //
-         this.setState({nom : "",modele : "", marque : "",annee :  "" , coleur : "", matricule :  "", images : []})
+         this.setState({nom : "",modele : "", marque : "",annee :  "" , coleur : "", matricule :  "", prix : 0, images : []})
          
       }
 
@@ -85,7 +85,7 @@ class AjouterVoiture extends Component {
             </Button>
           </Toolbar>
         </AppBar>
-        <div style={{ marginTop: 100, padding: 15 }}></div>
+        <div style={{ marginTop: 40, padding: 15 }}></div>
 
     
             <Grid container >
@@ -97,6 +97,7 @@ class AjouterVoiture extends Component {
                 <TextField placeholder="L'année" value={this.state.annee} name="annee" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
                 <TextField placeholder="Coleur" value={this.state.coleur} name="coleur" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
                 <TextField placeholder="Matricule" value={this.state.matricule} name="matricule" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+                <TextField placeholder="Prix par jour" value={this.state.prix} name="prix" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" type="number" inputProps={{ min: "0", step: "1" }} />
                 
                 <UploadImage placeholder="Images"  multiple  onChange={this.handleChangeImage} />
                 <br />

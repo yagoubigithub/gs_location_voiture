@@ -21,7 +21,7 @@ import PrintIconf from '@material-ui/icons/Print';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import PermMediaIcon from '@material-ui/icons/PermMedia';
-import SearchIcon from '@material-ui/icons/Search';
+
 import LoadingComponent from '../../utils/loadingComponent';
 
 
@@ -161,6 +161,11 @@ handleSelectOneChange =  (voitureSelected) =>{
       }, {
         Header: 'Disponibilité',
         accessor: 'disponibilite',
+        Cell: props =>
+          (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
+      }, {
+        Header: 'Prix par jour',
+        accessor: 'prix',
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
       }]

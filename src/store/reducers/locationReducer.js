@@ -5,83 +5,83 @@ const initStat = {
 const LocationReducer = (state = initStat, action) =>{
     console.log(action.type)
     switch(action.type){
-        case 'LOADING_CLIENT' : 
+        case 'LOADING_LOCATION' : 
         return{
             ...state,
             loading : true,
             error : null,
 
         }
-            case 'READ_ONE_CLIENT' : 
+            case 'READ_ONE_LOCATION' : 
                 return {
                     ...state,
-                    client : action.payload,
+                    location : action.payload,
                     error :  null
                 }
-            case 'READ_ALL_CLIENT' :
+            case 'READ_ALL_LOCATION' :
                
            return {
                         ...state,
-                        clients : action.payload,
+                        locations : action.payload,
                         error :  null
                     }
 
-            case 'ERROR_CLIENT' :
+            case 'ERROR_LOCATION' :
                return {
                             ...state,
                             error :  action.payload
                         }
-            case 'AJOUTER_CLIENT' :
+            case 'AJOUTER_LOCATION' :
                 return {
                     ...state,
-                    clients : action.payload,
+                    locations : action.payload,
                     error :  null,
-                    clientCreated :  true
+                    locationCreated :  true
 
                 }
 
-                case 'MODIFIER_CLIENT' :
+                case 'MODIFIER_LOCATION' :
                 return {
                     ...state,
-                    clients : action.payload.clients,
-                    client : action.payload.client,
+                    locations : action.payload.locations,
+                    location : action.payload.location,
                     error :  null,
-                    clientEdited :  true
+                    locationEdited :  true
 
                 }
                
                     
         
-          case 'STOP_LOADING_CLIENT' : 
+          case 'STOP_LOADING_LOCATION' : 
           return{
               ...state,
               loading : false
 
           }
-          case 'REMOVE_CLIENT_EDITED' : 
+          case 'REMOVE_LOCATION_EDITED' : 
           return{
               ...state,
-              clientEdited : false
+              locationEdited : false
 
           }
        
-          case 'SEARCH_CLIENT' :
+          case 'SEARCH_LOCATION' :
               return {
                 ...state,
-                clients : action.payload,
+                locations : action.payload,
                 error :  null
               }
 
-              case 'ADD_TO_CORBEILLE_CLIENT' :
+              case 'ADD_TO_CORBEILLE_LOCATION' :
                   return {
                       ...state,
-                      clients : action.payload,
+                      locations : action.payload,
                       error : null
                   }
-                  case 'UNDO_DELETE_CLIENT' :
+                  case 'UNDO_DELETE_LOCATION' :
                     return {
                         ...state,
-                        clients : action.payload,
+                        locations : action.payload,
                         error : null
                     }
        

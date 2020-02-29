@@ -69,6 +69,7 @@ app.on('ready', () => {
     modele TEXT,
     annee TEXT,
     coleur TEXT,
+    prix REAL,
     disponibilite TEXT,
     status TEXT
 
@@ -128,7 +129,7 @@ app.on('ready', () => {
             if (value.nom !== undefined) {
                 // ajouter
                 db.run(`
-               INSERT INTO voiture(nom , modele , marque , annee , coleur , matricule , disponibilite , status) VALUES ('${value.nom}','${value.modele}','${value.marque}','${value.annee}','${value.coleur}','${value.matricule}','disponible', 'undo') `, function (err) {
+               INSERT INTO voiture(nom , modele , marque , annee , coleur , matricule , prix , disponibilite , status) VALUES ('${value.nom}','${value.modele}','${value.marque}','${value.annee}','${value.coleur}','${value.matricule}', ${value.prix} ,'disponible', 'undo') `, function (err) {
                     const lastId = this.lastID;
 
 
@@ -284,7 +285,7 @@ db.run(`CREATE TABLE IF NOT EXISTS client (
    
 )`);
 
-   //get voiture
+   //get client
    ipcMain.on('client', (event, value) => {
 
     if (value.id !== undefined) {
@@ -408,6 +409,83 @@ ipcMain.on('client:modifier', (event, value) => {
         }
     })
 
+
+
+    /****************************************************************************** */
+//LOCATION
+
+
+ db.run('DROP TABLE location');
+
+ db.run(`CREATE TABLE IF NOT EXISTS location (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    client_id INTEGER NOT NULL,
+    voiture_id INTEGER NOT NULL,
+    date_entree TEXT,
+    date_sortie TEXT,
+    remise REAL,
+    prix_totale TEXT,
+    status TEXT
+   
+)`);
+
+
+        //AJOUTER location
+        ipcMain.on('location:ajouter', (event, value) => {
+
+            if (value.client.nom !== undefined && value.voiture.nom !== undefined) {
+                // ajouter
+                db.run(`
+               INSERT INTO location(client_id , voiture_id , date_entree , date_sortie , remise , prix_totale  , status) VALUES (${value.client.id},${value.voiture.id},'${value.date_entree}','${value.date_sortie}', ${value.remise},'${value.prix_totale}', 'undo') `, function (err) {
+                    
+
+               
+                  
+
+                    db.all("SELECT c.nom client_nom , c.prenom client_prenom , v.nom voiture_nom , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale ,l.status status FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id  ", function (err, rows) {
+                        if (err) mainWindow.webContents.send("location:ajouter", err);
+                        mainWindow.webContents.send("location:ajouter", rows);
+                    });
+                });
+
+
+                /*
+                
+                              */
+            }
+        })
+
+
+         //get location
+   ipcMain.on('location', (event, value) => {
+
+    if (value.id !== undefined) {
+        // get one voiture
+        db.get("SELECT c.nom client_nom , c.prenom client_prenom , v.nom voiture_nom , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale  FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id WHERE id=" + value.id, function (err, row) {
+
+            if (err) mainWindow.webContents.send("location", err);
+            mainWindow.webContents.send("location", row);
+           
+          
+        });
+
+    
+    } else {
+        //  get all client
+
+
+
+        db.all("SELECT c.nom client_nom , c.prenom client_prenom , v.nom voiture_nom , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale  FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id ", function (err, rows) {
+            if (err) mainWindow.webContents.send("location", err);
+            mainWindow.webContents.send("location", rows);
+            
+        });
+
+
+
+    }
+})
+
     Menu.setApplicationMenu(mainMenu);
 
     mainWindow.on('closed', () => {
@@ -417,7 +495,7 @@ ipcMain.on('client:modifier', (event, value) => {
 
 });
 
-
+ 
 
 const menuTemplate = [
 

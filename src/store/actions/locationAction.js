@@ -3,28 +3,28 @@ import axios from 'axios';
 const electron = window.require("electron");
 const {ipcRenderer}  = electron;
 
-export const ajouterClient = (data) =>{
+export const ajouterLocation = (data) =>{
     return (dispatch ,getState)=>{
     
       
       dispatch({
-        type : "LOADING_CLIENT"
+        type : "LOADING_LOCATION"
     })
-    ipcRenderer.send("client:ajouter", {...data});
+    ipcRenderer.send("location:ajouter", {...data});
 
-    ipcRenderer.once('client:ajouter', function (event,data) {
+    ipcRenderer.once('location:ajouter', function (event,data) {
      
       dispatch({
-        type : "STOP_LOADING_CLIENT"
+        type : "STOP_LOADING_LOCATION"
     });
     if(Array.isArray(data)){
       dispatch({
-          type : "AJOUTER_CLIENT",
+          type : "AJOUTER_LOCATION",
           payload : data
       });
     }else{
       dispatch({
-        type : "ERROR_CLIENT",
+        type : "ERROR_LOCATION",
         payload : data
     });
     }
@@ -36,7 +36,7 @@ export const ajouterClient = (data) =>{
 }
 
 
-export const modifierClient  = (client) =>{
+export const modifierLocation  = (client) =>{
   return (dispatch,getState) =>{
     dispatch({
       type : "LOADING_CLIENT"
