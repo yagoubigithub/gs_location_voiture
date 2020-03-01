@@ -27,6 +27,7 @@ const factureReducer = (state = initStat, action) =>{
                 error :null,
                 facture : action.payload
             }
+           
         default :
         return {
             ...state

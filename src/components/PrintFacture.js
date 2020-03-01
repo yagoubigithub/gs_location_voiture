@@ -21,14 +21,19 @@ import PageComponent from './PageComponent';
 
 //redux
 import {connect} from "react-redux";
-import {getFacture} from '../store/actions/factureAction'
+import {getFacture } from '../store/actions/factureAction'
 
+
+import {removeFactureId} from '../store/actions/locationAction';
  class PrintFacture extends Component {
   state = {
     open: true,
     facture : {}
   } 
 
+  componentWillUnmount(){
+    this.props.removeFactureId();
+  }
  
   componentDidMount(){
     const id = this.props.match.params.id;
@@ -173,7 +178,7 @@ import {getFacture} from '../store/actions/factureAction'
       <Dialog fullScreen open={this.state.open}>
         <AppBar color="secondary">
           <Toolbar>
-            <Link to={this.props.ReturnPath}>
+            <Link to="/location/">
               <IconButton onClick={this.handleClose}>
                 <CloseIcon />
               </IconButton>
@@ -219,7 +224,8 @@ const mapStateToProps = state =>{
 }
 const mapActionToProps = dispatch =>{
   return {
-    getFacture : (id)=>dispatch(getFacture(id))
+    getFacture : (id)=>dispatch(getFacture(id)),
+    removeFactureId : () =>dispatch(removeFactureId())
 
   }
 }

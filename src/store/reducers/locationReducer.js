@@ -40,6 +40,11 @@ const LocationReducer = (state = initStat, action) =>{
 
 
                 }
+                case 'REMOVE_FACTURE_ID' :
+                    return {
+                        ...state,
+                        facture_id : undefined
+                    }
 
                 case 'MODIFIER_LOCATION' :
                 return {

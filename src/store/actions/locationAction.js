@@ -29,13 +29,20 @@ export const ajouterLocation = (data) =>{
     });
     }
 });
-      
+
    
 
     }
 }
 
+export const removeFactureId = (id)=>{
+  return (dispatch,getState)=>{
+     dispatch({
 
+      type :  "REMOVE_FACTURE_ID"
+     })
+  }
+}
 export const modifierLocation  = (client) =>{
   return (dispatch,getState) =>{
     dispatch({

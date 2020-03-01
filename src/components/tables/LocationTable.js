@@ -8,7 +8,7 @@ import "react-table/react-table.css";
 //Mui
 import IconButton from "@material-ui/core/IconButton";
 import Checkbox from "@material-ui/core/Checkbox";
-import { Dialog, Collapse, Grid, DialogContent } from "@material-ui/core";
+import { Dialog, Collapse, Grid, DialogContent, Button } from "@material-ui/core";
 
 //redux
 import { connect } from "react-redux";
@@ -32,6 +32,7 @@ class LocationTable extends Component {
     locationDeletedId: null,
     rowsSelected: [],
     selectedAll: false,
+    printDialog : false,
    
     
   };
@@ -105,7 +106,13 @@ class LocationTable extends Component {
 
     })
   }
+  handleOpenCloseprintDialog = () =>{
+    this.setState({printDialog : !this.state.printDialog})
+  }
  
+  openPrintDialog = (obj)=>{
+    this.handleOpenCloseprintDialog();
+  }
   render() {
     const columns = [
      
@@ -257,11 +264,11 @@ columns.unshift(
                 <EditIcon className="black" fontSize="small"></EditIcon>
               </Link>
             </IconButton>
-            <IconButton size="small">
-              <Link to={`/location/print/${props.value}`}>
-                {" "}
+            <IconButton size="small" onClick={()=>this.openPrintDialog(props.original)}>
+            
+               
                 <PrintIconf className="black" fontSize="small"></PrintIconf>
-              </Link>
+            
             </IconButton>
           </div>
         );
@@ -272,6 +279,16 @@ columns.unshift(
    }
     return (
       <Fragment>
+
+<Dialog open={this.state.printDialog}   onClose={this.handleOpenCloseprintDialog}>
+<div style={{padding : 15}}>
+<h3>Imprimer</h3>
+<Link to={`/facture/${this.state.facture_id}`}><Button style={{padding : 15 ,width :100,margin : 5}} color="primary" variant="contained">facture</Button></Link>
+<Link to={`/bonlivraison/${this.state.facture_id}`}><Button style={{padding : 15 ,width :100,margin : 5}} color="primary" variant="contained" >Bon</Button></Link>
+</div>
+
+</Dialog>
+
         <Dialog
           open={this.state.addToCorbeilleDialog}
           onClose={this.handleOpenCloseaddToCorbeilleDialog}

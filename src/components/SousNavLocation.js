@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { NavLink } from 'react-router-dom';
+import { NavLink,Link } from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -15,11 +15,11 @@ import { getAllClient } from '../store/actions/clientAction';
                         <NavLink className="sous-nav-link" onClick={this.props.getAllClient}  to='/location'>Actualisé</NavLink>
                     </Grid>
                     <Grid item xs={2}>
-                        <NavLink className="sous-nav-link" to='/location/ajouter'>Ajouter</NavLink>
+                        <Link className="sous-nav-link" to='/location/ajouter/'>Ajouter</Link>
                     </Grid>
                    
                 <Grid item xs={2}>
-                    <NavLink className="sous-nav-link" to="/location/print">Imprimer</NavLink>
+                    <Link className="sous-nav-link" to="/location/print">Imprimer</Link>
                 </Grid>
               
                 </Grid>

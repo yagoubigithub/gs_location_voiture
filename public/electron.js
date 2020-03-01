@@ -484,8 +484,8 @@ db.run(`CREATE TABLE IF NOT EXISTS facture (
    ipcMain.on('location', (event, value) => {
 
     if (value.id !== undefined) {
-        // get one voiture
-        db.get("SELECT l.id id , c.nom client_nom , c.prenom client_prenom  , c.telephone client_telephone , c.numero_cart numero_cart_client ,  v.nom voiture_nom , v.matricule voiture_matricule , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale , l.status status FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id WHERE l.id=" + value.id, function (err, row) {
+      
+        db.get("SELECT l.id id , c.nom client_nom , c.prenom client_prenom  , c.telephone client_telephone , c.numero_cart numero_cart_client ,  v.nom voiture_nom, l.facture_id facture_id , v.matricule voiture_matricule , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale , l.status status FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id WHERE l.id=" + value.id, function (err, row) {
 
            
             if (err) mainWindow.webContents.send("location", err);
@@ -496,11 +496,11 @@ db.run(`CREATE TABLE IF NOT EXISTS facture (
 
     
     } else {
-        //  get all client
+        
 
 
 
-        db.all("SELECT l.id id , c.nom client_nom , c.prenom client_prenom , c.telephone client_telephone , c.numero_cart numero_cart_client , v.nom voiture_nom ,v.matricule voiture_matricule , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale,l.status status  FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id ", function (err, rows) {
+        db.all("SELECT l.id id , c.nom client_nom , c.prenom client_prenom , c.telephone client_telephone , c.numero_cart numero_cart_client , v.nom voiture_nom ,v.matricule voiture_matricule, l.facture_id facture_id , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale,l.status status  FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id ", function (err, rows) {
             if (err) mainWindow.webContents.send("location", err);
             mainWindow.webContents.send("location", rows);
             
@@ -517,21 +517,16 @@ db.run(`CREATE TABLE IF NOT EXISTS facture (
 
 ipcMain.on("facture", (event,value)=>{
 
-    db.all("SELECT * FROM entreprise ", function (err, rows) {
-        if (err) mainWindow.webContents.send("facture", err);
-        
-        const entreprise = rows[0];
-      
-        db.get("SELECT * FROM facture f JOIN client c ON c.id=f.client_id JOIN location l ON f.client_id=l.client_id JOIN voiture v ON v.id=l.voiture_id WHERE f.id=" + value.id, function (err, row) {
-            if (err) mainWindow.webContents.send("facture", err);
 
-            row["entreprise"] = entreprise;
+    db.all("SELECT * FROM location l JOIN client c ON c.id=l.client_id JOIN voiture v ON v.id=l.voiture_id AND l.facture_id=" + value.id , function (err, row) {
 
-        mainWindow.webContents.send("facture", row);
+if (err) mainWindow.webContents.send("facture", err);
 
-        });
-        
+mainWindow.webContents.send("facture", row);
     });
+
+
+    
    
 })
 

@@ -6,7 +6,7 @@ export const getFacture = (id)=>{
     return (dispatch,getState)=>{
         ipcRenderer.send("facture", {id});
     
-        ipcRenderer.once('entreprise', function (event,data) {
+        ipcRenderer.once('facture', function (event,data) {
          
           dispatch({
             type : "STOP_LOADING_FACTURE"
