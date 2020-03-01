@@ -101,7 +101,7 @@ class Location extends Component {
          component={(props) =>  <PrintFacture {...props} rows={
            this.state.locations.filter(l=>props.match.params.id==l.id)
         
-         } entreprise={this.state.entreprise}  ReturnPath="/location/" head={[{ access : "voiture_nom", value: "Voiture" },{ access : "modele", value: "Modéle" },{ access : "date_sortie", value: "Date Sortie" },{ access : "date_entree", value: "Date Entrée" },{ access : "remise", value: "Remise" },{ access : "prix_totale", value: "Prix Totale" }]}   />}
+         } entreprise={this.state.entreprise}  ReturnPath="/location/" head={[{ access : "voiture_nom", value: "Voiture" },{ access : "voiture_matricule", value: "Matricule" },{ access : "date_sortie", value: "Date Sortie" },{ access : "date_entree", value: "Date Entrée" },{ access : "remise", value: "Remise" },{ access : "prix_totale", value: "Prix Totale" }]}   />}
        />
 
 <Tabs >

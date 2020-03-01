@@ -46,72 +46,96 @@ import {getLocation} from '../store/actions/locationAction'
  
      const myPages =  rows_to_print.map((row,index)=>{
       
-        return (<PageComponent head={this.props.head} key={`pageCompnent-${index}`} index={index} rows_to_print={row}/>)
+        return (<PageComponent facture_number={row[0].id } client={{nom : row[0].client_nom,prenom : row[0].client_prenom,telephone :  row[0].client_telephone}} entreprise={this.props.entreprise} head={this.props.head} key={`pageCompnent-${index}`} index={index} rows_to_print={row}/>)
         
       })
       const w = window.open();
     
       w.document.write( `<style>
-      .print-page-container{
-        display: flex;;
-        flex-direction: column;
-        background: white;
-        min-height: 297mm;
-        height:297mm;
-        width:210mm
-       
-        
-        }
-        .print-page-head{
-          flex :5;
-         
-        }
-        .print-page-content{
-          flex : 14;
-         
-        }
-        .print-page-footer{
-          flex : 1;
-          
-        }
-        .print-page-content table,thead,tbody,tr{
-          width :100%;
-          max-width:  100%;
-         
-        }
-        .print-page-content table tbody tr  td   {
-        
-         text-overflow: ellipsis;
-         overflow: hidden;
-         
-         font-size: 12px;
-        }
-        .print-page-content table,  td  {
-          border : 1px solid black;
-        }
-        .print-page-content table th{
-          border-right:  1px solid black;
-        }
-        
-        .print-page-content table th:last-child{
-          border-right:  none;
-        }
-        .print-page-content table td{
-          border-right:  none; 
-          border-bottom:  none; 
-        }
-        .print-page-content table td:first-child{
-          border-left:  none;
-        }
-        .print-page-container .print-page-footer{
-          position: relative;
-          
-        }
-        .print-page-container .print-page-footer span{
-          position: absolute;
-          bottom:   5px;
-          right : 15px;
-        }
+
+  
+.print-page-container{
+  display: flex;;
+  flex-direction: column;
+  background: white;
+  min-height: 1170px;
+  height: 1170px;
+  width : 827px;
+  margin-bottom: 15px;
+  
+  }
+  .print-page-head{
+    flex :5;
+   
+  }
+  .print-page-content{
+    flex : 14;
+   
+  }
+  .print-page-footer{
+    flex : 1;
+    
+  }
+  
+  
+  .print-page-content table,.print-page-content table thead,.print-page-content table tbody,.print-page-content table tr{
+    width :100%;
+    max-width:  100%;
+   
+  }
+  .print-page-content table tbody tr  td   {
+  
+   text-overflow: ellipsis;
+   overflow: hidden;
+  
+   
+  }
+  .print-page-content table,   .print-page-content table td  {
+    
+    padding-bottom: 200px;
+  }
+  .print-page-content table th{
+    border:  1px solid black;
+  }
+  
+  
+  .print-page-content table td{
+     text-align: center;
+     
+     border : 1px solid black;
+  }
+  .print-page-content table td:first-child{
+    
+  }
+  .print-page-container .print-page-footer{
+    position: relative;
+    
+  }
+  .print-page-container .print-page-footer span{
+    position: absolute;
+    bottom:   5px;
+    right : 15px;
+  
+  }
+  .entreprise-information{
+    border: 1px solid gray;
+    padding : 5px;
+  }
+  .client-information{
+    border: 1px solid gray;
+    padding : 5px;
+  }
+  .entreprise-information p,h4 {
+    margin: 0;
+  }
+  .client-information p,h4 {
+    margin: 0;
+  }
+  .print-page-head {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+  }
       </style>
       ${ ReactDOMServer.renderToString(myPages)}
 ` );
@@ -134,10 +158,6 @@ import {getLocation} from '../store/actions/locationAction'
     } 
     
     }
-    console.log(this.props.rows)
-    
-   
-   
     return (
       <Dialog fullScreen open={this.state.open}>
         <AppBar color="secondary">
@@ -167,9 +187,9 @@ import {getLocation} from '../store/actions/locationAction'
   
  
   rows_to_print.map((row,index)=>{
-    console.log(row)
    
-    return (<PageComponent facture_number={row[0].id } client={{nom : row[0].client_nom,prenom : row[0].client_prenom}} entreprise={this.props.entreprise} head={this.props.head} key={`pageCompnent-${index}`} index={index} rows_to_print={row}/>)
+   
+    return (<PageComponent facture_number={row[0].id } client={{nom : row[0].client_nom,prenom : row[0].client_prenom,telephone :  row[0].client_telephone}} entreprise={this.props.entreprise} head={this.props.head} key={`pageCompnent-${index}`} index={index} rows_to_print={row}/>)
     
   })
 }

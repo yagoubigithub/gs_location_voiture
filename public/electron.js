@@ -22,6 +22,7 @@ app.on('ready', () => {
             ? "http://localhost:3000"
             : `file://${path.join(__dirname, "../build/index.html")}`
     );
+    mainWindow.maximize()
     const mainMenu = Menu.buildFromTemplate(menuTemplate);
 
 
@@ -59,7 +60,7 @@ app.on('ready', () => {
 
     db.serialize(function () {
 
-      // db.run('DROP TABLE voiture');
+   //    //db.run('DROP TABLE voiture');
 
         db.run(`CREATE TABLE IF NOT EXISTS voiture (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -76,7 +77,7 @@ app.on('ready', () => {
    
 )`);
 
-
+////db.run('DROP TABLE images');
         db.run(`CREATE TABLE IF NOT EXISTS images (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     image TEXT NOT NULL,
@@ -271,7 +272,7 @@ app.on('ready', () => {
 
 //Client
 
- db.run('DROP TABLE client');
+ //db.run('DROP TABLE client');
 
 db.run(`CREATE TABLE IF NOT EXISTS client (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -429,11 +430,18 @@ ipcMain.on('client:modifier', (event, value) => {
     status TEXT
    
 )`);
+db.run(`CREATE TABLE IF NOT EXISTS facture (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    client_id INTEGER NOT NULL,
+    status TEXT
+   
+)`);
 
 
         //AJOUTER location
         ipcMain.on('location:ajouter', (event, value) => {
-
+            console.log(value)
+/*
             if (value.client.nom !== undefined && value.voiture.nom !== undefined) {
                 // ajouter
                 db.run(`
@@ -444,7 +452,7 @@ ipcMain.on('client:modifier', (event, value) => {
                     if (err) mainWindow.webContents.send("client:delete", err);
     
                    
-                    db.all("SELECT l.id id , c.nom client_nom , c.prenom client_prenom , c.numero_cart numero_cart_client , v.nom voiture_nom , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale ,l.status status FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id  ", function (err, rows) {
+                    db.all("SELECT l.id id , c.nom client_nom , c.prenom client_prenom , c.telephone client_telephone , c.numero_cart numero_cart_client , v.nom voiture_nom , v.matricule voiture_matricule , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale ,l.status status FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id  ", function (err, rows) {
                         if (err) mainWindow.webContents.send("location:ajouter", err);
                         mainWindow.webContents.send("location:ajouter", rows);
                     });
@@ -454,10 +462,9 @@ ipcMain.on('client:modifier', (event, value) => {
                 });
 
 
-                /*
-                
-                              */
+          
             }
+*/
         })
 
 
@@ -466,7 +473,7 @@ ipcMain.on('client:modifier', (event, value) => {
 
     if (value.id !== undefined) {
         // get one voiture
-        db.get("SELECT l.id id , c.nom client_nom , c.prenom client_prenom , c.numero_cart numero_cart_client ,  v.nom voiture_nom , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale , l.status status FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id WHERE l.id=" + value.id, function (err, row) {
+        db.get("SELECT l.id id , c.nom client_nom , c.prenom client_prenom  , c.telephone client_telephone , c.numero_cart numero_cart_client ,  v.nom voiture_nom , v.matricule voiture_matricule , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale , l.status status FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id WHERE l.id=" + value.id, function (err, row) {
 
             console.log(row)
             if (err) mainWindow.webContents.send("location", err);
@@ -481,7 +488,7 @@ ipcMain.on('client:modifier', (event, value) => {
 
 
 
-        db.all("SELECT l.id id , c.nom client_nom , c.prenom client_prenom , c.numero_cart numero_cart_client , v.nom voiture_nom , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale,l.status status  FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id ", function (err, rows) {
+        db.all("SELECT l.id id , c.nom client_nom , c.prenom client_prenom , c.telephone client_telephone , c.numero_cart numero_cart_client , v.nom voiture_nom ,v.matricule voiture_matricule , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale,l.status status  FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id ", function (err, rows) {
             if (err) mainWindow.webContents.send("location", err);
             mainWindow.webContents.send("location", rows);
             
@@ -618,19 +625,12 @@ console.log(value)
                               */
             }
         })
-
-
     Menu.setApplicationMenu(mainMenu);
 
     mainWindow.on('closed', () => {
         app.quit();
     })
-
-
 });
-
- 
-
 const menuTemplate = [
 
     {

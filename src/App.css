@@ -251,10 +251,10 @@ padding: 15px;
 .print-page-container{
 display: flex;;
 flex-direction: column;
-background: var(--white);
-min-height: 842px;
-height: 842px;
-width : 595px;
+background: white;
+min-height: 1170px;
+height: 1170px;
+width : 827px;
 margin-bottom: 15px;
 
 }
@@ -270,6 +270,8 @@ margin-bottom: 15px;
   flex : 1;
   
 }
+
+
 .print-page-content table,.print-page-content table thead,.print-page-content table tbody,.print-page-content table tr{
   width :100%;
   max-width:  100%;
@@ -279,23 +281,22 @@ margin-bottom: 15px;
 
  text-overflow: ellipsis;
  overflow: hidden;
- border:  1px solid var(--black);
- font-size: 12px;
+
+ 
 }
 .print-page-content table,   .print-page-content table td  {
-  border : 1px solid var(--black);
+  
+  padding-bottom: 200px;
 }
 .print-page-content table th{
-  border:  1px solid var(--black);
+  border:  1px solid black;
 }
 
-.print-page-content table th:last-child{
-  
-}
+
 .print-page-content table td{
    text-align: center;
-   height: 300px;
-  
+   
+   border : 1px solid black;
 }
 .print-page-content table td:first-child{
   
@@ -308,14 +309,24 @@ margin-bottom: 15px;
   position: absolute;
   bottom:   5px;
   right : 15px;
+
 }
-.entreprise-information h6 {
+.entreprise-information{
+  border: 1px solid gray;
+  padding : 5px;
+}
+.client-information{
+  border: 1px solid gray;
+  padding : 5px;
+}
+.entreprise-information p,h4 {
   margin: 0;
 }
-.client-information h6 {
+.client-information p,h4 {
   margin: 0;
 }
 .print-page-head {
   display: flex;
   justify-content: space-around;
+  align-items: flex-start;
 }

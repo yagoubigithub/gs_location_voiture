@@ -9,22 +9,24 @@ import React, { Component } from "react";
     return (
       <div className="print-page-container">
         <div>
-        <h1 style={{textAlign : "center"}}>Facture N°{this.props.facture_number}</h1>
+        <h1 style={{textAlign : "center",border : "1px solid black"}}>Facture N°{this.props.facture_number}</h1>
         </div>
         <div className="print-page-head">
 
           <div className="entreprise-information">
-            <h6>Agence : {this.props.entreprise.nom}</h6>
-            <h6>Email : {this.props.entreprise.email}</h6>
-            <h6>Télephone : {this.props.entreprise.telephone}</h6>
-            <h6>Adresse : {this.props.entreprise.adresse}</h6>
+            <p><b>Agence</b> : {this.props.entreprise.nom}</p>
+            <p><b>Email</b> : {this.props.entreprise.email}</p>
+            <p><b>Télephone</b> : {this.props.entreprise.telephone}</p>
+            <p><b>Adresse</b> : {this.props.entreprise.adresse}</p>
    
           </div>
 
 <div className="client-information">
-<h6>Nom : {this.props.client.nom}</h6>
-<h6>Prénom : {this.props.client.prenom}</h6> 
-<h6>date de facture : 29/02/20</h6>
+<h4>Client Information : </h4>
+<p><b>Nom</b> : {this.props.client.nom}</p>
+<p><b>Prénom</b> : {this.props.client.prenom}</p> 
+<p><b>Télephone</b> : {this.props.client.telephone}</p> 
+<p><b>date de facture</b> : 29/02/20</p>
     
 
 </div>
@@ -56,9 +58,7 @@ import React, { Component } from "react";
             </tbody>
           </table>
         </div>
-        <div className="print-page-footer">
-          <span>{this.props.index + 1}</span>
-        </div>
+       
       </div>
     );
   }
