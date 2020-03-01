@@ -76,36 +76,33 @@ export const removeClientEdited = () =>{
 }}
 
 
-export const getClient = (id) =>{
+export const getLocation = (id) =>{
     return (dispatch ,getState)=>{
 
     
-  
       dispatch({
-        type : "LOADING_CLIENT"
+        type : "LOADING_LOCATION"
     })
-    ipcRenderer.send("client", {id});
+    ipcRenderer.send("location", {id});
 
     
-    ipcRenderer.once('client', function (event,data) {
+    ipcRenderer.once('location', function (event,data) {
      
       dispatch({
-        type : "STOP_LOADING_CLIENT"
+        type : "STOP_LOADING_LOCATION"
     });
-    if(data.nom){
+    if(data.id){
       dispatch({
-          type : "READ_ONE_CLIENT",
+          type : "READ_ONE_LOCATION",
           payload : data
       });
     }else{
       dispatch({
-        type : "ERROR_CLIENT",
+        type : "ERROR_LOCATION",
         payload :data
     });
     }
 });
-      
-
 
     }
 }

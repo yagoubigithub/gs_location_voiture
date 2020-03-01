@@ -36,6 +36,7 @@ class App extends Component {
               <Route path="/voiture" component={Voiture} />
               <Route path="/client" component={Client} />
               <Route path="/location" component={Location} />
+              
             </Switch>
           </div>
         </div>

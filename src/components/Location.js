@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 
 import LoadingComponent from '../utils/loadingComponent';
 import { getAllLocation, searchLocation } from '../store/actions/locationAction';
-
+import {getEtreprise} from './../store/actions/entrepriseAction'
 
 
 //icons
@@ -20,6 +20,7 @@ import ModifierClient from './ModifierClient';
 import SousNavLocation from './SousNavLocation';
 import LocationTable from './tables/LocationTable';
 import AjouterLocation from './AjouterLocation';
+import PrintFacture from './PrintFacture';
 
 
 
@@ -50,8 +51,11 @@ class Location extends Component {
          locationCorebeille.push(location)
        }
      })
-
-      this.setState({  locations ,locationCorebeille,loading : nexProps.loading});
+    
+        this.setState({  locations ,locationCorebeille,loading : nexProps.loading});
+    }
+    if(nexProps.entreprise !== undefined){
+      this.setState({  entreprise :  nexProps.entreprise}); 
     }
    
   }
@@ -83,14 +87,22 @@ class Location extends Component {
               <SearchIcon />
             </button>
           </form>
-     
+         
+         
       
 
 
 
       <Route path="/location/ajouter" component={AjouterLocation} />
 
-
+      <Route
+         
+         path='/location/print/:id'
+         component={(props) =>  <PrintFacture {...props} rows={
+           this.state.locations.filter(l=>props.match.params.id==l.id)
+        
+         } entreprise={this.state.entreprise}  ReturnPath="/location/" head={[{ access : "voiture_nom", value: "Voiture" },{ access : "modele", value: "Modéle" },{ access : "date_sortie", value: "Date Sortie" },{ access : "date_entree", value: "Date Entrée" },{ access : "remise", value: "Remise" },{ access : "prix_totale", value: "Prix Totale" }]}   />}
+       />
 
 <Tabs >
         <Tab index={0} title="Les locations">
@@ -115,7 +127,9 @@ const mapStateToProps = (state) => {
   return {
     auth : state.auth,
     locations : state.location.locations,
-    loading : state.location.loading
+    loading : state.location.loading,
+    location : state.location.location,
+    entreprise :  state.entreprise.info
 
    
   }
@@ -125,6 +139,7 @@ const mapActionToProps = (dispatch) =>{
   return  {
     getAllLocation : ()=>dispatch(getAllLocation()),
     searchLocation: (data) => dispatch(searchLocation(data)),
+    getEtreprise :  ()=>dispatch(getEtreprise())
 
   }
 

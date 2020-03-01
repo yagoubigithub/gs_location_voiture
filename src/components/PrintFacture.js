@@ -18,10 +18,19 @@ import Button from "@material-ui/core/Button";
 import CloseIcon from "@material-ui/icons/Close";
 import PrintIcon from "@material-ui/icons/Print";
 import PageComponent from './PageComponent';
-export default class PrintComponent extends Component {
+
+//redux
+import {connect} from "react-redux";
+import {getLocation} from '../store/actions/locationAction'
+
+ class PrintFacture extends Component {
   state = {
     open: true
   } 
+
+ 
+
+  
   print =() =>{
       
     
@@ -33,6 +42,7 @@ export default class PrintComponent extends Component {
       rows_to_print.push(r);
       
     }
+
  
      const myPages =  rows_to_print.map((row,index)=>{
       
@@ -122,7 +132,9 @@ export default class PrintComponent extends Component {
       rows_to_print.push(r);
       
     } 
+    
     }
+    console.log(this.props.rows)
     
    
    
@@ -155,8 +167,9 @@ export default class PrintComponent extends Component {
   
  
   rows_to_print.map((row,index)=>{
-    console.log(row);
-    return (<PageComponent head={this.props.head} key={`pageCompnent-${index}`} index={index} rows_to_print={row}/>)
+    console.log(row)
+   
+    return (<PageComponent facture_number={row[0].id } client={{nom : row[0].client_nom,prenom : row[0].client_prenom}} entreprise={this.props.entreprise} head={this.props.head} key={`pageCompnent-${index}`} index={index} rows_to_print={row}/>)
     
   })
 }
@@ -166,3 +179,17 @@ export default class PrintComponent extends Component {
     )
   }
 }
+const mapStateToProps = state =>{
+  return {
+
+    location :  state.location.location,
+    loading :  state.location.loading
+  }
+}
+const mapActionToProps = dispatch =>{
+  return {
+    getLocation : (id)=>dispatch(getLocation(id))
+
+  }
+}
+export default  connect (mapStateToProps,mapActionToProps)(PrintFacture);

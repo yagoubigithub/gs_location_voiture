@@ -10,7 +10,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Grid from "@material-ui/core/Grid";
 
 import Button from "@material-ui/core/Button";
-import UploadImage from 'yagoubi-upload-images';
+import UploadImage from "yagoubi-upload-images";
 
 //icons
 import CloseIcon from "@material-ui/icons/Close";
@@ -19,109 +19,186 @@ import SaveIcon from "@material-ui/icons/Save";
 
 //redux
 
-import {connect} from 'react-redux';
+import { connect } from "react-redux";
 
-import {ajouterVoiture} from '../store/actions/voitureAction'
+import { ajouterVoiture } from "../store/actions/voitureAction";
 
 import LoadingComponent from "../utils/loadingComponent";
-
-
 
 class AjouterVoiture extends Component {
   state = {
     open: true,
-    nom : "",
-    modele : "", marque : "",annee :  "" , coleur : "", matricule :  "", prix : 0, images : []
+    nom: "",
+    modele: "",
+    marque: "",
+    annee: "",
+    coleur: "",
+    matricule: "",
+    prix: 0,
+    images: []
   };
-  ajouter = () =>{
-    const data = {...this.state}
+  ajouter = () => {
+    const data = { ...this.state };
     delete data.open;
-    if(data.nom === undefined || !data.nom.trim().length > 0){
-        alert("le champ Nom obligatoire")
-    }else{
-         this.props.ajouterVoiture(data);
+    if (data.nom === undefined || !data.nom.trim().length > 0) {
+      alert("le champ Nom obligatoire");
+    } else {
+      this.props.ajouterVoiture(data);
+    }
+  };
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.voitureCreated) {
+      //
+      this.setState({
+        nom: "",
+        modele: "",
+        marque: "",
+        annee: "",
+        coleur: "",
+        matricule: "",
+        prix: 0,
+        images: []
+      });
     }
   }
-  componentWillReceiveProps (nextProps){
-      if(nextProps.voitureCreated){
-         //
-         this.setState({nom : "",modele : "", marque : "",annee :  "" , coleur : "", matricule :  "", prix : 0, images : []})
-         
-      }
-
-  }
-  handleChange = (e) =>{
-      this.setState({
-          [e.target.name] : e.target.value
-      })
-  }
-  handleChangeImage = (files) =>{
-      const images = []
-      files.map(file=>{
-          images.push(file.path)
-      })
-      this.setState({images})
-  }
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+  handleChangeImage = files => {
+    const images = [];
+    files.map(file => {
+      images.push(file.path);
+    });
+    this.setState({ images });
+  };
   render() {
     return (
       <Dialog fullScreen open={this.state.open}>
-          <LoadingComponent loading={this.props.loading !== undefined ? this.props.loading : false} />
-        <AppBar color="default">
-          <Toolbar>
+        <LoadingComponent
+          loading={
+            this.props.loading !== undefined ? this.props.loading : false
+          }
+        />
+        <AppBar className="bg-dark">
+          <Toolbar style={{display : "flax", justifyContent : "space-between"}}>
+            
+            <h2 style={{ textAlign: "center" }}>Ajouter Voiture</h2>
             <Link to="/voiture/">
-              <IconButton onClick={this.handleClose}>
+              <IconButton onClick={this.handleClose} style={{color : "white"}}>
                 <CloseIcon />
               </IconButton>
             </Link>
-            <h4 style={{ textAlign: "center" }}>Ajouter Voiture</h4>
-            <Button
-              color="primary"
-              variant="contained"
-              style={{ marginLeft: 100 }}
-              onClick={this.ajouter}
-              
-            >
-              <SaveIcon />
-            </Button>
           </Toolbar>
         </AppBar>
         <div style={{ marginTop: 40, padding: 15 }}></div>
 
-    
-            <Grid container >
-                <Grid item xs={2}></Grid>
+        <Grid container>
+          <Grid item xs={3}></Grid>
+          <Grid item xs={6}>
+            <TextField
+              placeholder="Nom *"
+              value={this.state.nom}
+              name="nom"
+              variant="outlined"
+              onChange={this.handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <Grid container spacing={2}>
               <Grid item xs={6}>
-                <TextField placeholder="Nom *" value={this.state.nom}  name="nom" variant="outlined" onChange={this.handleChange} fullWidth margin="normal" />
-                <TextField placeholder="Modéle" value={this.state.modele} name="modele" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
-                <TextField placeholder="Marque" value={this.state.marque} name="marque" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
-                <TextField placeholder="L'année" value={this.state.annee} name="annee" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
-                <TextField placeholder="Coleur" value={this.state.coleur} name="coleur" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
-                <TextField placeholder="Matricule" value={this.state.matricule} name="matricule" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
-                <TextField placeholder="Prix par jour" value={this.state.prix} name="prix" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" type="number" inputProps={{ min: "0", step: "1" }} />
-                
-                <UploadImage placeholder="Images"  multiple  onChange={this.handleChangeImage} />
-                <br />
+                <TextField
+                  placeholder="Modéle"
+                  value={this.state.modele}
+                  name="modele"
+                  variant="outlined"
+                  onChange={this.handleChange}
+                  fullWidth
+                  margin="normal"
+                />
               </Grid>
-             
-             
+              <Grid item xs={6}>
+                <TextField
+                  placeholder="Marque"
+                  value={this.state.marque}
+                  name="marque"
+                  variant="outlined"
+                  onChange={this.handleChange}
+                  fullWidth
+                  margin="normal"
+                />
+              </Grid>
             </Grid>
-          
-         
-       
+
+            <TextField
+              placeholder="L'année"
+              value={this.state.annee}
+              name="annee"
+              variant="outlined"
+              onChange={this.handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              placeholder="Coleur"
+              value={this.state.coleur}
+              name="coleur"
+              variant="outlined"
+              onChange={this.handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              placeholder="Matricule"
+              value={this.state.matricule}
+              name="matricule"
+              variant="outlined"
+              onChange={this.handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              placeholder="Prix par jour"
+              value={this.state.prix}
+              name="prix"
+              variant="outlined"
+              onChange={this.handleChange}
+              fullWidth
+              margin="normal"
+              type="number"
+              inputProps={{ min: "0", step: "1" }}
+            />
+
+            <UploadImage
+              placeholder="Images"
+              multiple
+              onChange={this.handleChangeImage}
+            />
+            <Button
+              color="primary"
+              variant="contained"
+              fullWidth
+              onClick={this.ajouter}
+            >
+              <SaveIcon />
+            </Button>
+            <br />
+          </Grid>
+        </Grid>
       </Dialog>
     );
   }
 }
-const mapActionToProps = (dispatch) =>{
-    return {
-        ajouterVoiture : (data)=> dispatch(ajouterVoiture(data))
-    }
-
-}
-const mapStateToProps = (state) => {
-    return {
-        loading : state.voiture.loading,
-        voitureCreated : state.voiture.voitureCreated
-    }
-}
-export default connect(mapStateToProps,mapActionToProps)(AjouterVoiture)  ;
+const mapActionToProps = dispatch => {
+  return {
+    ajouterVoiture: data => dispatch(ajouterVoiture(data))
+  };
+};
+const mapStateToProps = state => {
+  return {
+    loading: state.voiture.loading,
+    voitureCreated: state.voiture.voitureCreated
+  };
+};
+export default connect(mapStateToProps, mapActionToProps)(AjouterVoiture);

@@ -31,8 +31,8 @@ class AjouterClient extends Component {
   state = {
     open: true,
     nom : "",
-   
     prenom :"",
+    numero_cart : "",
     telephone :"",
     email :"",
     adresse :""
@@ -52,6 +52,7 @@ class AjouterClient extends Component {
          this.setState({ nom : "",
    
          prenom :"",
+         numero_cart : "",
          telephone :"",
          email :"",
          adresse :""})
@@ -69,38 +70,41 @@ class AjouterClient extends Component {
     return (
       <Dialog fullScreen open={this.state.open}>
           <LoadingComponent loading={this.props.loading !== undefined ? this.props.loading : false} />
-        <AppBar color="default">
-          <Toolbar>
+        <AppBar className="bg-dark">
+          <Toolbar style={{display : "flax", justifyContent : "space-between"}} >
+            
+            <h2 style={{ textAlign: "center" }}>Ajouter Client</h2>
+
             <Link to="/client/">
-              <IconButton onClick={this.handleClose}>
-                <CloseIcon />
+              <IconButton onClick={this.handleClose} style={{color : "white"}} >
+                <CloseIcon  />
               </IconButton>
             </Link>
-            <h4 style={{ textAlign: "center" }}>Ajouter Client</h4>
-            <Button
-              color="primary"
-              variant="contained"
-              style={{ marginLeft: 100 }}
-              onClick={this.ajouter}
-              
-            >
-              <SaveIcon />
-            </Button>
           </Toolbar>
         </AppBar>
-        <div style={{ marginTop: 100, padding: 15 }}></div>
+        <div style={{ marginTop: 50, padding: 15 }}></div>
 
     
             <Grid container >
-                <Grid item xs={2}></Grid>
+                <Grid item xs={3}></Grid>
               <Grid item xs={6}>
                 <TextField placeholder="Nom *" value={this.state.nom}  name="nom" variant="outlined" onChange={this.handleChange} fullWidth margin="normal" />
                 <TextField placeholder="Prénom" value={this.state.prenom} name="prenom" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+                <TextField placeholder="Numero de la cart d'identité" value={this.state.numero_cart} name="numero_cart" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
                 <TextField placeholder="Télephone" value={this.state.telephone} name="telephone" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
                 <TextField placeholder="Adresse" value={this.state.adresse} name="adresse" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
                 <TextField placeholder="Email" value={this.state.email} name="email" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
               
                <br />
+               <Button
+              color="primary"
+              variant="contained"
+              fullWidth
+              onClick={this.ajouter}
+              
+            >
+              <SaveIcon />
+            </Button>
               </Grid>
              
              

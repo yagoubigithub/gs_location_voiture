@@ -12,7 +12,7 @@ import { getAllVoiture } from '../store/actions/voitureAction';
             <div>
           <Grid container className="sous-nav-container">
           <Grid item xs={2}>
-                        <NavLink className="sous-nav-link" onClick={this.props.getAllVoiture}  to='/voiture'>Voiture</NavLink>
+                        <NavLink className="sous-nav-link" onClick={this.props.getAllVoiture}  to='/voiture'>Actualisé</NavLink>
                     </Grid>
                     <Grid item xs={2}>
                         <NavLink className="sous-nav-link" to='/voiture/ajouter'>Ajouter</NavLink>

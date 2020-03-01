@@ -6,9 +6,9 @@
   --bg-color: #eee;
   --white: #fff;
   --midnight: #104f55;
-  --primaryDark  : #00251a;
-  --primary : #004d40 ;
-  --primaryLight : #39796b;
+  --primaryDark  : #7f0000;
+  --primary : #b71c1c  ;
+  --primaryLight : #f05545;
   --black : #010101;
 
   /* gradient color */
@@ -19,6 +19,10 @@
 
   --navbarWidth : 150px;
 
+}
+.bg-dark{
+  background-color: var(--primaryDark) !important;
+  color: var(--white) !important;
 }
 
 body,html{
@@ -54,7 +58,7 @@ font-size: 13px !important;
 /****************************************************************************/
 /*nav styling*/
 #root .container .nav .navbar{
- background-color: rgba(0,15,10,0.8);
+ background-color: rgba(	0, 0, 0,0.8);
  height: 100%;
  display: flex;
  flex-direction: column;
@@ -275,25 +279,26 @@ margin-bottom: 15px;
 
  text-overflow: ellipsis;
  overflow: hidden;
- 
+ border:  1px solid var(--black);
  font-size: 12px;
 }
 .print-page-content table,   .print-page-content table td  {
   border : 1px solid var(--black);
 }
 .print-page-content table th{
-  border-right:  1px solid var(--black);
+  border:  1px solid var(--black);
 }
 
 .print-page-content table th:last-child{
-  border-right:  none;
+  
 }
 .print-page-content table td{
-  border-right:  none; 
-  border-bottom:  none; 
+   text-align: center;
+   height: 300px;
+  
 }
 .print-page-content table td:first-child{
-  border-left:  none;
+  
 }
 .print-page-container .print-page-footer{
   position: relative;
@@ -303,4 +308,14 @@ margin-bottom: 15px;
   position: absolute;
   bottom:   5px;
   right : 15px;
+}
+.entreprise-information h6 {
+  margin: 0;
+}
+.client-information h6 {
+  margin: 0;
+}
+.print-page-head {
+  display: flex;
+  justify-content: space-around;
 }

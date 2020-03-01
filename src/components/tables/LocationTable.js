@@ -63,6 +63,7 @@ class LocationTable extends Component {
     this.setState({ addToCorbeilleDialog: !this.state.addToCorbeilleDialog });
   };
   add_To_Corbeille = id => {
+   
     this.setState({ locationDeletedId: id });
     //popup
     this.handleOpenCloseaddToCorbeilleDialog();
@@ -254,6 +255,12 @@ columns.unshift(
               <Link to={`/location/modifier/${props.value}`}>
                 {" "}
                 <EditIcon className="black" fontSize="small"></EditIcon>
+              </Link>
+            </IconButton>
+            <IconButton size="small">
+              <Link to={`/location/print/${props.value}`}>
+                {" "}
+                <PrintIconf className="black" fontSize="small"></PrintIconf>
               </Link>
             </IconButton>
           </div>

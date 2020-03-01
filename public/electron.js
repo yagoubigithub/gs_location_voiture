@@ -59,7 +59,7 @@ app.on('ready', () => {
 
     db.serialize(function () {
 
-      //  db.run('DROP TABLE voiture');
+      // db.run('DROP TABLE voiture');
 
         db.run(`CREATE TABLE IF NOT EXISTS voiture (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -271,12 +271,13 @@ app.on('ready', () => {
 
 //Client
 
- //db.run('DROP TABLE client');
+ db.run('DROP TABLE client');
 
 db.run(`CREATE TABLE IF NOT EXISTS client (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nom TEXT NOT NULL,
     prenom TEXT,
+    numero_cart TEXT,
     telephone TEXT,
     email TEXT,
     adresse TEXT,
@@ -323,7 +324,7 @@ db.run(`CREATE TABLE IF NOT EXISTS client (
             if (value.nom !== undefined) {
                 // ajouter
                 db.run(`
-               INSERT INTO client(nom , prenom , telephone , email , adresse , confiance  , status) VALUES ('${value.nom}','${value.prenom}','${value.telephone}','${value.email}','${value.adresse}','confiance', 'undo') `, function (err) {
+               INSERT INTO client(nom , prenom , numero_cart , telephone , email , adresse , confiance  , status) VALUES ('${value.nom}','${value.prenom}','${value.numero_cart}','${value.telephone}','${value.email}','${value.adresse}','confiance', 'undo') `, function (err) {
                     
 
 
@@ -354,7 +355,7 @@ ipcMain.on('client:modifier', (event, value) => {
 
     
         db.run(`
-       UPDATE client SET nom='${value.nom}' , prenom='${value.prenom}' , telephone='${value.telephone}' , email='${value.email}' , adresse='${value.adresse}' , confiance='${value.confiance}' WHERE  id=${value.id}  `, function (err) {
+       UPDATE client SET nom='${value.nom}' , prenom='${value.prenom}' , numero_cart='${value.numero_cart}' , telephone='${value.telephone}' , email='${value.email}' , adresse='${value.adresse}' , confiance='${value.confiance}' WHERE  id=${value.id}  `, function (err) {
            
 
         if (err) mainWindow.webContents.send("client:modifier", err);
@@ -415,7 +416,7 @@ ipcMain.on('client:modifier', (event, value) => {
 //LOCATION
 
 
-db.run('DROP TABLE location');
+//db.run('DROP TABLE location');
 
  db.run(`CREATE TABLE IF NOT EXISTS location (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -443,7 +444,7 @@ db.run('DROP TABLE location');
                     if (err) mainWindow.webContents.send("client:delete", err);
     
                    
-                    db.all("SELECT c.nom client_nom , c.prenom client_prenom , v.nom voiture_nom , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale ,l.status status FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id  ", function (err, rows) {
+                    db.all("SELECT l.id id , c.nom client_nom , c.prenom client_prenom , c.numero_cart numero_cart_client , v.nom voiture_nom , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale ,l.status status FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id  ", function (err, rows) {
                         if (err) mainWindow.webContents.send("location:ajouter", err);
                         mainWindow.webContents.send("location:ajouter", rows);
                     });
@@ -465,8 +466,9 @@ db.run('DROP TABLE location');
 
     if (value.id !== undefined) {
         // get one voiture
-        db.get("SELECT c.nom client_nom , c.prenom client_prenom , v.nom voiture_nom , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale ,l.status status FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id WHERE id=" + value.id, function (err, row) {
+        db.get("SELECT l.id id , c.nom client_nom , c.prenom client_prenom , c.numero_cart numero_cart_client ,  v.nom voiture_nom , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale , l.status status FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id WHERE l.id=" + value.id, function (err, row) {
 
+            console.log(row)
             if (err) mainWindow.webContents.send("location", err);
             mainWindow.webContents.send("location", row);
            
@@ -479,7 +481,7 @@ db.run('DROP TABLE location');
 
 
 
-        db.all("SELECT c.nom client_nom , c.prenom client_prenom , v.nom voiture_nom , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale,l.status status  FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id ", function (err, rows) {
+        db.all("SELECT l.id id , c.nom client_nom , c.prenom client_prenom , c.numero_cart numero_cart_client , v.nom voiture_nom , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale,l.status status  FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id ", function (err, rows) {
             if (err) mainWindow.webContents.send("location", err);
             mainWindow.webContents.send("location", rows);
             

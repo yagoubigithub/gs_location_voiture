@@ -12,7 +12,7 @@ import { getAllClient } from '../store/actions/clientAction';
             <div>
           <Grid container className="sous-nav-container">
           <Grid item xs={2}>
-                        <NavLink className="sous-nav-link" onClick={this.props.getAllClient}  to='/client'>Client</NavLink>
+                        <NavLink className="sous-nav-link" onClick={this.props.getAllClient}  to='/client'>Actualisé</NavLink>
                     </Grid>
                     <Grid item xs={2}>
                         <NavLink className="sous-nav-link" to='/client/ajouter'>Ajouter</NavLink>
