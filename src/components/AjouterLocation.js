@@ -101,7 +101,7 @@ class AjouterLocation extends Component {
      
     };
 
-   console.log(location);
+    this.props.ajouterLocation(location);
   };
   componentDidMount() {
     this.props.getAllClient();
@@ -137,6 +137,11 @@ class AjouterLocation extends Component {
     }
     if (nextProps.locationCreated) {
       this.setState({ locationCreated: nextProps.locationCreated });
+      if(nextProps.facture_id){
+        const { history } = this.props;
+            if (history) history.push('/facture/'+nextProps.facture_id);
+            
+      }
     }
   }
 
@@ -569,7 +574,8 @@ const mapStateToProps = state => {
     loading: state.client.loading,
     clients: state.client.clients,
     voitures: state.voiture.voitures,
-    locationCreated: state.location.locationCreated
+    locationCreated: state.location.locationCreated,
+    facture_id : state.location.facture_id
   };
 };
 export default connect(mapStateToProps, mapActionToProps)(AjouterLocation);

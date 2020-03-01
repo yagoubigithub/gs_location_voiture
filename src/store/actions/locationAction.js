@@ -17,13 +17,13 @@ export const ajouterLocation = (data) =>{
       dispatch({
         type : "STOP_LOADING_LOCATION"
     });
-    if(Array.isArray(data)){
+    if(data){
       dispatch({
           type : "AJOUTER_LOCATION",
           payload : data
       });
     }else{
-      dispatch({
+           dispatch({
         type : "ERROR_LOCATION",
         payload : data
     });

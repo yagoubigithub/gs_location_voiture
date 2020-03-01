@@ -19,6 +19,7 @@ import Voiture from './components/Voiture';
 import Client from './components/Client';
 import Location from './components/Location';
 import Entreprise from './components/auth/Entreprise';
+import PrintFacture from './components/PrintFacture';
 
 
 class App extends Component {
@@ -36,6 +37,7 @@ class App extends Component {
               <Route path="/voiture" component={Voiture} />
               <Route path="/client" component={Client} />
               <Route path="/location" component={Location} />
+              <Route path="/facture/:id" component={PrintFacture} />
               
             </Switch>
           </div>

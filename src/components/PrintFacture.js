@@ -21,14 +21,25 @@ import PageComponent from './PageComponent';
 
 //redux
 import {connect} from "react-redux";
-import {getLocation} from '../store/actions/locationAction'
+import {getFacture} from '../store/actions/factureAction'
 
  class PrintFacture extends Component {
   state = {
-    open: true
+    open: true,
+    facture : {}
   } 
 
  
+  componentDidMount(){
+    const id = this.props.match.params.id;
+    console.log(this.props)
+    this.props.getFacture(id);
+  }
+  componentWillReceiveProps(nextProps){
+    if(nextProps.facture){
+      this.setState({facture : nextProps.facture})
+    }
+  }
 
   
   print =() =>{
@@ -202,13 +213,13 @@ import {getLocation} from '../store/actions/locationAction'
 const mapStateToProps = state =>{
   return {
 
-    location :  state.location.location,
+    facture :  state.facture.facture,
     loading :  state.location.loading
   }
 }
 const mapActionToProps = dispatch =>{
   return {
-    getLocation : (id)=>dispatch(getLocation(id))
+    getFacture : (id)=>dispatch(getFacture(id))
 
   }
 }

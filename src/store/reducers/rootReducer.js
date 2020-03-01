@@ -5,6 +5,7 @@ import voitureReducer from './voitureReducer';
 import clientReducer from './clientReducer';
 import locationReducer from './locationReducer';
 import entrepriseReducer from './entrepriseReducer';
+import factureReducer from './factureReducer';
 
 
 import {    combineReducers } from 'redux';
@@ -17,7 +18,8 @@ const rootReducer  = combineReducers({
     voiture : voitureReducer,
     client : clientReducer,
     location : locationReducer,
-    entreprise : entrepriseReducer
+    entreprise : entrepriseReducer,
+    facture : factureReducer
   
     
 });

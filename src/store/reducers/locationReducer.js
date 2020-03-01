@@ -34,9 +34,10 @@ const LocationReducer = (state = initStat, action) =>{
             case 'AJOUTER_LOCATION' :
                 return {
                     ...state,
-                    locations : action.payload,
+                    facture_id : action.payload,
                     error :  null,
-                    locationCreated :  true
+                    locationCreated :  true,
+
 
                 }
 

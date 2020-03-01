@@ -95,7 +95,7 @@ class Location extends Component {
 
       <Route path="/location/ajouter" component={AjouterLocation} />
 
-      <Route
+    { /*  <Route
          
          path='/location/print/:id'
          component={(props) =>  <PrintFacture {...props} rows={
@@ -103,7 +103,8 @@ class Location extends Component {
         
          } entreprise={this.state.entreprise}  ReturnPath="/location/" head={[{ access : "voiture_nom", value: "Voiture" },{ access : "voiture_matricule", value: "Matricule" },{ access : "date_sortie", value: "Date Sortie" },{ access : "date_entree", value: "Date Entrée" },{ access : "remise", value: "Remise" },{ access : "prix_totale", value: "Prix Totale" }]}   />}
        />
-
+       */
+}
 <Tabs >
         <Tab index={0} title="Les locations">
          

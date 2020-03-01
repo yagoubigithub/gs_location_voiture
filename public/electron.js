@@ -60,7 +60,7 @@ app.on('ready', () => {
 
     db.serialize(function () {
 
-   //    //db.run('DROP TABLE voiture');
+  // db.run('DROP TABLE voiture');
 
         db.run(`CREATE TABLE IF NOT EXISTS voiture (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -77,7 +77,7 @@ app.on('ready', () => {
    
 )`);
 
-////db.run('DROP TABLE images');
+//db.run('DROP TABLE images');
         db.run(`CREATE TABLE IF NOT EXISTS images (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     image TEXT NOT NULL,
@@ -100,7 +100,7 @@ app.on('ready', () => {
 
                         if (err) mainWindow.webContents.send("voiture", err);
                         row.images = [...rows]
-                        console.log(row)
+                     
     
                         
                         mainWindow.webContents.send("voiture", row);
@@ -222,7 +222,7 @@ app.on('ready', () => {
     if (value.nom !== undefined) {
         // modifier
 
-        console.log(value)
+       
         db.run(`
        UPDATE voiture SET nom='${value.nom}' , modele='${value.modele}' , marque='${value.marque}' , annee='${value.annee}' , coleur='${value.coleur}' , matricule='${value.matricule}' WHERE  id=${value.id}  `, function (err) {
            
@@ -423,6 +423,7 @@ ipcMain.on('client:modifier', (event, value) => {
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     client_id INTEGER NOT NULL,
     voiture_id INTEGER NOT NULL,
+    facture_id INTEGER NOT NULL,
     date_entree TEXT,
     date_sortie TEXT,
     remise REAL,
@@ -430,6 +431,8 @@ ipcMain.on('client:modifier', (event, value) => {
     status TEXT
    
 )`);
+//db.run('DROP TABLE facture');
+
 db.run(`CREATE TABLE IF NOT EXISTS facture (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     client_id INTEGER NOT NULL,
@@ -440,31 +443,40 @@ db.run(`CREATE TABLE IF NOT EXISTS facture (
 
         //AJOUTER location
         ipcMain.on('location:ajouter', (event, value) => {
-            console.log(value)
-/*
-            if (value.client.nom !== undefined && value.voiture.nom !== undefined) {
-                // ajouter
-                db.run(`
-               INSERT INTO location(client_id , voiture_id , date_entree , date_sortie , remise , prix_totale  , status) VALUES (${value.client.id},${value.voiture.id},'${value.date_entree}','${value.date_sortie}', ${value.remise},'${value.prix_totale}', 'undo') `, function (err) {
-                    
+         
 
-                db.run(`UPDATE voiture  SET disponibilite = 'loué' WHERE id = ${value.voiture.id};` , function (err) {
-                    if (err) mainWindow.webContents.send("client:delete", err);
-    
-                   
-                    db.all("SELECT l.id id , c.nom client_nom , c.prenom client_prenom , c.telephone client_telephone , c.numero_cart numero_cart_client , v.nom voiture_nom , v.matricule voiture_matricule , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale ,l.status status FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id  ", function (err, rows) {
-                        if (err) mainWindow.webContents.send("location:ajouter", err);
-                        mainWindow.webContents.send("location:ajouter", rows);
-                    });
-                });
+            db.run(`
+            INSERT INTO facture(client_id ,  status) VALUES (${value.client.id} , 'undo') `, function (err) {
+                const facture_id = this.lastID;
+                console.log(facture_id);
+
+                value.voiture.map(v=>{
+                    if (value.client.nom !== undefined) {
+                        // ajouter
+                        db.run(`
+                       INSERT INTO location(client_id , voiture_id , facture_id , date_entree , date_sortie , remise , prix_totale  , status) VALUES (${value.client.id},${v.voiture.id}, ${facture_id} ,'${v.date_entree}','${v.date_sortie}', ${v.remise},'${v.prix_totale}', 'undo') `, function (err) {
+                           
+        
+                        db.run(`UPDATE voiture  SET disponibilite = 'loué' WHERE id = ${v.voiture.id};` , function (err) {
+                            if (err) mainWindow.webContents.send("location:ajouter", err);
+            
+                           
+                           
+                        });
+                          
+        
+                        });
+        
+        
                   
+                    }
+                })
 
-                });
-
+                mainWindow.webContents.send("location:ajouter", facture_id);
+            });
 
           
-            }
-*/
+
         })
 
 
@@ -475,7 +487,7 @@ db.run(`CREATE TABLE IF NOT EXISTS facture (
         // get one voiture
         db.get("SELECT l.id id , c.nom client_nom , c.prenom client_prenom  , c.telephone client_telephone , c.numero_cart numero_cart_client ,  v.nom voiture_nom , v.matricule voiture_matricule , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale , l.status status FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id WHERE l.id=" + value.id, function (err, row) {
 
-            console.log(row)
+           
             if (err) mainWindow.webContents.send("location", err);
             mainWindow.webContents.send("location", row);
            
@@ -498,6 +510,31 @@ db.run(`CREATE TABLE IF NOT EXISTS facture (
 
     }
 })
+/****************************************************************************** */
+
+
+//FACTURE
+
+ipcMain.on("facture", (event,value)=>{
+
+    db.all("SELECT * FROM entreprise ", function (err, rows) {
+        if (err) mainWindow.webContents.send("facture", err);
+        
+        const entreprise = rows[0];
+      
+        db.get("SELECT * FROM facture f JOIN client c ON c.id=f.client_id JOIN location l ON f.client_id=l.client_id JOIN voiture v ON v.id=l.voiture_id WHERE f.id=" + value.id, function (err, row) {
+            if (err) mainWindow.webContents.send("facture", err);
+
+            row["entreprise"] = entreprise;
+
+        mainWindow.webContents.send("facture", row);
+
+        });
+        
+    });
+   
+})
+
 
 /*********************************************************************************** */
 
@@ -544,7 +581,7 @@ db.run(`CREATE TABLE IF NOT EXISTS user (
 
         //AJOUTER entreprise
         ipcMain.on('entreprise:ajouter', (event, value) => {
-console.log(value)
+
             if (value.entreprise !== undefined) {
                 // ajouter
                 db.run(`
@@ -588,7 +625,7 @@ console.log(value)
 
 
         db.all(`SELECT * FROM user WHERE username='${value.username}' AND password='${value.password}'`, function (err, rows) {
-            console.log(rows)
+          
             if (err) mainWindow.webContents.send("user", err);
             mainWindow.webContents.send("user", rows);
             
