@@ -224,7 +224,7 @@ app.on('ready', () => {
 
        
         db.run(`
-       UPDATE voiture SET nom='${value.nom}' , modele='${value.modele}' , marque='${value.marque}' , annee='${value.annee}' , coleur='${value.coleur}' , matricule='${value.matricule}' WHERE  id=${value.id}  `, function (err) {
+       UPDATE voiture SET nom='${value.nom}' , modele='${value.modele}' , marque='${value.marque}' , annee='${value.annee}' , coleur='${value.coleur}' , matricule='${value.matricule}' , disponibilite='${value.disponibilite}' WHERE  id=${value.id}  `, function (err) {
            
 
 /*
@@ -483,9 +483,10 @@ db.run(`CREATE TABLE IF NOT EXISTS facture (
          //get location
    ipcMain.on('location', (event, value) => {
 
+    
     if (value.id !== undefined) {
       
-        db.get("SELECT l.id id , c.nom client_nom , c.prenom client_prenom  , c.telephone client_telephone , c.numero_cart numero_cart_client ,  v.nom voiture_nom, l.facture_id facture_id , v.matricule voiture_matricule , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale , l.status status FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id WHERE l.id=" + value.id, function (err, row) {
+        db.get("SELECT l.id id , c.nom client_nom , c.prenom client_prenom  , c.telephone client_telephone , c.numero_cart numero_cart_client ,  v.nom voiture_nom, l.facture_id facture_id , v.matricule voiture_matricule , v.modele modele , v.disponibilite disponibilite_voiture ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale , l.status status FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id WHERE l.id=" + value.id, function (err, row) {
 
            
             if (err) mainWindow.webContents.send("location", err);
@@ -496,11 +497,12 @@ db.run(`CREATE TABLE IF NOT EXISTS facture (
 
     
     } else {
+       
         
 
 
 
-        db.all("SELECT l.id id , c.nom client_nom , c.prenom client_prenom , c.telephone client_telephone , c.numero_cart numero_cart_client , v.nom voiture_nom ,v.matricule voiture_matricule, l.facture_id facture_id , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale,l.status status  FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id ", function (err, rows) {
+        db.all("SELECT l.id id , c.nom client_nom , c.prenom client_prenom , c.telephone client_telephone , c.numero_cart numero_cart_client , v.nom voiture_nom ,v.matricule voiture_matricule , v.disponibilite disponibilite_voiture , l.facture_id facture_id , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale,l.status status  FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id ", function (err, rows) {
             if (err) mainWindow.webContents.send("location", err);
             mainWindow.webContents.send("location", rows);
             

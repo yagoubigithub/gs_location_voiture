@@ -28,7 +28,8 @@ import PrintFacture from './PrintFacture';
 class Location extends Component {
   state = {
     locations: [],
-    locationCorebeille : []
+    locationCorebeille : [],
+    locationAlarte : []
     
   }
 
@@ -42,6 +43,7 @@ class Location extends Component {
     if (nexProps.locations !== undefined) {
       const locations = [];
       const locationCorebeille = [];
+      const locationAlarte = [];
      nexProps.locations.map(location=>{
        if(location.status === "undo"){
          locations.push(location)
@@ -50,9 +52,14 @@ class Location extends Component {
        if(location.status === "corbeille"){
          locationCorebeille.push(location)
        }
+       const date_current = new Date();
+       const date_entree = new Date(location.date_entree);
+       if(location.disponibilite_voiture ==="loué" && date_current.getTime() > date_entree.getTime()){
+         locationAlarte.push(location)
+       }
      })
     
-        this.setState({  locations ,locationCorebeille,loading : nexProps.loading});
+        this.setState({  locations , locationAlarte ,locationCorebeille,loading : nexProps.loading});
     }
     if(nexProps.entreprise !== undefined){
       this.setState({  entreprise :  nexProps.entreprise}); 
@@ -112,7 +119,12 @@ class Location extends Component {
         </Tab>
  
         
-        <Tab index={1} title="Corbeille" 
+        <Tab index={1} title="Location Alarté" 
+        >
+         <LocationTable rows={this.state.locationAlarte}  />
+         
+        </Tab>
+        <Tab index={2} title="Corbeille" 
         >
          <LocationTable rows={this.state.locationCorebeille} type="corbeille" />
          

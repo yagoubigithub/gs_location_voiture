@@ -161,8 +161,14 @@ handleSelectOneChange =  (voitureSelected) =>{
       }, {
         Header: 'Disponibilité',
         accessor: 'disponibilite',
-        Cell: props =>
-          (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
+        Cell: props =>{
+          if(props.value === "enPane"){
+            return(<div className="cell" >{props.value !== "undefined" ? "En Panne" : ""}</div>)
+          }else{
+            return(<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
+          }
+        }
+         
       }, {
         Header: 'Prix par jour',
         accessor: 'prix',

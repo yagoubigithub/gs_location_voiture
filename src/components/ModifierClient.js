@@ -31,7 +31,7 @@ class AjouterClient extends Component {
   state = {
     open: true,
     nom : "",
-   
+   numero_cart :  "",
     prenom :"",
     telephone :"",
     email :"",
@@ -121,27 +121,19 @@ handleClose = () =>{
 
         </Dialog>
 
+        <AppBar className="bg-dark">
+       <Toolbar style={{display : "flax", justifyContent : "space-between"}}>
+           
+            <h4 style={{ textAlign: "center" }}>Modifier Client</h4>
 
-        <AppBar color="default">
-          <Toolbar>
             <Link to="/client/">
-              <IconButton onClick={this.handleClose}>
+              <IconButton onClick={this.handleClose}  style={{color : "white"}}>
                 <CloseIcon />
               </IconButton>
             </Link>
-            <h4 style={{ textAlign: "center" }}>Modifier Client</h4>
-            <Button
-              color="primary"
-              variant="contained"
-              style={{ marginLeft: 100 }}
-              onClick={this.modifier}
-              
-            >
-              <SaveIcon />
-            </Button>
           </Toolbar>
         </AppBar>
-        <div style={{ marginTop: 100, padding: 15 }}></div>
+        <div style={{ marginTop: 40, padding: 15 }}></div>
 
     
             <Grid container >
@@ -149,6 +141,7 @@ handleClose = () =>{
               <Grid item xs={6}>
                 <TextField placeholder="Nom *"  value={this.state.nom}  name="nom" variant="outlined" onChange={this.handleChange} fullWidth margin="normal" />
                 <TextField placeholder="Prénom"  value={this.state.prenom} name="prenom" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+                <TextField placeholder="Numero de la cart d'identité" value={this.state.numero_cart} name="numero_cart" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
                 <TextField placeholder="Télephone"  value={this.state.telephone} name="telephone" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
                 <TextField placeholder="Adresse"  value={this.state.adresse} name="adresse" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
                 <TextField placeholder="Email"  value={this.state.email} name="email" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
@@ -160,6 +153,16 @@ handleClose = () =>{
       />
                <br />
               {this.state.confiance !== "confiance" ? <p>{this.state.confiance}</p> :null}
+
+              <Button
+              color="primary"
+              variant="contained"
+              fullWidth
+              onClick={this.modifier}
+              
+            >
+              <SaveIcon />
+            </Button>
               </Grid>
              
              

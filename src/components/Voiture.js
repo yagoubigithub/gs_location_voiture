@@ -31,6 +31,7 @@ class Voiture extends Component {
     voitureDisponible : [],
      voitureEnPane : [],
      voitureLocation : [],
+    
   }
 
 
@@ -46,6 +47,7 @@ class Voiture extends Component {
       const voitureEnPane = [];
       const voitureLocation = [];
       const voitureCorebeille = [];
+      
 
       nexProps.voitures.map(voiture=>{
        
@@ -61,7 +63,7 @@ class Voiture extends Component {
           voitureEnPane.push(voiture);
 
         }
-        if(voiture.disponibilite === "enLocation" && voiture.status === "undo"){
+        if(voiture.disponibilite === "loué" && voiture.status === "undo"){
           voitureLocation.push(voiture);
 
         }
@@ -116,7 +118,17 @@ class Voiture extends Component {
          <VoitureTable rows={this.state.voitureDisponible} />
          
         </Tab>
-        <Tab index={2} title="Corbeille" 
+        <Tab index={2} title="Voiture Loué" 
+        >
+         <VoitureTable rows={this.state.voitureLocation} />
+         
+        </Tab>
+        <Tab index={3} title="Voiture En Panne" 
+        >
+         <VoitureTable rows={this.state.voitureEnPane} />
+         
+        </Tab>
+        <Tab index={4} title="Corbeille" 
         >
          <VoitureTable rows={this.state.voitureCorebeille} />
          
