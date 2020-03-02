@@ -5,7 +5,7 @@ const {ipcRenderer}  = electron;
 export const getFacture = (id)=>{
     return (dispatch,getState)=>{
         ipcRenderer.send("facture", {id});
-    
+    console.log(id)
         ipcRenderer.once('facture', function (event,data) {
          
           dispatch({

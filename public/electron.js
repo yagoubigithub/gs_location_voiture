@@ -520,7 +520,7 @@ db.run(`CREATE TABLE IF NOT EXISTS facture (
 ipcMain.on("facture", (event,value)=>{
 
 
-    db.all("SELECT * FROM location l JOIN client c ON c.id=l.client_id JOIN voiture v ON v.id=l.voiture_id AND l.facture_id=" + value.id , function (err, row) {
+    db.all("SELECT l.facture_id facture_number, v.nom voiture_nom , v.matricule voiture_matricule , c.telephone client_telephone ,   l.date_entree date_entree, l.date_sortie date_sortie , c.nom client_nom ,c.prenom client_prenom , l.prix_totale prix_totale , l.remise remise  FROM location l JOIN client c ON c.id=l.client_id JOIN voiture v ON v.id=l.voiture_id AND l.facture_id=" + value.id , function (err, row) {
 
 if (err) mainWindow.webContents.send("facture", err);
 

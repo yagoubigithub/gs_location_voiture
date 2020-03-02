@@ -249,10 +249,12 @@ padding: 15px;
 /*print page coponenet*/
 
 .print-page-container{
+  box-sizing: border-box;
 display: flex;;
 flex-direction: column;
 background: white;
 min-height: 1170px;
+max-height: 1170px;
 height: 1170px;
 width : 827px;
 margin-bottom: 15px;
@@ -286,7 +288,7 @@ margin-bottom: 15px;
 }
 .print-page-content table,   .print-page-content table td  {
   
-  padding-bottom: 200px;
+  padding-bottom: 10px;
 }
 .print-page-content table th{
   border:  1px solid black;

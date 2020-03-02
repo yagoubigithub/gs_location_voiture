@@ -111,7 +111,9 @@ class LocationTable extends Component {
   }
  
   openPrintDialog = (obj)=>{
+    this.setState({facture_id : obj.facture_id})
     this.handleOpenCloseprintDialog();
+   
   }
   render() {
     const columns = [
