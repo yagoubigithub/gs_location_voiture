@@ -12,8 +12,8 @@ import { Dialog, Collapse, Grid, DialogContent, Button } from "@material-ui/core
 
 //redux
 import { connect } from "react-redux";
-import { searchClient, addToCorbeille, undoDeleteClient } from "../../store/actions/clientAction";
-
+import { searchClient,  undoDeleteClient } from "../../store/actions/clientAction";
+import { addToCorbeille} from "../../store/actions/locationAction";
 //icons
 
 import PrintIconf from "@material-ui/icons/Print";
@@ -111,7 +111,7 @@ class LocationTable extends Component {
   }
  
   openPrintDialog = (obj)=>{
-    this.setState({facture_id : obj.facture_id})
+    this.setState({facture_id : obj.facture_id, location_id :  obj.id})
     this.handleOpenCloseprintDialog();
    
   }
@@ -199,43 +199,7 @@ class LocationTable extends Component {
 
    if( this.props.type !== "choose-one" ){
 columns.unshift(
-  {
-    Header: (
-      <div
-        style={{
-          backgroundColor: "#E4E4E4",
-          border: "1px solid rgba(0,0,0,0.45)"
-        }}
-      >
-        <Checkbox
-          key={"check-all-client-key"}
-          id="check-all-client-id"
-          style={{ padding: 3 }}
-          checked={this.state.selectedAll}
-          onChange={this.handleSelectAllLocationChange}
-          color="primary"
-        />
-      </div>
-    ),
-    sortable: false,
-    filterable: false,
-    accessor: "id",
-    width: 50,
-
-    Cell: props => (
-      <div className="cell">
-        <Checkbox
-          value={props.value}
-          key={`key-checkbox-table-location-${props.value}`}
-          id={`id-checkbox-table-location-${props.value}`}
-          onChange={e => this.handeleCheckCheckboxRow(e, props.value)}
-          checked={this.checkRowIsSelected(props.value)}
-          style={{ padding: 3 }}
-        />
-      </div>
-    )
-  },
-
+  
   {
     Header: "  ",
     accessor: "id",
@@ -254,18 +218,8 @@ columns.unshift(
         return (
           <div className="cell">
           
-            <IconButton
-              size="small"
-              onClick={() => this.add_To_Corbeille(props.value)}
-            >
-              <DeleteIcon className="red" fontSize="small"></DeleteIcon>
-            </IconButton>
-            <IconButton size="small">
-              <Link to={`/location/modifier/${props.value}`}>
-                {" "}
-                <EditIcon className="black" fontSize="small"></EditIcon>
-              </Link>
-            </IconButton>
+           
+            
             <IconButton size="small" onClick={()=>this.openPrintDialog(props.original)}>
             
                
@@ -286,7 +240,7 @@ columns.unshift(
 <div style={{padding : 15}}>
 <h3>Imprimer</h3>
 <Link to={`/facture/${this.state.facture_id}`}><Button style={{padding : 15 ,width :100,margin : 5}} color="primary" variant="contained">facture</Button></Link>
-<Link to={`/bonlivraison/${this.state.facture_id}`}><Button style={{padding : 15 ,width :100,margin : 5}} color="primary" variant="contained" >Bon</Button></Link>
+<Link to={`/bonlivraison/${this.state.location_id}`}><Button style={{padding : 15 ,width :100,margin : 5}} color="primary" variant="contained" >Bon</Button></Link>
 </div>
 
 </Dialog>
@@ -338,7 +292,7 @@ columns.unshift(
 const mapActionToProps = dispatch => {
   return {
     searchClient: data => dispatch(searchClient(data)),
-    addToCorbeille: id => dispatch(addToCorbeille(id)),
+   
     undoDeleteClient :  id=>dispatch(undoDeleteClient(id))
   };
 };

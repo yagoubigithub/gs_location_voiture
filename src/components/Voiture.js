@@ -26,6 +26,10 @@ import ModifierVoiture from './ModifierVoiture';
 
 class Voiture extends Component {
   state = {
+    nom : "",
+    matricule :  "",
+    modele :  "",
+    marque :  "",
     voitures: [],
     voitureCorebeille : [],
     voitureDisponible : [],
@@ -86,7 +90,7 @@ class Voiture extends Component {
   }
   handleSearch = (e) => {
     e.preventDefault();
-    const data = { nom : this.state.nom };
+    const data = { nom : this.state.nom, marque : this.state.marque, modele :  this.state.modele, matricule :  this.state.matricule };
     this.props.searchVoiture(data)
   }
   render() {
@@ -101,6 +105,10 @@ class Voiture extends Component {
         
         <form onSubmit={this.handleSearch} className="search-form">
             <input onChange={this.handleSearchChange} type="text" name="nom" placeholder="Nom" />
+            <input onChange={this.handleSearchChange} type="text" name="matricule" placeholder="Matricule" />
+            <input onChange={this.handleSearchChange} type="text" name="modele" placeholder="Modéle" />
+            <input onChange={this.handleSearchChange} type="text" name="marque" placeholder="Marque" />
+          
 
             <button type="submit" >
               <SearchIcon />
@@ -108,22 +116,22 @@ class Voiture extends Component {
 
           </form>
         <Tabs >
-        <Tab index={0} title="Liste des Voiture">
+        <Tab index={0} title="tous les voitures">
          
          <VoitureTable rows={this.state.voitures} />
         </Tab>
  
-        <Tab index={1} title="Voiture disponible" 
+        <Tab index={1} title="voitures disponible" 
         >
          <VoitureTable rows={this.state.voitureDisponible} />
          
         </Tab>
-        <Tab index={2} title="Voiture Loué" 
+        <Tab index={2} title="voitures Loué" 
         >
          <VoitureTable rows={this.state.voitureLocation} />
          
         </Tab>
-        <Tab index={3} title="Voiture En Panne" 
+        <Tab index={3} title="voitures En Panne" 
         >
          <VoitureTable rows={this.state.voitureEnPane} />
          

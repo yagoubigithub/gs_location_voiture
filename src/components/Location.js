@@ -29,7 +29,8 @@ class Location extends Component {
   state = {
     locations: [],
     locationCorebeille : [],
-    locationAlarte : []
+    locationAlarte : [],
+    locationActuale : [],
     
   }
 
@@ -44,6 +45,7 @@ class Location extends Component {
       const locations = [];
       const locationCorebeille = [];
       const locationAlarte = [];
+      const locationActuale = [];
      nexProps.locations.map(location=>{
        if(location.status === "undo"){
          locations.push(location)
@@ -54,12 +56,19 @@ class Location extends Component {
        }
        const date_current = new Date();
        const date_entree = new Date(location.date_entree);
-       if(location.disponibilite_voiture ==="loué" && date_current.getTime() > date_entree.getTime()){
+       const date_sortie = new Date(location.date_sortie);
+       if(location.voiture_disponibilite ==="loué" && date_current.getTime() > date_entree.getTime()){
          locationAlarte.push(location)
        }
+
+       if(location.voiture_disponibilite === "loué" && (date_current.getTime() > date_sortie.getTime() && date_current.getTime() < date_entree.getTime()) ){
+         locationActuale.push(location)
+       }
+
+
      })
     
-        this.setState({  locations , locationAlarte ,locationCorebeille,loading : nexProps.loading});
+        this.setState({  locations , locationAlarte,locationActuale ,locationCorebeille,loading : nexProps.loading});
     }
     if(nexProps.entreprise !== undefined){
       this.setState({  entreprise :  nexProps.entreprise}); 
@@ -89,10 +98,10 @@ class Location extends Component {
         <Route path="/location/modifier/:id" component={ModifierClient} />
         
         <form onSubmit={this.handleSearch} className="search-form">
-            <input onChange={this.handleSearchChange} type="text" name="nom" placeholder="Nom" />
+           { /* <input onChange={this.handleSearchChange} type="text" name="nom" placeholder="Nom" />
             <button type="submit" >
               <SearchIcon />
-            </button>
+            </button> */}
           </form>
          
          
@@ -124,11 +133,17 @@ class Location extends Component {
          <LocationTable rows={this.state.locationAlarte}  />
          
         </Tab>
-        <Tab index={2} title="Corbeille" 
+        <Tab index={2} title="les locations actuale" 
+        >
+         <LocationTable rows={this.state.locationActuale} />
+         
+        </Tab>
+        <Tab index={3} title="Corbeille" 
         >
          <LocationTable rows={this.state.locationCorebeille} type="corbeille" />
          
         </Tab>
+
       </Tabs>
      
       </div>

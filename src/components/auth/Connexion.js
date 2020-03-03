@@ -21,7 +21,7 @@ import LoadingComponent from "../../utils/loadingComponent";
         if(nextProps.auth.user !== undefined){
             
             const { history } = this.props;
-            if (history) history.push('/home');
+            if (history) history.push('/voiture');
         }
     }
     handleChange=(e) =>{
@@ -36,15 +36,18 @@ import LoadingComponent from "../../utils/loadingComponent";
     render() {
         return (
             <Dialog fullScreen open={this.state.open}>
-
-                <form onSubmit={this.handleSubmit}>
-                    <span>{this.props.auth.error}</span>
-                    <input onChange={this.handleChange} name="username" type="text" placeholder="Username" />
-                    <input onChange={this.handleChange} name="password" type="password" placeholder="Mot de passe" />
-                    <input type="submit" />
+            <div className="container-auth">
+                <form onSubmit={this.handleSubmit} className="form-auth">
+                    <span className="error-auth">{this.props.auth.error}</span>
+                    <input className="input-auth" onChange={this.handleChange} name="username" type="text" placeholder="Username" />
+                    <input className="input-auth"   onChange={this.handleChange} name="password" type="password" placeholder="Mot de passe" />
+                    <input type="submit" className="button-auth" value="Connexion"/>
                     
                 </form>  
-                <LoadingComponent loading={this.props.loading !== undefined ? this.props.loading : false} />
+                <LoadingComponent loading={this.props.loading !== undefined ? this.props.loading : false} /> 
+            </div>
+
+               
             </Dialog>
         )
     }

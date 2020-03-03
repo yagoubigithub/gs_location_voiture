@@ -18,9 +18,7 @@ import { getAllClient } from '../store/actions/clientAction';
                         <Link className="sous-nav-link" to='/location/ajouter/'>Ajouter</Link>
                     </Grid>
                    
-                <Grid item xs={2}>
-                    <Link className="sous-nav-link" to="/location/print">Imprimer</Link>
-                </Grid>
+             
               
                 </Grid>
                 

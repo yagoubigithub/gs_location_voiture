@@ -12,23 +12,26 @@ import IconButton from "@material-ui/core/IconButton";
 
 import Button from "@material-ui/core/Button";
 
+import LoadingComponent from '../utils/loadingComponent';
 
 
 //icons
 import CloseIcon from "@material-ui/icons/Close";
 import PrintIcon from "@material-ui/icons/Print";
-import PageComponent from './PageComponent';
+import PageBon from './PageBon';
 
 //redux
 import {connect} from "react-redux";
-import {getFacture } from '../store/actions/factureAction'
 
 
-import {removeFactureId} from '../store/actions/locationAction';
+
+import {removeFactureId , getLocation} from '../store/actions/locationAction';
+import {voitureEntree } from '../store/actions/voitureAction';
  class PrintFacture extends Component {
   state = {
     open: true,
-    facture : {}
+    facture : {},
+    voitureEntree : false
   } 
 
   componentWillUnmount(){
@@ -38,12 +41,16 @@ import {removeFactureId} from '../store/actions/locationAction';
   componentDidMount(){
     const id = this.props.match.params.id;
     console.log(this.props)
-    this.props.getFacture(id);
+    this.props.getLocation(id);
   }
   componentWillReceiveProps(nextProps){
-    if(nextProps.facture){
-      this.setState({facture : nextProps.facture})
+    if(nextProps.location){
+      this.setState({location : nextProps.location})
     }
+    if(nextProps.loading !== undefined){
+        this.setState({loading : nextProps.loading})
+    }
+    
   }
 
   
@@ -53,9 +60,9 @@ import {removeFactureId} from '../store/actions/locationAction';
     let rows_to_print = [];
     const factures = this.props.facture;
     if(factures !== undefined){
-      for (let i = 0; i < factures.length; i = i + 8) {
+      for (let i = 0; i < factures.length; i = i + 3) {
       const r = [];
-      r.push(factures[i], factures[i+1] ,factures[i+2], factures[i+3] , factures[i+4] , factures[i+5] , factures[i+6] , factures[i+7]);
+      r.push(factures[i], factures[i+1] ,factures[i+2]);
 
       if(factures[i] !== undefined)
       factures[i].numero =  i+1;
@@ -63,26 +70,17 @@ import {removeFactureId} from '../store/actions/locationAction';
       factures[i + 1].numero = i+2;
       if(factures[i + 2] !== undefined)
       factures[i +2 ].numero = i+3;
-      if(factures[i + 3] !== undefined)
-      factures[i +3 ].numero = i+4;
-      if(factures[i + 4] !== undefined)
-      factures[i +4 ].numero = i+5;
-      if(factures[i + 5] !== undefined)
-      factures[i +5 ].numero = i+6;
-      if(factures[i + 6] !== undefined)
-      factures[i +6 ].numero = i+7;
-      if(factures[i + 7] !== undefined)
-      factures[i + 7 ].numero = i+8;
+
       rows_to_print.push(r);
       
     } 
     
     }
-    const head=[{ access : "numero", value: "N°" },{ access : "voiture_nom", value: "Voiture" },{ access : "voiture_matricule", value: "Matricule" },{ access : "date_sortie", value: "Date Sortie" },{ access : "date_entree", value: "Date Entrée" },{ access : "remise", value: "Remise" },{ access : "prix_totale", value: "Prix Totale" }]
+    const head=[{ access : "numero", value: "Numero" },{ access : "voiture_nom", value: "Voiture" },{ access : "voiture_matricule", value: "Matricule" },{ access : "date_sortie", value: "Date Sortie" },{ access : "date_entree", value: "Date Entrée" },{ access : "remise", value: "Remise" },{ access : "prix_totale", value: "Prix Totale" }]
  
      const myPages =  rows_to_print.map((row,index)=>{
       
-        return (<PageComponent facture_number={row[0].facture_number } client={{nom : row[0].client_nom,prenom : row[0].client_prenom,telephone :  row[0].client_telephone}} entreprise={this.props.entreprise} head={head} key={`pageCompnent-${index}`} index={index} rows_to_print={row}/>)
+        return (<PageBon facture_number={row[0].facture_number } client={{nom : row[0].client_nom,prenom : row[0].client_prenom,telephone :  row[0].client_telephone}} entreprise={this.props.entreprise} head={head} key={`pageCompnent-${index}`} index={index} rows_to_print={row}/>)
         
       })
       const w = window.open();
@@ -184,46 +182,28 @@ import {removeFactureId} from '../store/actions/locationAction';
     
   
     }
+ 
   render() {
-    const head=[{ access : "numero", value: "Numero" },{ access : "voiture_nom", value: "Voiture" },{ access : "voiture_matricule", value: "Matricule" },{ access : "date_sortie", value: "Date Sortie" },{ access : "date_entree", value: "Date Entrée" },{ access : "remise", value: "Remise" },{ access : "prix_totale", value: "Prix Totale" }]
+const head=[{ access : "numero", value: "N°" },{ access : "voiture_nom", value: "Voiture" },{ access : "voiture_matricule", value: "Matricule" },{ access : "date_sortie", value: "Date Sortie" },{ access : "date_entree", value: "Date Entrée" },{ access : "remise", value: "Remise" },{ access : "prix_totale", value: "Prix Totale" }]
     
-    let rows_to_print = [];
-    const factures = this.props.facture;
-    const prix_totale_t = 0;
+    let rows_to_print = [{...this.props.location,numero : 1}];
+    let livreeBtn;
+    if(this.props.location !== undefined){
+            livreeBtn = this.props.location.voiture_disponibilite === "loué" ? <Button
+    color="primary"
+    variant="contained"
+    style={{ marginLeft: 100 }}
+    onClick={()=>this.props.voitureEntree(this.props.location.voiture_id)}
 
-    
-    
-    if(factures !== undefined){
-      factures.map(f=>{
-        prix_totale_t = prix_totale_t+f.prix_totale;
-      })
-      for (let i = 0; i < factures.length; i = i + 3) {
-      const r = [];
-      r.push(factures[i], factures[i+1] ,factures[i+2], factures[i+3] , factures[i+4] , factures[i+5] , factures[i+6] , factures[i+7]);
-
-      if(factures[i] !== undefined)
-      factures[i].numero =  i+1;
-      if(factures[i + 1] !== undefined)
-      factures[i + 1].numero = i+2;
-      if(factures[i + 2] !== undefined)
-      factures[i +2 ].numero = i+3;
-      if(factures[i + 3] !== undefined)
-      factures[i +3 ].numero = i+4;
-      if(factures[i + 4] !== undefined)
-      factures[i +4 ].numero = i+5;
-      if(factures[i + 5] !== undefined)
-      factures[i +5 ].numero = i+6;
-      if(factures[i + 6] !== undefined)
-      factures[i +6 ].numero = i+7;
-      if(factures[i + 7] !== undefined)
-      factures[i + 7 ].numero = i+8;
-      rows_to_print.push(r);
-      
-    } 
-    
+  >
+  La voiture a été livrée
+  </Button> : null;
     }
+ 
+    
     return (
       <Dialog fullScreen open={this.state.open}>
+         <LoadingComponent loading={this.state.loading !== undefined ? this.state.loading : false} />
         <AppBar color="secondary">
           <Toolbar>
             <Link to="/location/">
@@ -242,6 +222,8 @@ import {removeFactureId} from '../store/actions/locationAction';
             >
               <PrintIcon />
             </Button>
+{livreeBtn}
+           
           </Toolbar>
         </AppBar>
 
@@ -253,7 +235,7 @@ import {removeFactureId} from '../store/actions/locationAction';
   rows_to_print.map((row,index)=>{
  
   
-    return (<PageComponent prix_totale_t={prix_totale_t} facture_number={row[0].facture_number } client={{nom : row[0].client_nom,prenom : row[0].client_prenom,telephone :  row[0].client_telephone}} entreprise={this.props.entreprise} head={head} key={`pageCompnent-${index}`} index={index} rows_to_print={row}/>)
+    return (<PageBon facture_number={row.id } client={{nom : row.client_nom,prenom : row.client_prenom,telephone :  row.client_telephone}} entreprise={this.props.entreprise} head={head} key={`pageCompnent-${index}`} index={index} rows_to_print={rows_to_print}/>)
     
   })
 }
@@ -266,15 +248,18 @@ import {removeFactureId} from '../store/actions/locationAction';
 const mapStateToProps = state =>{
   return {
 
-    facture :  state.facture.facture,
-    loading :  state.location.loading,
-    entreprise : state.entreprise.info
+    location :  state.location.location,
+    loading :  state.voiture.loading,
+    entreprise : state.entreprise.info,
+  
   }
 }
 const mapActionToProps = dispatch =>{
   return {
-    getFacture : (id)=>dispatch(getFacture(id)),
-    removeFactureId : () =>dispatch(removeFactureId())
+    getLocation : (id)=>dispatch(getLocation(id)),
+    voitureEntree : (id)=>dispatch(voitureEntree(id)),
+    removeFactureId : () =>dispatch(removeFactureId()),
+   
 
   }
 }

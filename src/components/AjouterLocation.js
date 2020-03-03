@@ -12,7 +12,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 
 import { getCurrentDateTime } from "../utils/methods";
-import PrintFacture from "./PrintFacture";
+
 
 //icons
 import CloseIcon from "@material-ui/icons/Close";
@@ -98,6 +98,7 @@ class AjouterLocation extends Component {
     const location = {
       voiture: v,
       client: data.client_selected,
+      facture_date : getCurrentDateTime(new Date().getTime())
      
     };
 
@@ -161,16 +162,16 @@ class AjouterLocation extends Component {
   getVoitureData = voiture => {
    const voiture_selected =  [ ...this.state.voiture_selected];
    
-   voiture_selected[voiture_selected.length-1] = voiture;
+  
    voiture_selected.push(voiture);
     const date_sortie = [...this.state.date_sortie];
     const date_entree = [...this.state.date_entree];
     const remise = [...this.state.remise];
     const unite = [...this.state.unite];
     const number_unite = [...this.state.number_unite];
-    remise.push(5);
+    remise.push(0);
     unite.push("j");
-    number_unite.push(10);
+    number_unite.push(1);
     const d_sortie = getCurrentDateTime(new Date().getTime());
 const d_entree = getCurrentDateTime(
   new Date(d_sortie).getTime() + 1 * 24 * 60 * 60 * 1000
@@ -179,16 +180,18 @@ const d_entree = getCurrentDateTime(
 date_entree.push(d_entree);
 date_sortie.push(d_sortie)
 
-const index = remise.length ;
+voiture_selected.map(v_selected=>{
+  const voitures = [...this.state.voitures];
+  voitures.map((v,index)=>{
+    if(v_selected.id===v.id){
 
-    const more_voiture = [...this.state.more_voiture];
+       voitures.splice(index,1);
+    }
+  })
+  this.setState({voitures})
+})
    
- this.setState({ voiture_selected,date_sortie, date_entree,remise,number_unite,unite }, ()=>{
-
-  console.log([ ...this.state.voiture_selected],index) 
-  more_voiture.push();
-    this.setState({more_voiture})
- });
+ this.setState({ voiture_selected,date_sortie, date_entree,remise,number_unite,unite });
 
     
        
@@ -366,22 +369,17 @@ const index = remise.length ;
             this.props.loading !== undefined ? this.props.loading : false
           }
         />
-        <AppBar color="default">
-          <Toolbar>
+         <AppBar className="bg-dark">
+          <Toolbar style={{display : "flax", justifyContent : "space-between"}}>
+
+          <h4 style={{ textAlign: "center" }}>Ajouter location</h4>
+
             <Link to="/location/">
-              <IconButton onClick={this.handleClose}>
+              <IconButton onClick={this.handleClose} style={{color : "white"}}>
                 <CloseIcon />
               </IconButton>
             </Link>
-            <h4 style={{ textAlign: "center" }}>Ajouter location</h4>
-            <Button
-              color="primary"
-              variant="contained"
-              style={{ marginLeft: 100 }}
-              onClick={this.ajouter}
-            >
-              <SaveIcon />
-            </Button>
+        
           </Toolbar>
         </AppBar>
         <div style={{ marginTop: 50, padding: 15 }}></div>
@@ -466,8 +464,8 @@ const index = remise.length ;
           {this.state.voiture_selected.map((voiture,index)=>{
 
 return (<Grid key={`grid_of_voiture_select${index }`} container spacing={4}
-  style={{background :"gray",margin : 5}}>
-<h3>{voiture.nom}</h3>
+  style={{padding : 50,margin : 5}}>
+<h3>Voiture nom : {voiture.nom}</h3>
    <Grid item xs={2}></Grid>
      
 
@@ -555,7 +553,19 @@ return (<Grid key={`grid_of_voiture_select${index }`} container spacing={4}
        />
      </Grid></Grid>)
           })}
+
+        
         </Grid>
+        <br />
+        <Button
+              color="primary"
+              variant="contained"
+              fullWidth
+              onClick={this.ajouter}
+              style={{width : "80%", margin : "0 auto"}}
+            >
+              <SaveIcon />
+            </Button>
       </Dialog>
     );
   }

@@ -26,7 +26,8 @@ import ModifierClient from './ModifierClient';
 class Client extends Component {
   state = {
     clients: [],
-    clientCorebeille : []
+    clientCorebeille : [],
+    nom : '' , prenom : '', numero_cart : ''
     
   }
 
@@ -63,7 +64,7 @@ class Client extends Component {
   }
   handleSearch = (e) => {
     e.preventDefault();
-    const data = { nom : this.state.nom };
+    const data = { nom : this.state.nom , prenom : this.state.prenom, numero_cart : this.state.numero_cart};
     this.props.searchClient(data)
   }
   render() {
@@ -78,6 +79,9 @@ class Client extends Component {
         
         <form onSubmit={this.handleSearch} className="search-form">
             <input onChange={this.handleSearchChange} type="text" name="nom" placeholder="Nom" />
+            <input onChange={this.handleSearchChange} type="text" name="prenom" placeholder="Prénom" />
+            <input onChange={this.handleSearchChange} type="text" name="numero_cart" placeholder="Numero de la cart d'identité" />
+          
 
             <button type="submit" >
               <SearchIcon />
@@ -94,7 +98,7 @@ class Client extends Component {
 
 
 <Tabs >
-        <Tab index={0} title="Liste des Client">
+        <Tab index={0} title="tous les clients">
          
          <ClientTable rows={this.state.clients}  />
         </Tab>

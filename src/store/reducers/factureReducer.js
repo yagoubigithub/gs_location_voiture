@@ -27,6 +27,12 @@ const factureReducer = (state = initStat, action) =>{
                 error :null,
                 facture : action.payload
             }
+        case 'GET_ALL_FACTURE' :
+        return {
+            ...state,
+            factures :  action.payload,
+            error : null
+        }
            
         default :
         return {

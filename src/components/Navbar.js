@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 
 
-import { NavLink,Redirect } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 
 
@@ -18,11 +18,7 @@ class Navbar extends Component {
       <nav className="nav">
         <div className="navbar">
           <h2 className="project-title">{this.props.auth.user.employe && this.props.auth.user.employe}</h2>
-          
-          <NavLink  activeClassName="nav-active" to="/home" className="nav-link">
-            {" "}
-            Statistique
-          </NavLink>
+         
           <NavLink activeClassName="nav-active" to="/voiture" className="nav-link">
         Voiture{" "}
       </NavLink>
@@ -31,6 +27,12 @@ class Navbar extends Component {
       </NavLink>
       <NavLink activeClassName="nav-active" to="/location" className="nav-link">
         Location{" "}
+      </NavLink>
+      <NavLink activeClassName="nav-active" to="/facture" className="nav-link">
+        Facture{" "}
+      </NavLink>
+      <NavLink activeClassName="nav-active" to="/agence" className="nav-link">
+        Agence{" "}
       </NavLink>
         </div>
       </nav>

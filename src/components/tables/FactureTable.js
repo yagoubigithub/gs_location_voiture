@@ -26,15 +26,14 @@ import LoadingComponent from '../../utils/loadingComponent';
 
 
 
-class VoitureTable extends Component {
+class FactureTable extends Component {
   state = {
-    openGallerie : false,
+    
     addToCorbeilleDialog: false,
     voitureDeletedId: null,
     rowsSelected: [],
     selectedAll: false,
-    images : [],
-    voitureSelected :{}
+
 
   }
   componentWillReceiveProps(nextProps){
@@ -42,16 +41,7 @@ class VoitureTable extends Component {
       this.setState({ ...nextProps.voiture });
     }
   }
-  componentWillUnmount(){
-    switch(this.props.type){
-      case "choose-one":
-          const voitureSelected = {...this.state.voitureSelected};
-          this.props.sendData(voitureSelected);
-      break;
-      default :
-      break;
-    }
-  }
+
 
   
 
@@ -129,90 +119,47 @@ handleSelectOneChange =  (voitureSelected) =>{
 
     const columns = [
       {
-        Header: 'Nom',
-        accessor: 'nom',
+        Header: 'Nom Client',
+        accessor: 'client_nom',
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
       }, {
-        Header: 'Modéle',
-        accessor: 'modele',
+        Header: 'Prénom ',
+        accessor: 'client_prenom',
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
-      }, {
-        Header: 'Marque',
-        accessor: 'marque',
+      },  {
+        Header: "Télephone",
+        accessor: 'client_telephone',
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
-      }, {
-        Header: "L'année",
-        accessor: 'annee',
-        Cell: props =>
-          (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
-      }, {
-        Header: "Coleur",
-        accessor: 'coleur',
-        Cell: props =>
-          (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
-      }, {
-        Header: 'Matricule',
-        accessor: 'matricule',
-        Cell: props =>
-          (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
-      }, {
-        Header: 'Disponibilité',
-        accessor: 'disponibilite',
-        Cell: props =>{
-          if(props.value === "enPane"){
-            return(<div className="cell" >{props.value !== "undefined" ? "En Panne" : ""}</div>)
-          }else{
-            return(<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
-          }
-        }
-         
-      }, {
-        Header: 'Prix par jour',
-        accessor: 'prix',
+      },{
+        Header: 'Date Facture',
+        accessor: 'facture_date',
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
       }]
 
       if( this.props.type !== "choose-one" ){
         columns.unshift(
-         
+        
+    
           {
     
             Header: '  ',
-            accessor: 'id',
+            accessor: 'facture_number',
             width: 100,
             sortable: false,
             filterable: false,
             Cell: props => <div className="cell">
-              <IconButton size="small" onClick={()=>{this.handleCloseOpenGallerieVoiture();this.props.getVoiture(props.value)}}>
-                <PermMediaIcon className="black" fontSize="small"></PermMediaIcon>
-              </IconButton>
+            
     
+            
+            <Link to={`/facture/${props.value}`}>
               <IconButton size="small" onClick={() => this.add_To_Corbeille(props.value)}>
-                <DeleteIcon className="red" fontSize="small"></DeleteIcon>
-              </IconButton>
-              <IconButton size="small">
-                <Link to={`/voiture/modifier/${props.value}`}>  <EditIcon className="black" fontSize="small"></EditIcon></Link>
-              </IconButton>
-    
+               <PrintIconf className="black" fontSize="small"></PrintIconf>
+              </IconButton></Link> 
             </div>
-          }
-        )
-      }else{
-
-        columns.unshift(
-          {
-            Header: "  ",
-            accessor: "id",
-            width: 50,
-            sortable: false,
-            filterable: false,
-            Cell: props => {
-            return (  <div className="cell"><input type="radio" name="select-voiture" checked={props.value === this.state.voitureSelected.id} onChange={()=>this.handleSelectOneChange(props.original)} /></div>)
-            }
           }
         )
       }
@@ -226,23 +173,7 @@ handleSelectOneChange =  (voitureSelected) =>{
         </Dialog>
 
 
-        <Dialog scroll="paper" open={this.state.openGallerie} onClose={this.handleCloseOpenGallerieVoiture}>
-        <DialogContent dividers={true}>
-          <LoadingComponent
-            loading={
-              this.props.loading !== undefined ? this.props.loading : false
-            }
-          />
-          <div>
-            <Grid container>
-            {this.props.voiture !== undefined ?  <img
-                      style={{ maxHeight: 200, width: "100%", height: "100%" }}
-                      src={`../../images/${this.props.voiture.image}`}
-                    /> : null}
-            </Grid>
-          </div>
-        </DialogContent>
-      </Dialog>
+       
         <div className="table-container">
 
           {/*
@@ -290,4 +221,4 @@ const mapStateToProps = state => {
     voiture: state.voiture.voiture
   };
 };
-export default connect(mapStateToProps, mapActionToProps)(VoitureTable);
+export default connect(mapStateToProps, mapActionToProps)(FactureTable);

@@ -20,6 +20,9 @@ import Client from './components/Client';
 import Location from './components/Location';
 import Entreprise from './components/auth/Entreprise';
 import PrintFacture from './components/PrintFacture';
+import BonLivraison from './components/BonLivraison';
+import Facture from './components/Facture';
+import Agence from './components/Agence';
 
 
 class App extends Component {
@@ -38,7 +41,9 @@ class App extends Component {
               <Route path="/client" component={Client} />
               <Route path="/location" component={Location} />
               <Route path="/facture/:id" component={PrintFacture} />
-              
+              <Route path="/facture" component={Facture} />
+              <Route path="/bonlivraison/:id" component={BonLivraison} />
+              <Route path="/agence" component={Agence} />
             </Switch>
           </div>
         </div>

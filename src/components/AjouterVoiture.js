@@ -21,7 +21,7 @@ import SaveIcon from "@material-ui/icons/Save";
 
 import { connect } from "react-redux";
 
-import { ajouterVoiture } from "../store/actions/voitureAction";
+import { ajouterVoiture ,removeVoitureCreated} from "../store/actions/voitureAction";
 
 import LoadingComponent from "../utils/loadingComponent";
 
@@ -35,8 +35,14 @@ class AjouterVoiture extends Component {
     coleur: "",
     matricule: "",
     prix: 0,
-    images: []
+   
+    imagePath : ""
   };
+  constructor (props){
+    super(props);
+    this.UploadImagesInput = React.createRef()
+
+  }
   ajouter = () => {
     const data = { ...this.state };
     delete data.open;
@@ -49,16 +55,20 @@ class AjouterVoiture extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.voitureCreated) {
       //
-      this.setState({
-        nom: "",
-        modele: "",
-        marque: "",
-        annee: "",
-        coleur: "",
-        matricule: "",
-        prix: 0,
-        images: []
-      });
+     this.props.removeVoitureCreated();
+     
+     this.setState({
+      nom: "",
+      modele: "",
+      marque: "",
+      annee: "",
+      coleur: "",
+      matricule: "",
+      prix: 0,
+     
+      imagePath : ""
+     })
+     this.UploadImagesInput.current.removeAllImages();
     }
   }
   handleChange = e => {
@@ -67,11 +77,14 @@ class AjouterVoiture extends Component {
     });
   };
   handleChangeImage = files => {
-    const images = [];
-    files.map(file => {
-      images.push(file.path);
-    });
-    this.setState({ images });
+
+ if(files.length === 0)   this.setState({image : ""}, ()=>{
+  console.log(this.state.image)
+})
+else
+    this.setState({image : files[0].path}, ()=>{
+      console.log(this.state.image)
+    })
   };
   render() {
     return (
@@ -172,9 +185,11 @@ class AjouterVoiture extends Component {
 
             <UploadImage
               placeholder="Images"
-              multiple
+              multiple={false}
               onChange={this.handleChangeImage}
+              ref={this.UploadImagesInput}
             />
+         
             <Button
               color="primary"
               variant="contained"
@@ -192,7 +207,8 @@ class AjouterVoiture extends Component {
 }
 const mapActionToProps = dispatch => {
   return {
-    ajouterVoiture: data => dispatch(ajouterVoiture(data))
+    ajouterVoiture: data => dispatch(ajouterVoiture(data)),
+    removeVoitureCreated : () =>dispatch(removeVoitureCreated())
   };
 };
 const mapStateToProps = state => {

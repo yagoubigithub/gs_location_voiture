@@ -43,20 +43,20 @@ export const modifierVoiture  = (voiture) =>{
   })
   ipcRenderer.send("voiture:modifier", {...voiture});
 
-  ipcRenderer.once('voiture:modifier', function (event,voitures) {
+  ipcRenderer.once('voiture:modifier', function (event,data) {
    
     dispatch({
       type : "STOP_LOADING_VOITURE"
   });
-  if(Array.isArray(voitures)){
+  if(data){
     dispatch({
         type : "MODIFIER_VOITURE",
-        payload : {voitures, voiture}
+        payload : data
     });
   }else{
     dispatch({
       type : "ERROR_VOITURE",
-      payload : voitures
+      payload : data
   });
   }
 });
@@ -239,84 +239,65 @@ export const addToCorbeille = (id) =>{
 }
 
 
-//undo delete
-export const undoDeletePersonne = (id) =>{
-  return (dispatch ,getState)=>{
 
-    //axios if multi-post
+//voiture entree 
+export const voitureEntree = (id) =>{
+  return (dispatch , getState)=>{
+
     dispatch({
-      type : "LOADING_PERSONNE"
+      type : "LOADING_VOITURE"
   })
-    axios.get('/personne/delete.php?status=undo&id=' + id).then(res=>{
-      dispatch({
-        type : "STOP_LOADING_PERSONNE"
-    });
-    if(Array.isArray(res.data)){
-      dispatch({
-          type : "UNDO_DELETE_PERSONNE",
-          payload : res.data
-      });
-    }else{
-      dispatch({
-        type : "ERROR_PERSONNE",
-        payload : res.data
-    });
-    }
-  })
-  .catch(error=>{
+  ipcRenderer.send("voiture:entree", {id});
+
+  ipcRenderer.once('voiture:entree', function (event,data) {
+   
     dispatch({
-      type : "STOP_LOADING_PERSONNE"
+      type : "STOP_LOADING_VOITURE"
   });
-      dispatch({
-          type : "ERROR_PERSONNE",
-          payload : error
-      });
-  })
+  if(Array.isArray(data)){
+    dispatch({
+        type : "ENTREE_VOITURE",
+        payload : data
+    });
+  }else{
+    dispatch({
+      type : "ERROR_VOITURE",
+      payload :data
+  });
+  }
+});
     
 
-    //send to electron if one post
+  }
+}
+
+//voiture entree 
+export const removeVoitureEntree = (id) =>{
+  return (dispatch , getState)=>{
+
+    dispatch({
+      type : "REMOVE_VOITURE_ENTREE"
+  })
+  
+    
+
+  }
+}
+
+//voiture entree 
+export const removeVoitureCreated = () =>{
+  return (dispatch , getState)=>{
+
+    dispatch({
+      type : "REMOVE_VOITURE_CREATED"
+  })
+  
+    
 
   }
 }
 
 
 
-//undo delete
-export const Delete = (id) =>{
-  return (dispatch ,getState)=>{
 
-    //axios if multi-post
-    dispatch({
-      type : "LOADING_PERSONNE"
-  })
-    axios.get('/personne/delete.php?status=delete&id=' + id).then(res=>{
-      dispatch({
-        type : "STOP_LOADING_PERSONNE"
-    });
-    if(Array.isArray(res.data)){
-      dispatch({
-          type : "DELETE_PERSONNE",
-          payload : res.data
-      });
-    }else{
-      dispatch({
-        type : "ERROR_PERSONNE",
-        payload : res.data
-    });
-    }
-  })
-  .catch(error=>{
-    dispatch({
-      type : "STOP_LOADING_PERSONNE"
-  });
-      dispatch({
-          type : "ERROR_PERSONNE",
-          payload : error
-      });
-  })
-    
 
-    //send to electron if one post
-
-  }
-}

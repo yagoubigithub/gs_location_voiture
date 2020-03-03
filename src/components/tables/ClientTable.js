@@ -196,42 +196,7 @@ class ClientTable extends Component {
 
    if( this.props.type !== "choose-one" ){
 columns.unshift(
-  {
-    Header: (
-      <div
-        style={{
-          backgroundColor: "#E4E4E4",
-          border: "1px solid rgba(0,0,0,0.45)"
-        }}
-      >
-        <Checkbox
-          key={"check-all-client-key"}
-          id="check-all-client-id"
-          style={{ padding: 3 }}
-          checked={this.state.selectedAll}
-          onChange={this.handleSelectAllClientChange}
-          color="primary"
-        />
-      </div>
-    ),
-    sortable: false,
-    filterable: false,
-    accessor: "id",
-    width: 50,
-
-    Cell: props => (
-      <div className="cell">
-        <Checkbox
-          value={props.value}
-          key={`key-checkbox-table-client-${props.value}`}
-          id={`id-checkbox-table-client-${props.value}`}
-          onChange={e => this.handeleCheckCheckboxRow(e, props.value)}
-          checked={this.checkRowIsSelected(props.value)}
-          style={{ padding: 3 }}
-        />
-      </div>
-    )
-  },
+ 
 
   {
     Header: "  ",

@@ -5,18 +5,16 @@ import Grid from '@material-ui/core/Grid';
 
 //redux
 import {connect} from 'react-redux';
-import { getAllVoiture } from '../store/actions/voitureAction';
- class SousNavVoiture extends Component {
+import { getAllFacture } from '../store/actions/factureAction';
+ class SousNavFacture extends Component {
     render() {
         return (
             <div>
           <Grid container className="sous-nav-container">
           <Grid item xs={2}>
-                        <NavLink className="sous-nav-link" onClick={this.props.getAllVoiture}  to='/voiture'>Actualisé</NavLink>
+                        <NavLink className="sous-nav-link" onClick={this.props.getAllFacture}  to='/facture'>Actualisé</NavLink>
                     </Grid>
-                    <Grid item xs={2}>
-                        <NavLink className="sous-nav-link" to='/voiture/ajouter'>Ajouter</NavLink>
-                    </Grid>
+               
                    
             
               
@@ -30,7 +28,7 @@ import { getAllVoiture } from '../store/actions/voitureAction';
 
 const mapActionToProps = dispatch =>{
     return {
-        getAllVoiture : ()=>dispatch(getAllVoiture())
+        getAllFacture : ()=>dispatch(getAllFacture())
     }
 }
-export default connect(null,mapActionToProps)(SousNavVoiture);
+export default connect(null,mapActionToProps)(SousNavFacture);

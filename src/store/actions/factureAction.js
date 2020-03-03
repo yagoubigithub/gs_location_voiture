@@ -25,3 +25,29 @@ export const getFacture = (id)=>{
     });
     }
 }
+
+
+
+export const getAllFacture = ()=>{
+  return (dispatch,getState)=>{
+      ipcRenderer.send("facture", {});
+
+      ipcRenderer.once('facture', function (event,data) {
+       
+        dispatch({
+          type : "STOP_LOADING_FACTURE"
+      });
+      if(Array.isArray(data)){
+        dispatch({
+            type : "GET_ALL_FACTURE",
+            payload : data
+        });
+      }else{
+        dispatch({
+          type : "ERROR_FACTURE",
+          payload : data
+      });
+      }
+  });
+  }
+}

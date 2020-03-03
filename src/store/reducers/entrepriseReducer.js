@@ -32,6 +32,12 @@ const entrepriseReducer = (state = initStat, action) =>{
                 error :null,
                 info : action.payload
             }
+            case 'MODIFIER_ENTREPRISE':
+                return {
+                    ...state,
+                    error :null,
+                    info : action.payload
+                }
         default :
         return {
             ...state

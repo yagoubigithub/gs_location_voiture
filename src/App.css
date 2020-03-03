@@ -332,3 +332,39 @@ margin-bottom: 15px;
   justify-content: space-around;
   align-items: flex-start;
 }
+
+/*********************************************************************************************/
+
+/*auth*/
+
+.error-auth{
+  color : red ; 
+  width : 100%;
+}
+.input-auth {
+  padding : 7px 12px;
+  width : 100%;
+  margin : 15px;
+}
+
+.form-auth{
+width : 300px;
+margin : auto;
+text-align: center;
+}
+.button-auth{
+  background-color: var(--sky);
+  color :  var(--white);
+  width : 120px;
+  font-size: 20px;
+  font-weight: bolder;
+  padding : 4px 7px;
+  border : 0;
+  outline: 0;
+  border-radius: 4px;;
+}
+.container-auth{
+  background-color: #f2f2f2;
+  height : 100%;
+  width : 100%;
+}

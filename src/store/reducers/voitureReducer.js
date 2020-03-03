@@ -49,6 +49,17 @@ const VoitureReducer = (state = initStat, action) =>{
                     voitureEdited :  true
 
                 }
+              case   'ENTREE_VOITURE' : 
+                return {
+                    ...state,
+                    voitures : action.payload,
+                    voitureEntree : true
+                }
+                case 'REMOVE_VOITURE_ENTREE' : 
+                return {
+                    ...state,
+                    voitureEntree : false
+                }
                 case 'ERROR_AJOUTER_PERSONNE' :
                     return {
                                  ...state,
@@ -57,6 +68,12 @@ const VoitureReducer = (state = initStat, action) =>{
                     }
                     
         
+                    case 'REMOVE_VOITURE_CREATED' : 
+
+                    return {
+                        ...state,
+                        voitureCreated :  false
+                    }
           case 'STOP_LOADING_VOITURE' : 
           return{
               ...state,

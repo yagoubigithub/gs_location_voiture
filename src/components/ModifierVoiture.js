@@ -35,8 +35,13 @@ class ModifierVoiture extends Component {
     annee: "",
     coleur: "",
     matricule: "",
+    image: "",
     images: []
   };
+  constructor(props) {
+    super(props);
+    this.UploadImagesInput = React.createRef();
+  }
 
   componentWillMount() {
     const id = this.props.match.params.id;
@@ -54,13 +59,28 @@ class ModifierVoiture extends Component {
     }
   };
   componentWillReceiveProps(nextProps) {
+    if(this.UploadImagesInput.current){
+      this.UploadImagesInput.current.removeAllImages();
+    }
     if (nextProps.voitureEdited) {
       // voiture edited alert success
-      this.setState({ voitureEdited: nextProps.voitureEdited });
+      this.setState({ voitureEdited: nextProps.voitureEdited 
+      });
     }
 
+  
     if (nextProps.voiture) {
-      this.setState({ ...nextProps.voiture });
+      if (nextProps.voiture.image !== "") {
+     
+        this.setState({ ...nextProps.voiture }, ()=>{
+         
+          this.UploadImagesInput.current.addImages(
+            "../../../images/" + this.state.image
+          );
+        });
+       
+
+      }
     }
   }
   handleChange = e => {
@@ -69,24 +89,26 @@ class ModifierVoiture extends Component {
     });
   };
   handleChangeImage = files => {
-    const images = [];
-    files.map(file => {
-      images.push(file.path);
-    });
-    this.setState({ images });
+    if (files.length === 0) this.setState({ image: "" });
+    else
+      this.setState({
+        image:
+          files[0].path === undefined
+            ? "./images/" + files[0].name
+            : files[0].path
+      });
   };
   handleCloseSnack = () => {
     this.setState({ voitureEdited: !this.state.voitureEdited });
   };
-  handleCheckBoxChange = () =>{
+  handleCheckBoxChange = () => {
     const disponibilite = this.state.disponibilite;
-    if(disponibilite === "enPane"){
-      this.setState({disponibilite : "disponible"})
-    
-  }else{
-    this.setState({disponibilite : "enPane"})
-  }
-  }
+    if (disponibilite === "enPane") {
+      this.setState({ disponibilite: "disponible" });
+    } else {
+      this.setState({ disponibilite: "enPane" });
+    }
+  };
   render() {
     return (
       <Dialog fullScreen open={this.state.open}>
@@ -95,17 +117,14 @@ class ModifierVoiture extends Component {
             this.props.loading !== undefined ? this.props.loading : false
           }
         />
-       <AppBar className="bg-dark">
-       <Toolbar style={{display : "flax", justifyContent : "space-between"}}>
-           
+        <AppBar className="bg-dark">
+          <Toolbar style={{ display: "flax", justifyContent: "space-between" }}>
             <h4 style={{ textAlign: "center" }}>Modifier Voiture</h4>
             <Link to="/voiture/">
-              <IconButton onClick={this.handleClose} style={{color : "white"}}>
+              <IconButton onClick={this.handleClose} style={{ color: "white" }}>
                 <CloseIcon />
               </IconButton>
             </Link>
-
-            
           </Toolbar>
         </AppBar>
         <div style={{ marginTop: 40, padding: 15 }}></div>
@@ -132,35 +151,31 @@ class ModifierVoiture extends Component {
               fullWidth
               margin="normal"
             />
-<Grid container>
-  <Grid item xs={6}>
+            <Grid container>
+              <Grid item xs={6}>
+                <TextField
+                  placeholder="Modéle"
+                  value={this.state.modele}
+                  name="modele"
+                  variant="outlined"
+                  onChange={this.handleChange}
+                  fullWidth
+                  margin="normal"
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  placeholder="Marque"
+                  value={this.state.marque}
+                  name="marque"
+                  variant="outlined"
+                  onChange={this.handleChange}
+                  fullWidth
+                  margin="normal"
+                />
+              </Grid>
+            </Grid>
 
-  <TextField
-              placeholder="Modéle"
-              value={this.state.modele}
-              name="modele"
-              variant="outlined"
-              onChange={this.handleChange}
-              fullWidth
-              margin="normal"
-            />
-  </Grid>
-  <Grid item xs={6}>
-  <TextField
-              placeholder="Marque"
-              value={this.state.marque}
-              name="marque"
-              variant="outlined"
-              onChange={this.handleChange}
-              fullWidth
-              margin="normal"
-            />
-
-  </Grid>
-</Grid>
-
-         
-          
             <TextField
               placeholder="L'année"
               value={this.state.annee}
@@ -191,14 +206,15 @@ class ModifierVoiture extends Component {
 
             <UploadImage
               placeholder="Images"
-              multiple
+              multiple={false}
               onChange={this.handleChangeImage}
+              ref={this.UploadImagesInput}
             />
             <br />
             <Button
               color="primary"
               variant="contained"
-             fullWidth
+              fullWidth
               onClick={this.modifier}
             >
               <SaveIcon />
@@ -248,8 +264,8 @@ const mapActionToProps = dispatch => {
 const mapStateToProps = state => {
   return {
     loading: state.voiture.loading,
-    voitureEdited: state.voiture.voitureEdited,
-    voiture: state.voiture.voiture
+    voiture: state.voiture.voiture,
+    voitureEdited : state.voiture.voitureEdited
   };
 };
 export default connect(mapStateToProps, mapActionToProps)(ModifierVoiture);

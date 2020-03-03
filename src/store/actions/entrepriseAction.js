@@ -33,6 +33,9 @@ export const ajouterntreprise = (data) =>{
 
 export const getEtreprise = ()=>{
     return (dispatch,getState)=>{
+      dispatch({
+        type : "LOADING_ENTREPRISE"
+    });
         ipcRenderer.send("entreprise", {});
     
         ipcRenderer.once('entreprise', function (event,data) {
@@ -53,4 +56,36 @@ export const getEtreprise = ()=>{
         }
     });
     }
+}
+
+
+export const modifierAgence  = (data) =>{
+  return (dispatch,getState) =>{
+    dispatch({
+      type : "LOADING_ENTREPRISE"
+  })
+  ipcRenderer.send("entreprise:modifier", {...data});
+
+  ipcRenderer.once('entreprise:modifier', function (event,data) {
+   
+    dispatch({
+      type : "STOP_LOADING_ENTREPRISE"
+  });dispatch({
+    type : "STOP_LOADING_ENTREPRISE"
+});
+  if(Array.isArray(data)){
+    dispatch({
+        type : "MODIFIER_ENTREPRISE",
+        payload : data[0]
+    });
+  }else{
+    dispatch({
+      type : "ERROR_ENTREPRISE",
+      payload : data
+  });
+  }
+});
+
+  
+  }
 }
