@@ -50,10 +50,19 @@ import {removeFactureId} from '../store/actions/locationAction';
   print =() =>{
       
     
+    const head=[{ access : "numero", value: "Numero" },{ access : "voiture_nom", value: "Voiture" },{ access : "voiture_matricule", value: "Matricule" },{ access : "date_sortie", value: "Date Sortie" },{ access : "date_entree", value: "Date Entrée" },{ access : "remise", value: "Remise" },{ access : "prix_totale", value: "Prix Totale" }]
+    
     let rows_to_print = [];
     const factures = this.props.facture;
+    let prix_totale_t = 0;
+
+    
+    
     if(factures !== undefined){
-      for (let i = 0; i < factures.length; i = i + 8) {
+      factures.map(f=>{
+        prix_totale_t = prix_totale_t + parseInt(f.prix_totale);
+      })
+      for (let i = 0; i < factures.length; i = i + 3) {
       const r = [];
       r.push(factures[i], factures[i+1] ,factures[i+2], factures[i+3] , factures[i+4] , factures[i+5] , factures[i+6] , factures[i+7]);
 
@@ -78,101 +87,106 @@ import {removeFactureId} from '../store/actions/locationAction';
     } 
     
     }
-    const head=[{ access : "numero", value: "N°" },{ access : "voiture_nom", value: "Voiture" },{ access : "voiture_matricule", value: "Matricule" },{ access : "date_sortie", value: "Date Sortie" },{ access : "date_entree", value: "Date Entrée" },{ access : "remise", value: "Remise" },{ access : "prix_totale", value: "Prix Totale" }]
- 
      const myPages =  rows_to_print.map((row,index)=>{
       
-        return (<PageComponent facture_number={row[0].facture_number } client={{nom : row[0].client_nom,prenom : row[0].client_prenom,telephone :  row[0].client_telephone}} entreprise={this.props.entreprise} head={head} key={`pageCompnent-${index}`} index={index} rows_to_print={row}/>)
+        return (<PageComponent facture_date={row[0].facture_date} prix_totale_t={prix_totale_t} facture_number={row[0].facture_number } client={{nom : row[0].client_nom,prenom : row[0].client_prenom,telephone :  row[0].client_telephone}} entreprise={this.props.entreprise} head={head} key={`pageCompnent-${index}`} index={index} rows_to_print={row}/>)
         
       })
       const w = window.open();
     
       w.document.write( `<style>
 
-      .print-page-container{
-        box-sizing: border-box;
-      display: flex;;
-      flex-direction: column;
-      background: white;
-      min-height: 1170px;
-      max-height: 1170px;
-      height: 1170px;
-      width : 827px;
-      margin-bottom: 15px;
-      
-      }
-      .print-page-head{
-        flex :5;
-       
-      }
-      .print-page-content{
-        flex : 14;
-       
-      }
-      .print-page-footer{
-        flex : 1;
-        
-      }
-      
-      
-      .print-page-content table,.print-page-content table thead,.print-page-content table tbody,.print-page-content table tr{
-        width :100%;
-        max-width:  100%;
-       
-      }
-      .print-page-content table tbody tr  td   {
-      
-       text-overflow: ellipsis;
-       overflow: hidden;
-      
-       
-      }
-      .print-page-content table,   .print-page-content table td  {
-        
-        padding-bottom: 10px;
-      }
-      .print-page-content table th{
-        border:  1px solid black;
-      }
-      
-      
-      .print-page-content table td{
-         text-align: center;
-         
-         border : 1px solid black;
-      }
-      .print-page-content table td:first-child{
-        
-      }
-      .print-page-container .print-page-footer{
-        position: relative;
-        
-      }
-      .print-page-container .print-page-footer span{
-        position: absolute;
-        bottom:   5px;
-        right : 15px;
-      
-      }
-      .entreprise-information{
-        border: 1px solid gray;
-        padding : 5px;
-      }
-      .client-information{
-        border: 1px solid gray;
-        padding : 5px;
-      }
-      .entreprise-information p,h4 {
-        margin: 0;
-      }
-      .client-information p,h4 {
-        margin: 0;
-      }
-      .print-page-head {
-        display: flex;
-        justify-content: space-around;
-        align-items: flex-start;
-      }
+     
+.print-page-container{
+  box-sizing: border-box;
+display: flex;;
+flex-direction: column;
+background: white;
+min-height: 1170px;
+max-height: 1170px;
+height: 1170px;
+width : 827px;
+margin-bottom: 15px;
+
+}
+.print-page-head{
+  flex :5;
+ 
+}
+.print-page-content{
+  flex : 14;
+ 
+}
+.print-page-footer{
+  flex : 1;
+  
+}
+
+
+.print-page-content table,.print-page-content table thead,.print-page-content table tbody,.print-page-content table tr{
+  width :100%;
+  max-width:  100%;
+ 
+}
+.print-page-content table tbody tr  td   {
+
+ text-overflow: ellipsis;
+ overflow: hidden;
+
+ 
+}
+.print-page-content table,   .print-page-content table td  {
+  
+  padding-bottom: 10px;
+}
+.print-page-content table th{
+  border:  1px solid black;
+}
+
+
+.print-page-content table td{
+   text-align: center;
+   
+   border : 1px solid black;
+}
+.print-page-content table td:first-child{
+  
+}
+.print-page-container .print-page-footer{
+  position: relative;
+  
+}
+.print-page-container .print-page-footer span{
+  position: absolute;
+  bottom:   5px;
+  right : 15px;
+
+}
+.entreprise-information{
+  border: 1px solid gray;
+  padding : 5px;
+}
+.client-information{
+  border: 1px solid gray;
+  padding : 5px;
+}
+.entreprise-information p,h4 {
+  margin: 0;
+}
+.client-information p,h4 {
+  margin: 0;
+}
+.print-page-head {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+.prix-totale{
+  display: flex;
+  justify-content: flex-end;
+  padding : 15px;
+}
+
       </style>
       ${ ReactDOMServer.renderToString(myPages)}
 ` );
@@ -189,13 +203,13 @@ import {removeFactureId} from '../store/actions/locationAction';
     
     let rows_to_print = [];
     const factures = this.props.facture;
-    const prix_totale_t = 0;
+    let prix_totale_t = 0;
 
     
     
     if(factures !== undefined){
       factures.map(f=>{
-        prix_totale_t = prix_totale_t+f.prix_totale;
+        prix_totale_t = prix_totale_t + parseInt(f.prix_totale);
       })
       for (let i = 0; i < factures.length; i = i + 3) {
       const r = [];
@@ -253,7 +267,7 @@ import {removeFactureId} from '../store/actions/locationAction';
   rows_to_print.map((row,index)=>{
  
   
-    return (<PageComponent prix_totale_t={prix_totale_t} facture_number={row[0].facture_number } client={{nom : row[0].client_nom,prenom : row[0].client_prenom,telephone :  row[0].client_telephone}} entreprise={this.props.entreprise} head={head} key={`pageCompnent-${index}`} index={index} rows_to_print={row}/>)
+    return (<PageComponent facture_date={row[0].facture_date} prix_totale_t={prix_totale_t} facture_number={row[0].facture_number } client={{nom : row[0].client_nom,prenom : row[0].client_prenom,telephone :  row[0].client_telephone}} entreprise={this.props.entreprise} head={head} key={`pageCompnent-${index}`} index={index} rows_to_print={row}/>)
     
   })
 }

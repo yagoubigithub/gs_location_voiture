@@ -103,6 +103,37 @@ export const getVoiture = (id) =>{
 
 
 
+export const getDirename = () =>{
+  return (dispatch ,getState)=>{
+
+  
+
+    dispatch({
+      type : "LOADING_VOITURE"
+  })
+  ipcRenderer.send("voiture:direname", {});
+
+  
+  ipcRenderer.once('voiture:direname', function (event,data) {
+   
+    dispatch({
+      type : "STOP_LOADING_VOITURE"
+  });
+  
+    dispatch({
+        type : "DIRENAME",
+        payload : data
+    });
+ 
+  
+});
+    
+
+
+  }
+}
+
+
 export const getAllVoiture = () =>{
     return (dispatch ,getState)=>{
 

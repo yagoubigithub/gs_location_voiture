@@ -81,6 +81,7 @@ import { Grid, TextField, Button } from '@material-ui/core';
             <Grid container >
                 <Grid item xs={2}></Grid>
               <Grid item xs={6}>
+              <h1>Agence Information</h1>
                 <TextField
                  placeholder="Nom de l'agence *"
                  error={this.state.e_agence}

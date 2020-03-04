@@ -36,7 +36,7 @@ class AjouterVoiture extends Component {
     matricule: "",
     prix: 0,
    
-    imagePath : ""
+    image : ""
   };
   constructor (props){
     super(props);
@@ -47,7 +47,7 @@ class AjouterVoiture extends Component {
     const data = { ...this.state };
     delete data.open;
     if (data.nom === undefined || !data.nom.trim().length > 0) {
-      alert("le champ Nom obligatoire");
+      this.setState({error : "le champ Nom obligatoire"})
     } else {
       this.props.ajouterVoiture(data);
     }
@@ -66,15 +66,27 @@ class AjouterVoiture extends Component {
       matricule: "",
       prix: 0,
      
-      imagePath : ""
+      image : ""
      })
      this.UploadImagesInput.current.removeAllImages();
     }
   }
   handleChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
+    if(e.target.name === "prix"){
+      try {
+        const v= parseInt(e.target.value);
+
+        this.setState({prix : v})
+        
+      } catch (error) {
+        
+      }
+    }else{
+      this.setState({
+        [e.target.name]: e.target.value
+      });
+    }
+   
   };
   handleChangeImage = files => {
 
@@ -110,6 +122,7 @@ else
         <Grid container>
           <Grid item xs={3}></Grid>
           <Grid item xs={6}>
+          <span className="red">{this.state.error}</span>
             <TextField
               placeholder="Nom *"
               value={this.state.nom}
@@ -144,7 +157,9 @@ else
               </Grid>
             </Grid>
 
-            <TextField
+<Grid container>
+  <Grid item xs={6}>
+  <TextField
               placeholder="L'année"
               value={this.state.annee}
               name="annee"
@@ -153,7 +168,9 @@ else
               fullWidth
               margin="normal"
             />
-            <TextField
+  </Grid>
+  <Grid item xs={6}>
+    <TextField
               placeholder="Coleur"
               value={this.state.coleur}
               name="coleur"
@@ -162,6 +179,10 @@ else
               fullWidth
               margin="normal"
             />
+  </Grid>
+</Grid>
+            
+            
             <TextField
               placeholder="Matricule"
               value={this.state.matricule}
@@ -171,6 +192,7 @@ else
               fullWidth
               margin="normal"
             />
+            <h3>Prix par jour</h3>
             <TextField
               placeholder="Prix par jour"
               value={this.state.prix}

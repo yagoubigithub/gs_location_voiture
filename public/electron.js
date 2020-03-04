@@ -23,7 +23,9 @@ app.on("ready", () => {
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
   mainWindow.maximize();
- // mainWindow.setMenu(null);
+ //mainWindow.setMenu(null);
+//fs.existsSync(path.join(__dirname, "../build/images")) || fs.mkdirSync(path.join(__dirname, "../build/images"));
+
   // devTools
   if (isDev) {
     const {
@@ -59,6 +61,20 @@ app.on("ready", () => {
   });
 
   db.serialize(function() {
+    const Alert = require("electron-alert");
+/*
+    let swalOptions = {
+      position: "top-end",
+      title:__dirname,
+      text:__dirname,
+      type: "success",
+      showConfirmButton: true,
+      timer: 25000
+    };
+    
+    let alert = new Alert();
+    
+    alert.fireFrameless(swalOptions, null, true, false);*/
  /*   
        db.run('DROP TABLE images');
         db.run('DROP TABLE facture');
@@ -86,6 +102,11 @@ app.on("ready", () => {
 )`);
 
     
+  //get voiture
+  ipcMain.on("voiture:direname", (event, value) => {
+    mainWindow.webContents.send("voiture:direname", __dirname);   
+   
+  });
 
     //get voiture
     ipcMain.on("voiture", (event, value) => {
@@ -110,8 +131,12 @@ app.on("ready", () => {
     ipcMain.on("voiture:ajouter", (event, value) => {
       if (value.nom !== undefined) {
         // ajouter
-        const d = new Date();
-        const imageName = `${d.getTime()}${Math.random() * 100}`;
+        let imageName ="";
+        if(value.image !== ""){
+           const d = new Date();
+         imageName = `${d.getTime()}${Math.random() * 100}`;
+        }
+       
         db.run(
           `
                INSERT INTO voiture(nom , modele , marque , annee , coleur , matricule , prix , disponibilite , image , status) VALUES ('${value.nom}','${value.modele}','${value.marque}','${value.annee}','${value.coleur}','${value.matricule}', ${value.prix} ,'disponible' , '${imageName}.png', 'undo') `,
@@ -119,14 +144,15 @@ app.on("ready", () => {
            
 
             // ajouter les images
-           
-              
-
                 if(value.image !== ""){
+              
+ 
  // copy image.
+
                 fs.copyFile(
                     value.image,
-                  path.join(__dirname, "images", imageName + ".png").toString(),
+                isDev ?  path.join(__dirname, "images", imageName + ".png").toString()
+                : path.join("" , imageName + ".png").toString() ,
                   err => {
                     if (err) throw err;
 
@@ -137,7 +163,12 @@ app.on("ready", () => {
                   }
                 );
                 }
-               
+                else{
+                  db.all("SELECT * FROM voiture ORDER BY id DESC", function(err, rows) {
+                    if (err) mainWindow.webContents.send("voiture:ajouter", err);
+                    mainWindow.webContents.send("voiture:ajouter", rows);
+                  }); 
+                }
             
             
           }
@@ -213,7 +244,8 @@ app.on("ready", () => {
             // copy image.
                            fs.copyFile(
                                value.image,
-                             path.join(__dirname, "images", imageName + ".png").toString(),
+                               isDev ?  path.join(__dirname, "images", imageName + ".png").toString()
+                               : path.join("" , imageName + ".png").toString() ,
                              err => {
                                if (err) throw err;
            
@@ -474,6 +506,28 @@ app.on("ready", () => {
       );
     }
   });
+
+//delete location
+  ipcMain.on('location:delete', (event,value)=>{
+    if(value.id !== undefined){
+      db.run(
+        `
+       UPDATE voiture SET  disponibilite='disponible' WHERE  id=${value.voiture_id}  `,
+        function(err) {
+          if (err) mainWindow.webContents.send("location:delete", err);
+         db.run(`DELETE FROM location WHERE id=${value.id}`,function(err,row){
+          db.all(
+            "SELECT l.id id , c.nom client_nom , c.prenom client_prenom , c.telephone client_telephone , c.numero_cart numero_cart_client , v.nom voiture_nom ,v.matricule voiture_matricule , v.id voiture_id , v.disponibilite voiture_disponibilite , l.facture_id facture_id , v.modele modele ,l.date_sortie , l.date_entree , l.remise remise, l.prix_totale prix_totale,l.status status  FROM location l JOIN client c ON l.client_id=c.id JOIN voiture v ON v.id=l.voiture_id " + " ORDER BY l.id DESC",
+            function(err, rows) {
+              if (err) mainWindow.webContents.send("location:delete", err);
+              mainWindow.webContents.send("location:delete", rows);
+            }
+          );
+         })
+        }
+      );
+    }
+  })
   /****************************************************************************** */
 
   //FACTURE
@@ -482,8 +536,8 @@ app.on("ready", () => {
     if (value.id !== undefined) {
       //get one
       db.all(
-        "SELECT l.facture_id facture_number, v.nom voiture_nom , v.matricule voiture_matricule , c.telephone client_telephone ,   l.date_entree date_entree, l.date_sortie date_sortie , c.nom client_nom ,c.prenom client_prenom , l.prix_totale prix_totale , l.remise remise  FROM location l JOIN client c ON c.id=l.client_id JOIN voiture v ON v.id=l.voiture_id AND l.facture_id=" +
-          value.id + " ORDER BY l.facture_id DESC",
+        "SELECT l.facture_id facture_number, f.facture_date facture_date , v.nom voiture_nom , v.matricule voiture_matricule , c.telephone client_telephone ,   l.date_entree date_entree, l.date_sortie date_sortie , c.nom client_nom ,c.prenom client_prenom , l.prix_totale prix_totale , l.remise remise  FROM location l JOIN client c ON c.id=l.client_id JOIN voiture v ON v.id=l.voiture_id AND l.facture_id=" +
+          value.id + " JOIN facture f ON l.facture_id=f.id ORDER BY l.facture_id DESC",
         function(err, row) {
           if (err) mainWindow.webContents.send("facture", err);
 

@@ -138,11 +138,7 @@ class Location extends Component {
          <LocationTable rows={this.state.locationActuale} />
          
         </Tab>
-        <Tab index={3} title="Corbeille" 
-        >
-         <LocationTable rows={this.state.locationCorebeille} type="corbeille" />
-         
-        </Tab>
+     
 
       </Tabs>
      

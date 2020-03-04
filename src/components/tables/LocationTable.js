@@ -226,6 +226,12 @@ columns.unshift(
                 <PrintIconf className="black" fontSize="small"></PrintIconf>
             
             </IconButton>
+            <IconButton size="small" onClick={()=>this.add_To_Corbeille(props.original)}>
+            
+               
+            <DeleteIcon className="red" fontSize="small"></DeleteIcon>
+        
+        </IconButton>
           </div>
         );
       }
@@ -240,7 +246,7 @@ columns.unshift(
 <div style={{padding : 15}}>
 <h3>Imprimer</h3>
 <Link to={`/facture/${this.state.facture_id}`}><Button style={{padding : 15 ,width :100,margin : 5}} color="primary" variant="contained">facture</Button></Link>
-<Link to={`/bonlivraison/${this.state.location_id}`}><Button style={{padding : 15 ,width :100,margin : 5}} color="primary" variant="contained" >Bon</Button></Link>
+<Link to={`/bonlivraison/${this.state.location_id}`}><Button style={{padding : 15 ,width :100,margin : 5}} color="primary" variant="contained" >Bon de livraison</Button></Link>
 </div>
 
 </Dialog>
@@ -292,7 +298,7 @@ columns.unshift(
 const mapActionToProps = dispatch => {
   return {
     searchClient: data => dispatch(searchClient(data)),
-   
+   addToCorbeille : id=>  dispatch(addToCorbeille(id)),
     undoDeleteClient :  id=>dispatch(undoDeleteClient(id))
   };
 };

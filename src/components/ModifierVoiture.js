@@ -22,7 +22,7 @@ import SaveIcon from "@material-ui/icons/Save";
 
 import { connect } from "react-redux";
 
-import { modifierVoiture, getVoiture } from "../store/actions/voitureAction";
+import { modifierVoiture, getVoiture , getDirename } from "../store/actions/voitureAction";
 
 import LoadingComponent from "../utils/loadingComponent";
 
@@ -75,7 +75,7 @@ class ModifierVoiture extends Component {
         this.setState({ ...nextProps.voiture }, ()=>{
          
           this.UploadImagesInput.current.addImages(
-            "../../../images/" + this.state.image
+            `file:/${this.props.direname}/../../../${this.state.image}`
           );
         });
        
@@ -222,35 +222,7 @@ class ModifierVoiture extends Component {
           </Grid>
         </Grid>
 
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          open={this.state.voitureEdited}
-          autoHideDuration={4000}
-          onClose={this.handleCloseSnack}
-          message="Note archived"
-          action={
-            <React.Fragment>
-              <Button
-                color="secondary"
-                size="small"
-                onClick={this.handleCloseSnack}
-              >
-                UNDO
-              </Button>
-              <IconButton
-                size="small"
-                aria-label="close"
-                color="inherit"
-                onClick={this.handleCloseSnack}
-              >
-                <CloseIcon fontSize="small" />
-              </IconButton>
-            </React.Fragment>
-          }
-        />
+    
       </Dialog>
     );
   }
@@ -258,14 +230,16 @@ class ModifierVoiture extends Component {
 const mapActionToProps = dispatch => {
   return {
     modifierVoiture: data => dispatch(modifierVoiture(data)),
-    getVoiture: id => dispatch(getVoiture(id))
+    getVoiture: id => dispatch(getVoiture(id)),
+    getDirename : ()=>dispatch(getDirename()),
   };
 };
 const mapStateToProps = state => {
   return {
     loading: state.voiture.loading,
     voiture: state.voiture.voiture,
-    voitureEdited : state.voiture.voitureEdited
+    voitureEdited : state.voiture.voitureEdited,
+    direname :  state.voiture.direname
   };
 };
 export default connect(mapStateToProps, mapActionToProps)(ModifierVoiture);

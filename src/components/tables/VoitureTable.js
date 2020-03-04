@@ -6,14 +6,15 @@ import ReactTable from 'react-table'
 import 'react-table/react-table.css'
 
 
+
 //Mui
 import IconButton from "@material-ui/core/IconButton";
-import Checkbox from '@material-ui/core/Checkbox';
+
 import { Dialog, Collapse, Grid, DialogContent } from '@material-ui/core';
 
 //redux
 import { connect } from 'react-redux';
-import { searchVoiture, addToCorbeille, getVoiture } from '../../store/actions/voitureAction';
+import { searchVoiture, addToCorbeille, getVoiture,getDirename } from '../../store/actions/voitureAction';
 
 //icons
 
@@ -23,6 +24,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import PermMediaIcon from '@material-ui/icons/PermMedia';
 
 import LoadingComponent from '../../utils/loadingComponent';
+
 
 
 
@@ -41,6 +43,9 @@ class VoitureTable extends Component {
     if (nextProps.voiture) {
       this.setState({ ...nextProps.voiture });
     }
+  }
+  componentWillMount(){
+    this.props.getDirename();
   }
   componentWillUnmount(){
     switch(this.props.type){
@@ -126,6 +131,8 @@ handleSelectOneChange =  (voitureSelected) =>{
   })
 }
   render() {
+    
+    
 
     const columns = [
       {
@@ -216,6 +223,9 @@ handleSelectOneChange =  (voitureSelected) =>{
           }
         )
       }
+
+      const loc = window.location.pathname;
+const dir = loc.substring(0, loc.lastIndexOf('/'));
     return (
       <Fragment>
         <Dialog open={this.state.addToCorbeilleDialog} onClose={this.handleOpenCloseaddToCorbeilleDialog}>
@@ -237,7 +247,7 @@ handleSelectOneChange =  (voitureSelected) =>{
             <Grid container>
             {this.props.voiture !== undefined ?  <img
                       style={{ maxHeight: 200, width: "100%", height: "100%" }}
-                      src={`../../images/${this.props.voiture.image}`}
+                      src={`file:/${this.props.direname}/../../../${this.props.voiture.image}`}
                     /> : null}
             </Grid>
           </div>
@@ -279,6 +289,7 @@ const mapActionToProps = dispatch => {
   return {
     searchVoiture: (data) => dispatch(searchVoiture(data)),
     addToCorbeille: (id) => dispatch(addToCorbeille(id)),
+    getDirename : ()=>dispatch(getDirename()),
     
     getVoiture: id => dispatch(getVoiture(id))
   }
@@ -287,7 +298,8 @@ const mapActionToProps = dispatch => {
 const mapStateToProps = state => {
   return {
     loading: state.voiture.loading,
-    voiture: state.voiture.voiture
+    voiture: state.voiture.voiture,
+    direname :  state.voiture.direname
   };
 };
 export default connect(mapStateToProps, mapActionToProps)(VoitureTable);

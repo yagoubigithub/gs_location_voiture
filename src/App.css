@@ -332,6 +332,11 @@ margin-bottom: 15px;
   justify-content: space-around;
   align-items: flex-start;
 }
+.prix-totale{
+  display: flex;
+  justify-content: flex-end;
+  padding : 15px;
+}
 
 /*********************************************************************************************/
 

@@ -41,7 +41,7 @@ class AjouterClient extends Component {
     const data = {...this.state}
     delete data.open;
     if(data.nom === undefined || !data.nom.trim().length > 0){
-        alert("le champ Nom obligatoire")
+        this.setState({error : "le champ Nom obligatoire"})
     }else{
          this.props.ajouterClient(data);
     }
@@ -50,6 +50,7 @@ class AjouterClient extends Component {
       if(nextProps.clientCreated){
          //
          this.setState({ nom : "",
+         error :  "",
    
          prenom :"",
          numero_cart : "",
@@ -88,6 +89,7 @@ class AjouterClient extends Component {
             <Grid container >
                 <Grid item xs={3}></Grid>
               <Grid item xs={6}>
+              <span className="red">{this.state.error}</span>
                 <TextField placeholder="Nom *" value={this.state.nom}  name="nom" variant="outlined" onChange={this.handleChange} fullWidth margin="normal" />
                 <TextField placeholder="Prénom" value={this.state.prenom} name="prenom" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
                 <TextField placeholder="Numero de la cart d'identité" value={this.state.numero_cart} name="numero_cart" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />

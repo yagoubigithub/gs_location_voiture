@@ -12,7 +12,15 @@ const VoitureReducer = (state = initStat, action) =>{
             error : null,
 
         }
-            case 'READ_ONE_VOITURE' : 
+        case 'DIRENAME' : 
+        return {
+            ...state,
+            direname : action.payload,
+            error : null
+
+        }
+        
+        case 'READ_ONE_VOITURE' : 
                 return {
                     ...state,
                     voiture : action.payload,

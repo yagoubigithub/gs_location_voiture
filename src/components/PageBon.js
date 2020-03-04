@@ -9,7 +9,7 @@ import React, { Component } from "react";
     return (
       <div className="print-page-container">
         <div>
-        <h1 style={{textAlign : "center",border : "1px solid black"}}>Bon livraison N°{this.props.facture_number}</h1>
+        <h1 style={{textAlign : "center",border : "1px solid black"}}>Bon de livraison N°{this.props.facture_number}</h1>
         </div>
         <div className="print-page-head">
 

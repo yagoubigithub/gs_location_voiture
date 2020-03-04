@@ -26,7 +26,7 @@ import React, { Component } from "react";
 <p><b>Nom</b> : {this.props.client.nom}</p>
 <p><b>Prénom</b> : {this.props.client.prenom}</p> 
 <p><b>Télephone</b> : {this.props.client.telephone}</p> 
-<p><b>date de facture</b> : 29/02/20</p>
+<p><b>date de facture</b> : {this.props.facture_date}</p>
     
 
 </div>
@@ -57,6 +57,7 @@ import React, { Component } from "react";
               })}
             </tbody>
           </table>
+          <div className="prix-totale"><span>Prix Totale : {this.props.prix_totale_t}</span></div>
         </div>
        
       </div>

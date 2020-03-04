@@ -43,6 +43,11 @@ class AjouterLocation extends Component {
   state = {
     open: true,
     nom_client: "",
+    nom_voiture : "",
+    numero_cart : "",
+    matricule :  "",
+    modele : "",
+    marque : "",
     number_unite: [],
     unite: [],
     clients: [],
@@ -62,12 +67,12 @@ class AjouterLocation extends Component {
    
 
     if (data.client_selected.nom === undefined) {
-      alert("le champ Client obligatoire");
+      this.setState({error : "le champ Client obligatoire"})
       return;
     }
 
     if (data.voiture_selected[0] === undefined) {
-      alert("le champ Voiture obligatoire");
+      this.setState({error : "le champ Voiture obligatoire"})
       return;
     }
     
@@ -162,8 +167,8 @@ class AjouterLocation extends Component {
   getVoitureData = voiture => {
    const voiture_selected =  [ ...this.state.voiture_selected];
    
-  
-   voiture_selected.push(voiture);
+  if(voiture.nom !==undefined){
+    voiture_selected.push(voiture);
     const date_sortie = [...this.state.date_sortie];
     const date_entree = [...this.state.date_entree];
     const remise = [...this.state.remise];
@@ -194,7 +199,9 @@ voiture_selected.map(v_selected=>{
  this.setState({ voiture_selected,date_sortie, date_entree,remise,number_unite,unite });
 
     
-       
+    
+  }
+      
   };
   handleSearchClientChange = e => {
     this.setState({
@@ -204,7 +211,7 @@ voiture_selected.map(v_selected=>{
 
   handleSearchClient = e => {
     e.preventDefault();
-    const data = { nom: this.state.nom_client };
+    const data = { nom : this.state.nom_client , prenom : this.state.prenom, numero_cart : this.state.numero_cart};
     this.props.searchClient(data);
   };
 
@@ -216,7 +223,7 @@ voiture_selected.map(v_selected=>{
 
   handleSearchVoiture = e => {
     e.preventDefault();
-    const data = { nom: this.state.nom_voiture };
+    const data = { nom : this.state.nom_voiture, marque : this.state.marque, modele :  this.state.modele, matricule :  this.state.matricule };
     this.props.searchVoiture(data);
   };
   handleNumberChange = (e,index) => {
@@ -316,6 +323,10 @@ voiture_selected.map(v_selected=>{
               name="nom_client"
               placeholder="Nom"
             />
+             
+            <input onChange={this.handleSearchClientChange} type="text" name="prenom" placeholder="Prénom" />
+            <input onChange={this.handleSearchClientChange} type="text" name="numero_cart" placeholder="Numero de la cart d'identité" />
+          
 
             <button type="submit">search</button>
           </form>
@@ -346,6 +357,9 @@ voiture_selected.map(v_selected=>{
               name="nom_voiture"
               placeholder="Nom"
             />
+              <input onChange={this.handleSearchVoitureChange} type="text" name="matricule" placeholder="Matricule" />
+            <input onChange={this.handleSearchVoitureChange} type="text" name="modele" placeholder="Modéle" />
+            <input onChange={this.handleSearchVoitureChange} type="text" name="marque" placeholder="Marque" />
 
             <button type="submit">search</button>
           </form>
@@ -385,8 +399,10 @@ voiture_selected.map(v_selected=>{
         <div style={{ marginTop: 50, padding: 15 }}></div>
 
         <Grid container spacing={4} >
+
           <Grid item xs={2}></Grid>
           <Grid item xs={8}>
+          <span className="red">{this.state.error}</span>
           <h3 style={{margin : 0}}>Client :</h3>
             <Grid container>
               <Grid item xs={5}>

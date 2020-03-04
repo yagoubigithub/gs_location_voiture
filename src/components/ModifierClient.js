@@ -168,26 +168,6 @@ handleClose = () =>{
              
             </Grid>
           
-            <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        open={this.props.clientEdited}
-        autoHideDuration={3000}
-        onClose={this.handleCloseSnack}
-        message="Note archived"
-        action={
-          <React.Fragment>
-            <Button color="secondary" size="small" onClick={this.handleCloseSnack}>
-              UNDO
-            </Button>
-            <IconButton size="small" aria-label="close" color="inherit" onClick={this.handleCloseSnack}>
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          </React.Fragment>
-        }
-      />
          
        
       </Dialog>

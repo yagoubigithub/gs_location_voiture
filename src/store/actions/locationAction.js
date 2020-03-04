@@ -185,64 +185,29 @@ export const searchLocation =(data) =>{
   }
 }
 
-export const searchCorbeillePersonne=(data) =>{
-  return (dispatch ,getState) =>{
-    
-    dispatch({
-      type : "LOADING_PERSONNE"
-  })
-   
-
-    axios.post('/personne/search.php',{
-     ...data
-     
-    }).then(res=>{
-      dispatch({
-        type : "STOP_LOADING_PERSONNE"
-    });
-
-      dispatch({
-        type : "SEARCH_IN_PERSONNE",
-        payload : res.data
-    })
-    
-  })
-  .catch(error=>{
-      
-    dispatch({
-      type : "STOP_LOADING_PERSONNE"
-  });
-      dispatch({
-          type : "ERROR_PERSONNE",
-          payload : error
-      })
-  })
-  }
-}
-
 
 //delete (mettre dans le corbeille)
-export const addToCorbeille = (id) =>{
+export const addToCorbeille = (data) =>{
   return (dispatch , getState)=>{
 
     dispatch({
-      type : "LOADING_CLIENT"
+      type : "LOADING_LOCATION"
   })
-  ipcRenderer.send("client:delete", {id, status :  "corbeille"});
+  ipcRenderer.send("location:delete", {id : data.id,voiture_id : data.voiture_id, status :  "corbeille"});
 
-  ipcRenderer.once('client:delete', function (event,data) {
+  ipcRenderer.once('location:delete', function (event,data) {
    
     dispatch({
-      type : "STOP_LOADING_CLIENT"
+      type : "STOP_LOADING_LOCATION"
   });
   if(Array.isArray(data)){
     dispatch({
-        type : "ADD_TO_CORBEILLE_CLIENT",
+        type : "ADD_TO_CORBEILLE_LOCATION",
         payload : data
     });
   }else{
     dispatch({
-      type : "ERROR_CLIENT",
+      type : "ERROR_LOCATION",
       payload :data
   });
   }
