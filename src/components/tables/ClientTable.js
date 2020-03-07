@@ -126,9 +126,10 @@ class ClientTable extends Component {
           </div>
         )
       },
+     
       {
-        Header: "Numero de la cart",
-        accessor: "numero_cart",
+        Header: "Prénom",
+        accessor: "prenom",
         Cell: props => (
           <div className="cell">
             {props.value !== "undefined" ? props.value : ""}
@@ -136,8 +137,17 @@ class ClientTable extends Component {
         )
       },
       {
-        Header: "Prénom",
-        accessor: "prenom",
+        Header: "Date de naissance",
+        accessor: "date_naissance",
+        Cell: props => (
+          <div className="cell">
+            {props.value !== "undefined" ? props.value : ""}
+          </div>
+        )
+      },
+      {
+        Header: "P.CN°",
+        accessor: "numero_cart",
         Cell: props => (
           <div className="cell">
             {props.value !== "undefined" ? props.value : ""}

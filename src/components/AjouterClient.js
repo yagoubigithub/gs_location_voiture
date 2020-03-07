@@ -35,6 +35,7 @@ class AjouterClient extends Component {
     numero_cart : "",
     telephone :"",
     email :"",
+    date_naissance : "",
     adresse :""
   };
   ajouter = () =>{
@@ -51,7 +52,7 @@ class AjouterClient extends Component {
          //
          this.setState({ nom : "",
          error :  "",
-   
+         date_naissance : "",
          prenom :"",
          numero_cart : "",
          telephone :"",
@@ -92,7 +93,10 @@ class AjouterClient extends Component {
               <span className="red">{this.state.error}</span>
                 <TextField placeholder="Nom *" value={this.state.nom}  name="nom" variant="outlined" onChange={this.handleChange} fullWidth margin="normal" />
                 <TextField placeholder="Prénom" value={this.state.prenom} name="prenom" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
-                <TextField placeholder="Numero de la cart d'identité" value={this.state.numero_cart} name="numero_cart" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+               
+                <TextField placeholder="Date de naissance" value={this.state.date_naissance} name="date_naissance" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+
+                <TextField placeholder="P.CN°" value={this.state.numero_cart} name="numero_cart" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
                 <TextField placeholder="Télephone" value={this.state.telephone} name="telephone" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
                 <TextField placeholder="Adresse" value={this.state.adresse} name="adresse" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
                 <TextField placeholder="Email" value={this.state.email} name="email" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />

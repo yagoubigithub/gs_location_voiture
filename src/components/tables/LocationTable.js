@@ -159,7 +159,7 @@ class LocationTable extends Component {
         accessor: "date_sortie",
         Cell: props => (
           <div className="cell">
-            {props.value !== "undefined" ? props.value : ""}
+            {props.value !== "undefined" ? props.value.replace('T', " ") : ""}
           </div>
         )
       },
@@ -169,7 +169,7 @@ class LocationTable extends Component {
         Cell: props => 
         (
             <div className="cell">
-            {props.value !== "undefined" ? props.value : ""}
+            {props.value !== "undefined" ? props.value.replace('T', " ") : ""}
           </div>
         )
       }
@@ -245,7 +245,7 @@ columns.unshift(
 <Dialog open={this.state.printDialog}   onClose={this.handleOpenCloseprintDialog}>
 <div style={{padding : 15}}>
 <h3>Imprimer</h3>
-<Link to={`/facture/${this.state.facture_id}`}><Button style={{padding : 15 ,width :100,margin : 5}} color="primary" variant="contained">facture</Button></Link>
+<Link to={`/facture/${this.state.facture_id}/location`}><Button style={{padding : 15 ,width :100,margin : 5}} color="primary" variant="contained">facture</Button></Link>
 <Link to={`/bonlivraison/${this.state.location_id}`}><Button style={{padding : 15 ,width :100,margin : 5}} color="primary" variant="contained" >Bon de livraison</Button></Link>
 </div>
 

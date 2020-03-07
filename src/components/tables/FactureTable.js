@@ -137,7 +137,7 @@ handleSelectOneChange =  (voitureSelected) =>{
         Header: 'Date Facture',
         accessor: 'facture_date',
         Cell: props =>
-          (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
+          (<div className="cell" >{props.value !== "undefined" ? props.value.replace('T', " ") : ""}</div>)
       }]
 
       if( this.props.type !== "choose-one" ){
@@ -155,7 +155,7 @@ handleSelectOneChange =  (voitureSelected) =>{
             
     
             
-            <Link to={`/facture/${props.value}`}>
+            <Link to={`/facture/${props.value}/facture`}>
               <IconButton size="small" onClick={() => this.add_To_Corbeille(props.value)}>
                <PrintIconf className="black" fontSize="small"></PrintIconf>
               </IconButton></Link> 

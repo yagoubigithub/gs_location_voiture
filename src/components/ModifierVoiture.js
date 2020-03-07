@@ -8,7 +8,6 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Grid from "@material-ui/core/Grid";
-import Snackbar from "@material-ui/core/Snackbar";
 
 import Button from "@material-ui/core/Button";
 import UploadImage from "yagoubi-upload-images";
@@ -22,7 +21,13 @@ import SaveIcon from "@material-ui/icons/Save";
 
 import { connect } from "react-redux";
 
-import { modifierVoiture, getVoiture , getDirename } from "../store/actions/voitureAction";
+import {
+  modifierVoiture,
+  getVoiture,
+  getDirename,
+  removeVoitureEdited,
+  getImages
+} from "../store/actions/voitureAction";
 
 import LoadingComponent from "../utils/loadingComponent";
 
@@ -35,7 +40,8 @@ class ModifierVoiture extends Component {
     annee: "",
     coleur: "",
     matricule: "",
-    image: "",
+    assurance_debut :  new Date().toISOString().split('T')[0],
+        assurance_fin : new Date().toISOString().split('T')[0],
     images: []
   };
   constructor(props) {
@@ -43,10 +49,10 @@ class ModifierVoiture extends Component {
     this.UploadImagesInput = React.createRef();
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const id = this.props.match.params.id;
-
     this.props.getVoiture(id);
+    this.props.getImages(id);
   }
   modifier = () => {
     const data = { ...this.state };
@@ -55,32 +61,34 @@ class ModifierVoiture extends Component {
     if (data.nom === undefined || !data.nom.trim().length > 0) {
       alert("le champ Nom obligatoire");
     } else {
+      console.log(data);
       this.props.modifierVoiture({ ...data, id });
     }
   };
   componentWillReceiveProps(nextProps) {
-    if(this.UploadImagesInput.current){
-      this.UploadImagesInput.current.removeAllImages();
-    }
     if (nextProps.voitureEdited) {
       // voiture edited alert success
-      this.setState({ voitureEdited: nextProps.voitureEdited 
+      this.setState({
+        voitureEdited: nextProps.voitureEdited,
+        voiture: nextProps.voiture
       });
     }
 
-  
     if (nextProps.voiture) {
-      if (nextProps.voiture.image !== "") {
-     
-        this.setState({ ...nextProps.voiture }, ()=>{
-         
-          this.UploadImagesInput.current.addImages(
-            `file:/${this.props.direname}/../../../${this.state.image}`
-          );
-        });
-       
+      this.setState({ ...nextProps.voiture });
+    }
 
-      }
+    if (nextProps.images) {
+      const addedImages = nextProps.images.map((image, index) => {
+        return {
+          path: `file:/${this.props.direname}/../../../${image.image}`,
+          name: image.image,
+          type: "isNotFile"
+        };
+      });
+      this.setState({ images: nextProps.images });
+
+      this.UploadImagesInput.current.addAllImages(addedImages);
     }
   }
   handleChange = e => {
@@ -89,18 +97,15 @@ class ModifierVoiture extends Component {
     });
   };
   handleChangeImage = files => {
-    if (files.length === 0) this.setState({ image: "" });
-    else
-      this.setState({
-        image:
-          files[0].path === undefined
-            ? "./images/" + files[0].name
-            : files[0].path
-      });
+    const images = [];
+
+    console.log(files);
+    files.map(file => {
+      images.push(file.path);
+    });
+    this.setState({ images });
   };
-  handleCloseSnack = () => {
-    this.setState({ voitureEdited: !this.state.voitureEdited });
-  };
+
   handleCheckBoxChange = () => {
     const disponibilite = this.state.disponibilite;
     if (disponibilite === "enPane") {
@@ -121,7 +126,10 @@ class ModifierVoiture extends Component {
           <Toolbar style={{ display: "flax", justifyContent: "space-between" }}>
             <h4 style={{ textAlign: "center" }}>Modifier Voiture</h4>
             <Link to="/voiture/">
-              <IconButton onClick={this.handleClose} style={{ color: "white" }}>
+              <IconButton
+                onClick={this.props.removeVoitureEdited}
+                style={{ color: "white" }}
+              >
                 <CloseIcon />
               </IconButton>
             </Link>
@@ -129,9 +137,9 @@ class ModifierVoiture extends Component {
         </AppBar>
         <div style={{ marginTop: 40, padding: 15 }}></div>
 
-        <Grid container>
-          <Grid item xs={2}></Grid>
-          <Grid item xs={6}>
+        <Grid container spacing={2} style={{padding : 15}}>
+          
+          <Grid item xs={12}>
             <FormControlLabel
               control={
                 <Checkbox
@@ -142,74 +150,130 @@ class ModifierVoiture extends Component {
               }
               label=" En panne"
             />
-            <TextField
-              placeholder="Nom *"
-              value={this.state.nom}
-              name="nom"
-              variant="outlined"
-              onChange={this.handleChange}
-              fullWidth
-              margin="normal"
-            />
-            <Grid container>
-              <Grid item xs={6}>
-                <TextField
-                  placeholder="Modéle"
-                  value={this.state.modele}
-                  name="modele"
-                  variant="outlined"
-                  onChange={this.handleChange}
-                  fullWidth
-                  margin="normal"
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  placeholder="Marque"
-                  value={this.state.marque}
-                  name="marque"
-                  variant="outlined"
-                  onChange={this.handleChange}
-                  fullWidth
-                  margin="normal"
-                />
-              </Grid>
+
+</Grid>
+            <Grid item xs={4}>
+              <TextField
+                placeholder="Nom *"
+                value={this.state.nom}
+                name="nom"
+                variant="outlined"
+                onChange={this.handleChange}
+                fullWidth
+                margin="normal"
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <TextField
+                placeholder="Modéle"
+                value={this.state.modele}
+                name="modele"
+                variant="outlined"
+                onChange={this.handleChange}
+                fullWidth
+                margin="normal"
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <TextField
+                placeholder="Marque"
+                value={this.state.marque}
+                name="marque"
+                variant="outlined"
+                onChange={this.handleChange}
+                fullWidth
+                margin="normal"
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <TextField
+                placeholder="L'année"
+                value={this.state.annee}
+                name="annee"
+                variant="outlined"
+                onChange={this.handleChange}
+                fullWidth
+                margin="normal"
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <TextField
+                placeholder="Coleur"
+                value={this.state.coleur}
+                name="coleur"
+                variant="outlined"
+                onChange={this.handleChange}
+                fullWidth
+                margin="normal"
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <TextField
+                placeholder="Matricule"
+                value={this.state.matricule}
+                name="matricule"
+                variant="outlined"
+                onChange={this.handleChange}
+                fullWidth
+                margin="normal"
+              />
             </Grid>
 
-            <TextField
-              placeholder="L'année"
-              value={this.state.annee}
-              name="annee"
-              variant="outlined"
-              onChange={this.handleChange}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              placeholder="Coleur"
-              value={this.state.coleur}
-              name="coleur"
-              variant="outlined"
-              onChange={this.handleChange}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              placeholder="Matricule"
-              value={this.state.matricule}
-              name="matricule"
-              variant="outlined"
-              onChange={this.handleChange}
-              fullWidth
-              margin="normal"
-            />
+            <Grid item xs={12}>
+              <h2 style={{ margin: 0 }}>Assurance : </h2>
+            </Grid>
+            <Grid item xs={6}>
+              <h3 style={{ margin: 0 }}>À partir de</h3>
 
-            <UploadImage
-              placeholder="Images"
-              multiple={false}
-              onChange={this.handleChangeImage}
-              ref={this.UploadImagesInput}
-            />
+              <TextField
+                placeholder="Date début"
+                value={this.state.assurance_debut}
+                name="assurance_debut"
+                variant="outlined"
+                onChange={this.handleChange}
+                fullWidth
+                margin="none"
+                type="date"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <h3 style={{ margin: 0 }}>À </h3>
+              <TextField
+                placeholder="Date fin"
+                value={this.state.assurance_fin}
+                name="assurance_fin"
+                variant="outlined"
+                onChange={this.handleChange}
+                fullWidth
+                margin="none"
+                type="date"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <h3>Prix par jour</h3>
+
+              <TextField
+                placeholder="Prix par jour"
+                value={this.state.prix}
+                name="prix"
+                variant="outlined"
+                onChange={this.handleChange}
+                fullWidth
+                margin="none"
+                type="number"
+                inputProps={{ min: "0", step: "1" }}
+              />
+            </Grid>
+
+            <Grid item xs={6}>
+              <UploadImage
+                placeholder="Images"
+                multiple
+                onChange={this.handleChangeImage}
+                ref={this.UploadImagesInput}
+              />
+            </Grid>
+
             <br />
             <Button
               color="primary"
@@ -220,9 +284,7 @@ class ModifierVoiture extends Component {
               <SaveIcon />
             </Button>
           </Grid>
-        </Grid>
-
-    
+     
       </Dialog>
     );
   }
@@ -231,15 +293,17 @@ const mapActionToProps = dispatch => {
   return {
     modifierVoiture: data => dispatch(modifierVoiture(data)),
     getVoiture: id => dispatch(getVoiture(id)),
-    getDirename : ()=>dispatch(getDirename()),
+    getImages: id => dispatch(getImages(id)),
+    getDirename: () => dispatch(getDirename()),
+    removeVoitureEdited: () => dispatch(removeVoitureEdited())
   };
 };
 const mapStateToProps = state => {
   return {
     loading: state.voiture.loading,
     voiture: state.voiture.voiture,
-    voitureEdited : state.voiture.voitureEdited,
-    direname :  state.voiture.direname
+    direname: state.voiture.direname,
+    images: state.voiture.images
   };
 };
 export default connect(mapStateToProps, mapActionToProps)(ModifierVoiture);

@@ -39,7 +39,7 @@ class Voiture extends Component {
   }
 
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.getAllVoiture();
   }
 
@@ -77,8 +77,9 @@ class Voiture extends Component {
         }
       })
       
-      this.setState({ voitures,voitureCorebeille,voitureDisponible,voitureEnPane,voitureLocation,loading : nexProps.loading });
+      this.setState({ voitures,voitureCorebeille,voitureDisponible,voitureEnPane,voitureLocation });
     }
+   
    
   }
 
@@ -138,7 +139,7 @@ class Voiture extends Component {
         </Tab>
         <Tab index={4} title="Corbeille" 
         >
-         <VoitureTable rows={this.state.voitureCorebeille} />
+         <VoitureTable rows={this.state.voitureCorebeille}  type={"corbeille"} />
          
         </Tab>
       </Tabs>

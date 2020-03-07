@@ -8,8 +8,9 @@ import React, { Component } from "react";
   render() {
     return (
       <div className="print-page-container">
+      <div className={"logo-facture"}></div>
         <div>
-        <h1 style={{textAlign : "center",border : "1px solid black"}}>Facture N°{this.props.facture_number}</h1>
+        <h1 >Facture N°{this.props.facture_number}</h1>
         </div>
         <div className="print-page-head">
 
@@ -47,6 +48,9 @@ import React, { Component } from "react";
                   return (
                     <tr key={`tbody-tr-${index}`}>
                       {this.props.head.map((title, index) => {
+                        if(title.access === "date_sortie" || title.access === "date_entree"){
+                          return ( <td key={`tbody-td-${index}`}>{row[title.access].replace("T", " ")}</td>)
+                        }else
                         return (
                           <td key={`tbody-td-${index}`}>{row[title.access]}</td>
                         );

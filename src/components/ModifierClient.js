@@ -36,6 +36,7 @@ class AjouterClient extends Component {
     telephone :"",
     email :"",
     adresse :"",
+    date_naissance : "",
     confianceChecked :  false,
     confianceDialog :  false,
     confiance :  "confiance"
@@ -139,11 +140,33 @@ handleClose = () =>{
             <Grid container >
                 <Grid item xs={2}></Grid>
               <Grid item xs={6}>
+              <Grid container>
+                <Grid item xs={6}>
+                <h3 style={{margin : 0}}>Nom *</h3>
+                
                 <TextField placeholder="Nom *"  value={this.state.nom}  name="nom" variant="outlined" onChange={this.handleChange} fullWidth margin="normal" />
+                </Grid>
+                <Grid item xs={6}>
+                <h3 style={{margin : 0}}>Prénom </h3>
                 <TextField placeholder="Prénom"  value={this.state.prenom} name="prenom" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
-                <TextField placeholder="Numero de la cart d'identité" value={this.state.numero_cart} name="numero_cart" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+                </Grid>
+                <Grid item xs={6}>
+<h3 style={{margin : 0}}>P.CN°</h3>
+                <TextField placeholder="P.CN°" value={this.state.numero_cart} name="numero_cart" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+                </Grid>
+                <Grid item xs={6}>
+ <h3 style={{margin : 0}}>Télephone</h3>
                 <TextField placeholder="Télephone"  value={this.state.telephone} name="telephone" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+</Grid>
+              </Grid>
+            
+              <h3 style={{margin : 0}}>Date de naissance</h3>
+                <TextField placeholder="Date de naissance"  value={this.state.date_naissance} name="date_naissance" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+                
+              
+                <h3 style={{margin : 0}}>Adresse</h3>
                 <TextField placeholder="Adresse"  value={this.state.adresse} name="adresse" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+                <h3 style={{margin : 0}}>Email</h3>
                 <TextField placeholder="Email"  value={this.state.email} name="email" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
                 <FormControlLabel
         control={

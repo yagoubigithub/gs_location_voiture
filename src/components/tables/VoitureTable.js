@@ -14,7 +14,7 @@ import { Dialog, Collapse, Grid, DialogContent } from '@material-ui/core';
 
 //redux
 import { connect } from 'react-redux';
-import { searchVoiture, addToCorbeille, getVoiture,getDirename } from '../../store/actions/voitureAction';
+import { searchVoiture, addToCorbeille, getVoiture , undoDeleteVoiture } from '../../store/actions/voitureAction';
 
 //icons
 
@@ -22,6 +22,7 @@ import PrintIconf from '@material-ui/icons/Print';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import PermMediaIcon from '@material-ui/icons/PermMedia';
+import UndoIcon from '@material-ui/icons/Undo';
 
 import LoadingComponent from '../../utils/loadingComponent';
 
@@ -44,9 +45,7 @@ class VoitureTable extends Component {
       this.setState({ ...nextProps.voiture });
     }
   }
-  componentWillMount(){
-    this.props.getDirename();
-  }
+ 
   componentWillUnmount(){
     switch(this.props.type){
       case "choose-one":
@@ -163,6 +162,13 @@ handleSelectOneChange =  (voitureSelected) =>{
       }, {
         Header: 'Matricule',
         accessor: 'matricule',
+        
+        Cell: props =>
+          (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
+      }, {
+        Header: "Date de fin de l'assurance",
+        accessor: 'assurance_fin',
+        width : 200,
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
       }, {
@@ -193,19 +199,32 @@ handleSelectOneChange =  (voitureSelected) =>{
             width: 100,
             sortable: false,
             filterable: false,
-            Cell: props => <div className="cell">
-              <IconButton size="small" onClick={()=>{this.handleCloseOpenGallerieVoiture();this.props.getVoiture(props.value)}}>
-                <PermMediaIcon className="black" fontSize="small"></PermMediaIcon>
-              </IconButton>
-    
-              <IconButton size="small" onClick={() => this.add_To_Corbeille(props.value)}>
-                <DeleteIcon className="red" fontSize="small"></DeleteIcon>
-              </IconButton>
-              <IconButton size="small">
-                <Link to={`/voiture/modifier/${props.value}`}>  <EditIcon className="black" fontSize="small"></EditIcon></Link>
-              </IconButton>
-    
-            </div>
+            Cell: props => 
+            {
+              if (this.props.type === "corbeille") {
+                return  <div className="cell"><IconButton
+                size="small"
+                onClick={() => this.props.undoDeleteVoiture(props.value)}
+              >
+                <UndoIcon className="black" fontSize="small"></UndoIcon>
+              </IconButton></div> ;
+              }else{
+                return( <div className="cell">
+                <IconButton size="small" onClick={()=>{this.handleCloseOpenGallerieVoiture();this.props.getVoiture(props.value)}}>
+                  <PermMediaIcon className="black" fontSize="small"></PermMediaIcon>
+                </IconButton>
+      
+                <IconButton size="small" onClick={() => this.add_To_Corbeille(props.value)}>
+                  <DeleteIcon className="red" fontSize="small"></DeleteIcon>
+                </IconButton>
+                <IconButton size="small">
+                  <Link to={`/voiture/modifier/${props.value}`}>  <EditIcon className="black" fontSize="small"></EditIcon></Link>
+                </IconButton>
+      
+              </div>)
+              }
+            }
+           
           }
         )
       }else{
@@ -289,8 +308,8 @@ const mapActionToProps = dispatch => {
   return {
     searchVoiture: (data) => dispatch(searchVoiture(data)),
     addToCorbeille: (id) => dispatch(addToCorbeille(id)),
-    getDirename : ()=>dispatch(getDirename()),
-    
+   
+    undoDeleteVoiture :  (id) => dispatch(undoDeleteVoiture(id)),
     getVoiture: id => dispatch(getVoiture(id))
   }
 }

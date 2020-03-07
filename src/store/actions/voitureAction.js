@@ -120,19 +120,49 @@ export const getDirename = () =>{
       type : "STOP_LOADING_VOITURE"
   });
   
-    dispatch({
+  if(data){
+     dispatch({
         type : "DIRENAME",
         payload : data
     });
+  }
+   
  
   
 });
-    
-
-
+  
   }
 }
 
+//undo delete
+export const undoDeleteVoiture = (id) =>{
+  return (dispatch ,getState)=>{
+
+    dispatch({
+      type : "LOADING_VOITURE"
+  })
+  ipcRenderer.send("voiture:delete", {id, status :  "undo"});
+
+  ipcRenderer.once('voiture:delete', function (event,data) {
+   
+    dispatch({
+      type : "STOP_LOADING_VOITURE"
+  });
+  if(Array.isArray(data)){
+    dispatch({
+        type : "UNDO_DELETE_VOITURE",
+        payload : data
+    });
+  }else{
+    dispatch({
+      type : "ERROR_CLIENT",
+      payload :data
+  });
+  }
+});
+
+  }
+}
 
 export const getAllVoiture = () =>{
     return (dispatch ,getState)=>{
@@ -329,6 +359,54 @@ export const removeVoitureCreated = () =>{
 }
 
 
+//remove voiture edited 
+export const removeVoitureEdited = () =>{
+  return (dispatch , getState)=>{
+
+    dispatch({
+      type : "REMOVE_VOITURE_EDITED"
+  })
+  
+    
+
+  }
+}
 
 
 
+
+
+export const getImages = (id) =>{
+  return (dispatch ,getState)=>{
+
+    
+    dispatch({
+      type : "LOADING_VOITURE"
+  })
+  ipcRenderer.send("voiture:images", {id});
+
+  
+  ipcRenderer.once('voiture:images', function (event,data) {
+   
+    dispatch({
+      type : "STOP_LOADING_VOITURE"
+  });
+  if(Array.isArray(data)){
+    dispatch({
+        type : "READ_VOITURE_IMAGES",
+        payload : data
+    });
+  }else{
+    dispatch({
+      type : "ERROR_VOITURE",
+      payload :data
+  });
+  }
+});
+    
+    
+
+   
+
+  }
+}

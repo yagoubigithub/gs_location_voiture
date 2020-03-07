@@ -40,7 +40,7 @@ class App extends Component {
               <Route path="/voiture" component={Voiture} />
               <Route path="/client" component={Client} />
               <Route path="/location" component={Location} />
-              <Route path="/facture/:id" component={PrintFacture} />
+              <Route path="/facture/:id/:returnPath" component={PrintFacture} />
               <Route path="/facture" component={Facture} />
               <Route path="/bonlivraison/:id" component={BonLivraison} />
               <Route path="/agence" component={Agence} />

@@ -47,6 +47,12 @@ const VoitureReducer = (state = initStat, action) =>{
                     voitureCreated :  true
 
                 }
+            case 'READ_VOITURE_IMAGES' :
+                return{
+                    ...state,
+                    images : action.payload,
+                    error : null
+                }
 
                 case 'MODIFIER_VOITURE' :
                 return {
@@ -54,7 +60,8 @@ const VoitureReducer = (state = initStat, action) =>{
                     voitures : action.payload.voitures,
                     voiture : action.payload.voiture,
                     error :  null,
-                    voitureEdited :  true
+                    voitureEdited :  true,
+                    images : action.payload.images
 
                 }
               case   'ENTREE_VOITURE' : 
@@ -66,8 +73,15 @@ const VoitureReducer = (state = initStat, action) =>{
                 case 'REMOVE_VOITURE_ENTREE' : 
                 return {
                     ...state,
-                    voitureEntree : false
+                    voitureEntree : undefined
                 }
+                case 'REMOVE_VOITURE_EDITED' :
+                    return {
+                        ...state,
+                        voitureEdited : undefined,
+                        voiture : undefined,
+                        images :undefined
+                    }
                 case 'ERROR_AJOUTER_PERSONNE' :
                     return {
                                  ...state,
@@ -95,24 +109,19 @@ const VoitureReducer = (state = initStat, action) =>{
                 voitures : action.payload,
                 error :  null
               }
-        case "ADD_TO_CORBEILLE_PERSONNE" : 
-        return {
-            ...state,
-            personnes : action.payload,
-            error : null
-        }
-        case "UNDO_DELETE_PERSONNE" :
+      
+        case "UNDO_DELETE_VOITURE" :
             return {
                 ...state,
-                personnes :action.payload,
-                error : null,
+                voitures : action.payload,
+            error : null
 
             }
         
-            case "DELETE_PERSONNE" :
+            case "ADD_TO_CORBEILLE_VOITURE" :
             return {
                 ...state,
-                personnes :action.payload,
+                voitures :action.payload,
                 error : null,
 
             }

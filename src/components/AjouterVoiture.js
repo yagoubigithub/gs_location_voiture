@@ -21,7 +21,10 @@ import SaveIcon from "@material-ui/icons/Save";
 
 import { connect } from "react-redux";
 
-import { ajouterVoiture ,removeVoitureCreated} from "../store/actions/voitureAction";
+import {
+  ajouterVoiture,
+  removeVoitureCreated
+} from "../store/actions/voitureAction";
 
 import LoadingComponent from "../utils/loadingComponent";
 
@@ -34,20 +37,20 @@ class AjouterVoiture extends Component {
     annee: "",
     coleur: "",
     matricule: "",
+    assurance_debut :  new Date().toISOString().split('T')[0],
+    assurance_fin : new Date().toISOString().split('T')[0],
     prix: 0,
-   
-    image : ""
+    images: []
   };
-  constructor (props){
+  constructor(props) {
     super(props);
-    this.UploadImagesInput = React.createRef()
-
+    this.UploadImagesInput = React.createRef();
   }
   ajouter = () => {
     const data = { ...this.state };
     delete data.open;
     if (data.nom === undefined || !data.nom.trim().length > 0) {
-      this.setState({error : "le champ Nom obligatoire"})
+      this.setState({ error: "le champ Nom obligatoire" });
     } else {
       this.props.ajouterVoiture(data);
     }
@@ -55,48 +58,44 @@ class AjouterVoiture extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.voitureCreated) {
       //
-     this.props.removeVoitureCreated();
-     
-     this.setState({
-      nom: "",
-      modele: "",
-      marque: "",
-      annee: "",
-      coleur: "",
-      matricule: "",
-      prix: 0,
-     
-      image : ""
-     })
-     this.UploadImagesInput.current.removeAllImages();
+      this.props.removeVoitureCreated();
+
+      this.setState({
+        nom: "",
+        modele: "",
+        marque: "",
+        annee: "",
+        coleur: "",
+        matricule: "",
+        prix: 0,
+        images: [],
+        assurance_debut :  new Date().toISOString().split('T')[0],
+        assurance_fin : new Date().toISOString().split('T')[0],
+      });
+      this.UploadImagesInput.current.removeAllImages();
     }
   }
   handleChange = e => {
-    if(e.target.name === "prix"){
+    if (e.target.name === "prix") {
       try {
-        const v= parseInt(e.target.value);
+        const v = parseInt(e.target.value);
 
-        this.setState({prix : v})
-        
-      } catch (error) {
-        
-      }
-    }else{
+        this.setState({ prix: v });
+      } catch (error) {}
+    } else {
       this.setState({
         [e.target.name]: e.target.value
       });
     }
-   
   };
   handleChangeImage = files => {
+    const images = [];
 
- if(files.length === 0)   this.setState({image : ""}, ()=>{
-  console.log(this.state.image)
-})
-else
-    this.setState({image : files[0].path}, ()=>{
-      console.log(this.state.image)
-    })
+    files.map(file => {
+      images.push(file.path);
+    });
+    console.log(images);
+    this.setState({ images });
   };
   render() {
     return (
@@ -107,22 +106,24 @@ else
           }
         />
         <AppBar className="bg-dark">
-          <Toolbar style={{display : "flax", justifyContent : "space-between"}}>
-            
+          <Toolbar style={{ display: "flax", justifyContent: "space-between" }}>
             <h2 style={{ textAlign: "center" }}>Ajouter Voiture</h2>
             <Link to="/voiture/">
-              <IconButton onClick={this.handleClose} style={{color : "white"}}>
+              <IconButton onClick={this.handleClose} style={{ color: "white" }}>
                 <CloseIcon />
               </IconButton>
             </Link>
           </Toolbar>
         </AppBar>
-        <div style={{ marginTop: 40, padding: 15 }}></div>
+        <div style={{ marginTop: 49, padding: 15 }}></div>
 
         <Grid container>
           <Grid item xs={3}></Grid>
           <Grid item xs={6}>
-          <span className="red">{this.state.error}</span>
+            <span className="red">{this.state.error}</span>
+           
+            <Grid container spacing={2}>
+            <Grid item xs={6}>
             <TextField
               placeholder="Nom *"
               value={this.state.nom}
@@ -130,9 +131,9 @@ else
               variant="outlined"
               onChange={this.handleChange}
               fullWidth
-              margin="normal"
+              margin="none"
             />
-            <Grid container spacing={2}>
+            </Grid>
               <Grid item xs={6}>
                 <TextField
                   placeholder="Modéle"
@@ -141,7 +142,7 @@ else
                   variant="outlined"
                   onChange={this.handleChange}
                   fullWidth
-                  margin="normal"
+                  margin="none"
                 />
               </Grid>
               <Grid item xs={6}>
@@ -152,47 +153,82 @@ else
                   variant="outlined"
                   onChange={this.handleChange}
                   fullWidth
-                  margin="normal"
+                  margin="none"
                 />
               </Grid>
-            </Grid>
+          
 
-<Grid container>
-  <Grid item xs={6}>
-  <TextField
-              placeholder="L'année"
-              value={this.state.annee}
-              name="annee"
-              variant="outlined"
-              onChange={this.handleChange}
-              fullWidth
-              margin="normal"
-            />
-  </Grid>
-  <Grid item xs={6}>
-    <TextField
-              placeholder="Coleur"
-              value={this.state.coleur}
-              name="coleur"
-              variant="outlined"
-              onChange={this.handleChange}
-              fullWidth
-              margin="normal"
-            />
-  </Grid>
-</Grid>
-            
-            
-            <TextField
+          
+              <Grid item xs={6}>
+                <TextField
+                  placeholder="L'année"
+                  value={this.state.annee}
+                  name="annee"
+                  variant="outlined"
+                  onChange={this.handleChange}
+                  fullWidth
+                  margin="none"
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  placeholder="Coleur"
+                  value={this.state.coleur}
+                  name="coleur"
+                  variant="outlined"
+                  onChange={this.handleChange}
+                  fullWidth
+                  margin="none"
+                />
+              </Grid>
+              <Grid item xs={6}>
+              <TextField
               placeholder="Matricule"
               value={this.state.matricule}
               name="matricule"
               variant="outlined"
               onChange={this.handleChange}
               fullWidth
-              margin="normal"
+              margin="none"
             />
+              </Grid>
+             
+           <Grid item xs={12}>
+           <h2 style={{margin : 0}}>Assurance : </h2>
+           </Grid>
+              <Grid item xs={6}>
+                <h3 style={{margin : 0}}>À partir de</h3>
+                
+            <TextField
+              placeholder="Date début"
+              value={this.state.assurance_debut}
+              name="assurance_debut"
+              variant="outlined"
+              onChange={this.handleChange}
+              fullWidth
+              margin="none"
+              type="date"
+             
+            />
+              </Grid>
+              <Grid item xs={6}>
+                <h3 style={{margin : 0}}>À </h3>
+                <TextField
+              placeholder="Date fin"
+              value={this.state.assurance_fin}
+              name="assurance_fin"
+              variant="outlined"
+              onChange={this.handleChange}
+              fullWidth
+              margin="none"
+             
+              type="date"
+            />
+              </Grid>
+            </Grid>
             <h3>Prix par jour</h3>
+            
+           
             <TextField
               placeholder="Prix par jour"
               value={this.state.prix}
@@ -200,18 +236,18 @@ else
               variant="outlined"
               onChange={this.handleChange}
               fullWidth
-              margin="normal"
+              margin="none"
               type="number"
               inputProps={{ min: "0", step: "1" }}
             />
 
             <UploadImage
               placeholder="Images"
-              multiple={false}
+              multiple
               onChange={this.handleChangeImage}
               ref={this.UploadImagesInput}
             />
-         
+
             <Button
               color="primary"
               variant="contained"
@@ -230,10 +266,11 @@ else
 const mapActionToProps = dispatch => {
   return {
     ajouterVoiture: data => dispatch(ajouterVoiture(data)),
-    removeVoitureCreated : () =>dispatch(removeVoitureCreated())
+    removeVoitureCreated: () => dispatch(removeVoitureCreated())
   };
 };
 const mapStateToProps = state => {
+  console.log("ajouter voiture", state);
   return {
     loading: state.voiture.loading,
     voitureCreated: state.voiture.voitureCreated

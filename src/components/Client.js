@@ -80,7 +80,7 @@ class Client extends Component {
         <form onSubmit={this.handleSearch} className="search-form">
             <input onChange={this.handleSearchChange} type="text" name="nom" placeholder="Nom" />
             <input onChange={this.handleSearchChange} type="text" name="prenom" placeholder="Prénom" />
-            <input onChange={this.handleSearchChange} type="text" name="numero_cart" placeholder="Numero de la cart d'identité" />
+            <input onChange={this.handleSearchChange} type="text" name="numero_cart" placeholder="P.CN°" />
           
 
             <button type="submit" >

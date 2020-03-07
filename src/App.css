@@ -65,8 +65,8 @@ font-size: 13px !important;
 }
 #root .container  .nav{
   width :var(--navbarWidth);
-  background-image: url('./images//background-navbar.jpg');
-  background-size: cover;
+ 
+ 
  
    position: fixed;
     height: 100%;
@@ -292,6 +292,7 @@ margin-bottom: 15px;
 }
 .print-page-content table th{
   border:  1px solid black;
+  box-shadow: 0px 0px 5px 2px black;
 }
 
 
@@ -299,10 +300,10 @@ margin-bottom: 15px;
    text-align: center;
    
    border : 1px solid black;
+   box-shadow: 0px 0px 5px 2px black;
 }
-.print-page-content table td:first-child{
-  
-}
+
+
 .print-page-container .print-page-footer{
   position: relative;
   
@@ -314,18 +315,22 @@ margin-bottom: 15px;
 
 }
 .entreprise-information{
-  border: 1px solid gray;
+  
   padding : 5px;
 }
 .client-information{
-  border: 1px solid gray;
+  
   padding : 5px;
 }
 .entreprise-information p,h4 {
   margin: 0;
+  font-size: 20px;
+  margin-left  : 5px;
 }
 .client-information p,h4 {
   margin: 0;
+  font-size: 20px;
+  margin-left  : 5px;
 }
 .print-page-head {
   display: flex;
@@ -336,6 +341,27 @@ margin-bottom: 15px;
   display: flex;
   justify-content: flex-end;
   padding : 15px;
+  
+}
+.prix-totale span{
+  font-size: 20px;
+  font-weight: bolder;
+  background-color: yellow;
+  padding : 4px;
+}
+.logo-facture{
+  width : 100%;
+  height : 150px;
+  background-image: url('./logo.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  
+}
+.print-page-container h1{
+  text-align: center;
+  font-size: 45px;
+ border-bottom: 1px solid rgba(0,0,0,0.3);
+ padding-bottom: 15px;
 }
 
 /*********************************************************************************************/

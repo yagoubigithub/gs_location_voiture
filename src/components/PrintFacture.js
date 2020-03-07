@@ -64,7 +64,7 @@ import {removeFactureId} from '../store/actions/locationAction';
       })
       for (let i = 0; i < factures.length; i = i + 3) {
       const r = [];
-      r.push(factures[i], factures[i+1] ,factures[i+2], factures[i+3] , factures[i+4] , factures[i+5] , factures[i+6] , factures[i+7]);
+      r.push(factures[i], factures[i+1] ,factures[i+2]);
 
       if(factures[i] !== undefined)
       factures[i].numero =  i+1;
@@ -72,16 +72,7 @@ import {removeFactureId} from '../store/actions/locationAction';
       factures[i + 1].numero = i+2;
       if(factures[i + 2] !== undefined)
       factures[i +2 ].numero = i+3;
-      if(factures[i + 3] !== undefined)
-      factures[i +3 ].numero = i+4;
-      if(factures[i + 4] !== undefined)
-      factures[i +4 ].numero = i+5;
-      if(factures[i + 5] !== undefined)
-      factures[i +5 ].numero = i+6;
-      if(factures[i + 6] !== undefined)
-      factures[i +6 ].numero = i+7;
-      if(factures[i + 7] !== undefined)
-      factures[i + 7 ].numero = i+8;
+   
       rows_to_print.push(r);
       
     } 
@@ -213,7 +204,7 @@ margin-bottom: 15px;
       })
       for (let i = 0; i < factures.length; i = i + 3) {
       const r = [];
-      r.push(factures[i], factures[i+1] ,factures[i+2], factures[i+3] , factures[i+4] , factures[i+5] , factures[i+6] , factures[i+7]);
+      r.push(factures[i], factures[i+1] ,factures[i+2] );
 
       if(factures[i] !== undefined)
       factures[i].numero =  i+1;
@@ -221,16 +212,7 @@ margin-bottom: 15px;
       factures[i + 1].numero = i+2;
       if(factures[i + 2] !== undefined)
       factures[i +2 ].numero = i+3;
-      if(factures[i + 3] !== undefined)
-      factures[i +3 ].numero = i+4;
-      if(factures[i + 4] !== undefined)
-      factures[i +4 ].numero = i+5;
-      if(factures[i + 5] !== undefined)
-      factures[i +5 ].numero = i+6;
-      if(factures[i + 6] !== undefined)
-      factures[i +6 ].numero = i+7;
-      if(factures[i + 7] !== undefined)
-      factures[i + 7 ].numero = i+8;
+   
       rows_to_print.push(r);
       
     } 
@@ -240,7 +222,7 @@ margin-bottom: 15px;
       <Dialog fullScreen open={this.state.open}>
         <AppBar color="secondary">
           <Toolbar>
-            <Link to="/location/">
+            <Link to={`/${this.props.match.params.returnPath}/`}>
               <IconButton onClick={this.handleClose}>
                 <CloseIcon />
               </IconButton>

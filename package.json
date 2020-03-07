@@ -35,7 +35,7 @@
     "redux-thunk": "^2.3.0",
     "sqlite": "^3.0.3",
     "wait-on": "^3.3.0",
-    "yagoubi-upload-images": "^1.5.8"
+    "yagoubi-upload-images": "^1.6.9"
   },
   "scripts": {
     "react-start": "react-scripts start",

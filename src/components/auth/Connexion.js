@@ -8,6 +8,7 @@ import Dialog from '@material-ui/core/Dialog'
 //redux
 import {connect} from "react-redux";
 import {connexion} from '../../store/actions/authAction'
+import {getDirename} from '../../store/actions/voitureAction'
 
 
 import LoadingComponent from "../../utils/loadingComponent";
@@ -16,6 +17,9 @@ import LoadingComponent from "../../utils/loadingComponent";
     state = {
         open : true,
 
+    }
+    componentDidMount(){
+        this.props.getDirename()
     }
     componentWillReceiveProps(nextProps){
         if(nextProps.auth.user !== undefined){
@@ -54,7 +58,8 @@ import LoadingComponent from "../../utils/loadingComponent";
 }
 const mapActionToProps = dispatch =>{
     return {
-        connexion  : (data) => dispatch(connexion(data))
+        connexion  : (data) => dispatch(connexion(data)),
+        getDirename :  () => dispatch(getDirename())
     }
 }
 const mapStateToProps = state =>{
