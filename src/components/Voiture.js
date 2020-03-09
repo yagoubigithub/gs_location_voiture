@@ -19,8 +19,9 @@ import AjouterVoiture from './AjouterVoiture';
 
 //icons
 import SearchIcon from '@material-ui/icons/Search';
+import CloseIcon from '@material-ui/icons/Close';
 import ModifierVoiture from './ModifierVoiture';
-
+import { Snackbar, IconButton } from '@material-ui/core';
 
 
 
@@ -35,7 +36,9 @@ class Voiture extends Component {
     voitureDisponible : [],
      voitureEnPane : [],
      voitureLocation : [],
-    
+     voitureAlarte : [],
+     openSnack :  false,
+    error : "",
   }
 
 
@@ -50,6 +53,7 @@ class Voiture extends Component {
       const voitureDisponible = [];
       const voitureEnPane = [];
       const voitureLocation = [];
+      const voitureAlarte = [];
       const voitureCorebeille = [];
       
 
@@ -75,9 +79,20 @@ class Voiture extends Component {
         {
           voitureCorebeille.push(voiture);
         }
+        const datePlusDays = new Date();
+         datePlusDays.setDate(datePlusDays.getDate() + 15);
+        
+        if(new Date(voiture.assurance_fin).getTime()  < datePlusDays.getTime())
+        {
+         
+          voitureAlarte.push(voiture);
+        }
       })
       
-      this.setState({ voitures,voitureCorebeille,voitureDisponible,voitureEnPane,voitureLocation });
+      if(voitureAlarte.length > 0 ){
+        this.setState({openSnack : true, error : "vérifier assurance"});
+      }
+      this.setState({ voitures,voitureCorebeille,voitureAlarte,voitureDisponible,voitureEnPane,voitureLocation });
     }
    
    
@@ -93,6 +108,9 @@ class Voiture extends Component {
     e.preventDefault();
     const data = { nom : this.state.nom, marque : this.state.marque, modele :  this.state.modele, matricule :  this.state.matricule };
     this.props.searchVoiture(data)
+  }
+  handleCloseSnack = () =>{
+    this.setState({openSnack : !this.state.openSnack})
   }
   render() {
     if(this.props.auth.user ===  undefined){
@@ -132,12 +150,17 @@ class Voiture extends Component {
          <VoitureTable rows={this.state.voitureLocation} />
          
         </Tab>
-        <Tab index={3} title="voitures En Panne" 
+        <Tab index={3} title="Les alertes" 
+        >
+         <VoitureTable rows={this.state.voitureAlarte} />
+         
+        </Tab>
+        <Tab index={4} title="voitures En Panne" 
         >
          <VoitureTable rows={this.state.voitureEnPane} />
          
         </Tab>
-        <Tab index={4} title="Corbeille" 
+        <Tab index={5} title="Corbeille" 
         >
          <VoitureTable rows={this.state.voitureCorebeille}  type={"corbeille"} />
          
@@ -150,8 +173,26 @@ class Voiture extends Component {
       <Route path="/voiture/ajouter" component={AjouterVoiture} />
 
 
-    
-     
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        open={this.state.openSnack}
+        autoHideDuration={6000}
+        onClose={this.handleCloseSnack}
+        message={this.state.error}
+        color="error"
+        action={
+          <React.Fragment>
+           
+            <IconButton size="small" aria-label="close" color="inherit" onClick={this.handleCloseSnack}>
+             <CloseIcon />
+            </IconButton>
+          </React.Fragment>
+        }
+      />
+       
       </div>
     )
   }

@@ -23,6 +23,7 @@ import PrintFacture from './components/PrintFacture';
 import BonLivraison from './components/BonLivraison';
 import Facture from './components/Facture';
 import Agence from './components/Agence';
+import Contrat from './components/Contrat';
 
 
 class App extends Component {
@@ -43,6 +44,7 @@ class App extends Component {
               <Route path="/facture/:id/:returnPath" component={PrintFacture} />
               <Route path="/facture" component={Facture} />
               <Route path="/bonlivraison/:id" component={BonLivraison} />
+              <Route path="/contrat/:id" component={Contrat} />
               <Route path="/agence" component={Agence} />
             </Switch>
           </div>

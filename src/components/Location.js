@@ -14,13 +14,14 @@ import { getEtreprise } from "./../store/actions/entrepriseAction";
 
 //icons
 import SearchIcon from "@material-ui/icons/Search";
-
+import CloseIcon from '@material-ui/icons/Close';
 
 import ModifierClient from "./ModifierClient";
 import SousNavLocation from "./SousNavLocation";
 import LocationTable from "./tables/LocationTable";
 import AjouterLocation from "./AjouterLocation";
 
+import { Snackbar, IconButton } from '@material-ui/core';
 
 class Location extends Component {
   state = {
@@ -31,7 +32,9 @@ class Location extends Component {
     client_nom: "",
     matricule: "",
     numero_cart: "",
-    voiture_nom: ""
+    voiture_nom: "",
+    error:  "",
+    openSnack : false
   };
 
   componentWillMount() {
@@ -69,6 +72,9 @@ class Location extends Component {
           locationActuale.push(location);
         }
       });
+      if(locationAlarte.length > 0 ){
+        this.setState({openSnack : true, error : "vérifier Les Alertes de location"});
+      }
 
       this.setState({
         locations,
@@ -98,6 +104,9 @@ class Location extends Component {
     };
     this.props.searchLocation(data);
   };
+  handleCloseSnack = () =>{
+    this.setState({openSnack : !this.state.openSnack})
+  }
   render() {
     if (this.props.auth.user === undefined) {
       return <Redirect to="/" />;
@@ -150,13 +159,33 @@ class Location extends Component {
             <LocationTable rows={this.state.locations} />
           </Tab>
 
-          <Tab index={1} title="Location Alarté">
+          <Tab index={1} title="Les Alertes">
             <LocationTable rows={this.state.locationAlarte} />
           </Tab>
           <Tab index={2} title="les locations actuale">
             <LocationTable rows={this.state.locationActuale} />
           </Tab>
         </Tabs>
+        
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        open={this.state.openSnack}
+        autoHideDuration={6000}
+        onClose={this.handleCloseSnack}
+        message={this.state.error}
+        color="error"
+        action={
+          <React.Fragment>
+           
+            <IconButton size="small" aria-label="close" color="inherit" onClick={this.handleCloseSnack}>
+             <CloseIcon />
+            </IconButton>
+          </React.Fragment>
+        }
+      />
       </div>
     );
   }

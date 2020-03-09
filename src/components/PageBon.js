@@ -8,6 +8,7 @@ import React, { Component } from "react";
   render() {
     return (
       <div className="print-page-container">
+      <div className={"logo-facture"}></div>
         <div>
         <h1 style={{textAlign : "center",border : "1px solid black"}}>Bon de livraison N°{this.props.facture_number}</h1>
         </div>
@@ -15,6 +16,7 @@ import React, { Component } from "react";
 
           <div className="entreprise-information">
             <p><b>Agence</b> : {this.props.entreprise.nom}</p>
+            <p><b>N.RC : </b><span dir="rtl">{"91 ا 0086165 - 00/31"}</span></p>
             <p><b>Email</b> : {this.props.entreprise.email}</p>
             <p><b>Télephone</b> : {this.props.entreprise.telephone}</p>
             <p><b>Adresse</b> : {this.props.entreprise.adresse}</p>
@@ -26,7 +28,7 @@ import React, { Component } from "react";
 <p><b>Nom</b> : {this.props.client.nom}</p>
 <p><b>Prénom</b> : {this.props.client.prenom}</p> 
 <p><b>Télephone</b> : {this.props.client.telephone}</p> 
-<p><b>date de facture</b> : 29/02/20</p>
+
     
 
 </div>

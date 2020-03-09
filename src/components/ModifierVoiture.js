@@ -41,7 +41,7 @@ class ModifierVoiture extends Component {
     coleur: "",
     matricule: "",
     assurance_debut :  new Date().toISOString().split('T')[0],
-        assurance_fin : new Date().toISOString().split('T')[0],
+    assurance_fin : new Date().toISOString().split('T')[0],
     images: []
   };
   constructor(props) {
@@ -58,10 +58,11 @@ class ModifierVoiture extends Component {
     const data = { ...this.state };
     const id = this.props.match.params.id;
     delete data.open;
-    if (data.nom === undefined || !data.nom.trim().length > 0) {
+    console.log("modifier", data)
+    if (data.nom === undefined || !data.nom.trim().length > 0 ) {
       alert("le champ Nom obligatoire");
     } else {
-      console.log(data);
+      
       this.props.modifierVoiture({ ...data, id });
     }
   };
@@ -79,16 +80,10 @@ class ModifierVoiture extends Component {
     }
 
     if (nextProps.images) {
-      const addedImages = nextProps.images.map((image, index) => {
-        return {
-          path: `file:/${this.props.direname}/../../../${image.image}`,
-          name: image.image,
-          type: "isNotFile"
-        };
-      });
-      this.setState({ images: nextProps.images });
+      
+      this.setState({ images: nextProps.images.map(image=>image.image) });
 
-      this.UploadImagesInput.current.addAllImages(addedImages);
+     
     }
   }
   handleChange = e => {
@@ -101,7 +96,10 @@ class ModifierVoiture extends Component {
 
     console.log(files);
     files.map(file => {
-      images.push(file.path);
+      images.push({
+        imagePath : file.path,
+        imageName :  file.name
+      });
     });
     this.setState({ images });
   };
@@ -114,6 +112,30 @@ class ModifierVoiture extends Component {
       this.setState({ disponibilite: "enPane" });
     }
   };
+  ajouterImage = () =>{
+    const file = this.fileInput.files[0];
+  
+    if(file){
+       this.toBase64(file).then((image64)=>{
+        const images = [...this.state.images]
+        images.push(image64)
+        this.setState({images})
+        this.fileInput.value = ""
+      })
+    }
+   
+  }
+  toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+});
+removeImage = index =>{
+  const images = [...this.state.images];
+  images.splice(index , 1);
+  this.setState({images})
+}
   render() {
     return (
       <Dialog fullScreen open={this.state.open}>
@@ -266,12 +288,17 @@ class ModifierVoiture extends Component {
             </Grid>
 
             <Grid item xs={6}>
-              <UploadImage
-                placeholder="Images"
-                multiple
-                onChange={this.handleChangeImage}
-                ref={this.UploadImagesInput}
-              />
+            <input type={"file"}  accept="image/*" ref={input => (this.fileInput = input)} multiple={false} />
+        <button onClick={this.ajouterImage} >Ajouter image</button>
+        <div className="image-container">
+          {this.state.images.map((image,index)=>{
+            return (<div className="image">
+            <IconButton onClick={()=>this.removeImage(index)} >
+              <CloseIcon></CloseIcon>
+            </IconButton>
+            <img style={{height : 100, width : 100}}  key={`image-${index}`} src={image} /></div>)
+          })}
+        </div>
             </Grid>
 
             <br />

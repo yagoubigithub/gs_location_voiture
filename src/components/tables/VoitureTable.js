@@ -14,7 +14,7 @@ import { Dialog, Collapse, Grid, DialogContent } from '@material-ui/core';
 
 //redux
 import { connect } from 'react-redux';
-import { searchVoiture, addToCorbeille, getVoiture , undoDeleteVoiture } from '../../store/actions/voitureAction';
+import { searchVoiture, addToCorbeille, getVoiture , getImages , undoDeleteVoiture } from '../../store/actions/voitureAction';
 
 //icons
 
@@ -43,6 +43,9 @@ class VoitureTable extends Component {
   componentWillReceiveProps(nextProps){
     if (nextProps.voiture) {
       this.setState({ ...nextProps.voiture });
+    }
+    if(nextProps.images){
+      this.setState({images : nextProps.images})
     }
   }
  
@@ -210,7 +213,7 @@ handleSelectOneChange =  (voitureSelected) =>{
               </IconButton></div> ;
               }else{
                 return( <div className="cell">
-                <IconButton size="small" onClick={()=>{this.handleCloseOpenGallerieVoiture();this.props.getVoiture(props.value)}}>
+                <IconButton size="small" onClick={()=>{this.handleCloseOpenGallerieVoiture();this.props.getImages(props.value)}}>
                   <PermMediaIcon className="black" fontSize="small"></PermMediaIcon>
                 </IconButton>
       
@@ -245,6 +248,18 @@ handleSelectOneChange =  (voitureSelected) =>{
 
       const loc = window.location.pathname;
 const dir = loc.substring(0, loc.lastIndexOf('/'));
+
+let images = null;
+if(this.state.images !== undefined){
+ images =   this.state.images.map((image,index)=>{
+   
+
+  return (<img
+    style={{ maxHeight: 200, width: "100%", height: "100%" }}
+    key={`image-${index}`} src={image.image}
+  />)
+  })
+}
     return (
       <Fragment>
         <Dialog open={this.state.addToCorbeilleDialog} onClose={this.handleOpenCloseaddToCorbeilleDialog}>
@@ -264,10 +279,8 @@ const dir = loc.substring(0, loc.lastIndexOf('/'));
           />
           <div>
             <Grid container>
-            {this.props.voiture !== undefined ?  <img
-                      style={{ maxHeight: 200, width: "100%", height: "100%" }}
-                      src={`file:/${this.props.direname}/../../../${this.props.voiture.image}`}
-                    /> : null}
+            
+            {images}
             </Grid>
           </div>
         </DialogContent>
@@ -308,9 +321,9 @@ const mapActionToProps = dispatch => {
   return {
     searchVoiture: (data) => dispatch(searchVoiture(data)),
     addToCorbeille: (id) => dispatch(addToCorbeille(id)),
-   
+    getImages: id => dispatch(getImages(id)),
     undoDeleteVoiture :  (id) => dispatch(undoDeleteVoiture(id)),
-    getVoiture: id => dispatch(getVoiture(id))
+    getVoiture: id => dispatch(getVoiture , getImages(id))
   }
 }
 
@@ -318,7 +331,8 @@ const mapStateToProps = state => {
   return {
     loading: state.voiture.loading,
     voiture: state.voiture.voiture,
-    direname :  state.voiture.direname
+    direname :  state.voiture.direname,
+    images :  state.voiture.images
   };
 };
 export default connect(mapStateToProps, mapActionToProps)(VoitureTable);

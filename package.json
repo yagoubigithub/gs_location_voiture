@@ -1,5 +1,7 @@
 {
   "name": "gs_location_voiture",
+  "author": "yagoubi abdelkader",
+  "description": " location du voitrure confiance ",
   "version": "0.1.2",
   "private": true,
   "build": {
@@ -9,7 +11,9 @@
     },
     "win": {
       "icon": "public/logo512.png"
-    }
+    },
+    "productName" : "Location de Voiture Confiance",
+    "copyright" : "yagoubi abdelkader"
   },
   "main": "public/electron.js",
   "homepage": "./",

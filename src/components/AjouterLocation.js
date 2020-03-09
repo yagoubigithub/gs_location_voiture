@@ -57,6 +57,7 @@ class AjouterLocation extends Component {
     clientDialog: false,
     voitureDialog: false,
     remise: [],
+    km :[],
     location_selected: [],
     more_voiture : [],
     date_sortie : [],
@@ -93,6 +94,7 @@ class AjouterLocation extends Component {
         date_entree : data.date_entree[index],
         date_sortie : data.date_sortie[index],
         remise : data.remise[index],
+        km : data.km[index],
         prix_totale : prix_totale.toFixed(2)
       })
       
@@ -145,7 +147,7 @@ class AjouterLocation extends Component {
       this.setState({ locationCreated: nextProps.locationCreated });
       if(nextProps.facture_id){
         const { history } = this.props;
-            if (history) history.push('/facture/'+nextProps.facture_id);
+            if (history) history.push('/location/');
             
       }
     }
@@ -172,9 +174,11 @@ class AjouterLocation extends Component {
     const date_sortie = [...this.state.date_sortie];
     const date_entree = [...this.state.date_entree];
     const remise = [...this.state.remise];
+    const km = [...this.state.km];
     const unite = [...this.state.unite];
     const number_unite = [...this.state.number_unite];
     remise.push(0);
+    km.push(0);
     unite.push("j");
     number_unite.push(1);
     const d_sortie = getCurrentDateTime(new Date().getTime());
@@ -196,7 +200,7 @@ voiture_selected.map(v_selected=>{
   this.setState({voitures})
 })
    
- this.setState({ voiture_selected,date_sortie, date_entree,remise,number_unite,unite });
+ this.setState({ voiture_selected,date_sortie, date_entree,remise,number_unite,unite,km });
 
     
     
@@ -564,6 +568,20 @@ return (<Grid key={`grid_of_voiture_select${index }`} container spacing={4}
          type={"number"}
          value={this.state.remise[index  ]}
          name="remise"
+         inputProps={{ min: "0", step: "1" }}
+         fullWidth
+       />
+     </Grid>
+     <Grid item xs={7}>
+     <h3 style={{margin : 0}}>Départ KM :</h3>
+       <TextField
+         margin="normal"
+         style={{ flex: 1 }}
+         variant="outlined"
+         onChange={(e)=>this.handleChangeArray(e,index )}
+         type={"number"}
+         value={this.state.km[index  ]}
+         name="km"
          inputProps={{ min: "0", step: "1" }}
          fullWidth
        />

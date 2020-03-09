@@ -10,6 +10,12 @@ const authReducer = (state = initStat, action) =>{
                 ...state,
                 loading : true
             }
+        case 'MODIFIER_AUTH':
+            return {
+                ...state,
+                error :null,
+                user : action.payload
+            }
         case 'STOP_LOADING_AUTH' :
             return {
                 ...state,

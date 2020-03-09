@@ -10,7 +10,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Grid from "@material-ui/core/Grid";
 
 import Button from "@material-ui/core/Button";
-import UploadImage from "yagoubi-upload-images";
+
 
 //icons
 import CloseIcon from "@material-ui/icons/Close";
@@ -44,17 +44,40 @@ class AjouterVoiture extends Component {
   };
   constructor(props) {
     super(props);
-    this.UploadImagesInput = React.createRef();
+    
   }
   ajouter = () => {
     const data = { ...this.state };
     delete data.open;
+    console.log(data)
     if (data.nom === undefined || !data.nom.trim().length > 0) {
       this.setState({ error: "le champ Nom obligatoire" });
     } else {
+      
       this.props.ajouterVoiture(data);
     }
   };
+  
+  ajouterImage = () =>{
+    const file = this.fileInput.files[0];
+  
+    if(file){
+       this.toBase64(file).then((image64)=>{
+        const images = [...this.state.images]
+        images.push(image64)
+        this.setState({images})
+        this.fileInput.value = ""
+      })
+    }
+   
+  }
+  toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+});
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.voitureCreated) {
       //
@@ -72,14 +95,13 @@ class AjouterVoiture extends Component {
         assurance_debut :  new Date().toISOString().split('T')[0],
         assurance_fin : new Date().toISOString().split('T')[0],
       });
-      this.UploadImagesInput.current.removeAllImages();
+    
     }
   }
   handleChange = e => {
     if (e.target.name === "prix") {
       try {
         const v = parseInt(e.target.value);
-
         this.setState({ prix: v });
       } catch (error) {}
     } else {
@@ -88,15 +110,11 @@ class AjouterVoiture extends Component {
       });
     }
   };
-  handleChangeImage = files => {
-    const images = [];
-
-    files.map(file => {
-      images.push(file.path);
-    });
-    console.log(images);
-    this.setState({ images });
-  };
+  removeImage = index =>{
+    const images = [...this.state.images];
+    images.splice(index , 1);
+    this.setState({images})
+  }
   render() {
     return (
       <Dialog fullScreen open={this.state.open}>
@@ -241,12 +259,17 @@ class AjouterVoiture extends Component {
               inputProps={{ min: "0", step: "1" }}
             />
 
-            <UploadImage
-              placeholder="Images"
-              multiple
-              onChange={this.handleChangeImage}
-              ref={this.UploadImagesInput}
-            />
+        <input type={"file"}  accept="image/*" ref={input => (this.fileInput = input)} multiple={false} />
+        <button onClick={this.ajouterImage} >Ajouter image</button>
+        <div className="image-container">
+          {this.state.images.map((image,index)=>{
+            return (<div className="image">
+            <IconButton onClick={()=>this.removeImage(index)} >
+              <CloseIcon></CloseIcon>
+            </IconButton>
+            <img style={{height : 100, width : 100}}  key={`image-${index}`} src={image} /></div>)
+          })}
+        </div>
 
             <Button
               color="primary"

@@ -16,6 +16,7 @@ import React, { Component } from "react";
 
           <div className="entreprise-information">
             <p><b>Agence</b> : {this.props.entreprise.nom}</p>
+            <p><b>N.RC : </b><span dir="rtl">{"91 ا 0086165 - 00/31"}</span></p>
             <p><b>Email</b> : {this.props.entreprise.email}</p>
             <p><b>Télephone</b> : {this.props.entreprise.telephone}</p>
             <p><b>Adresse</b> : {this.props.entreprise.adresse}</p>
