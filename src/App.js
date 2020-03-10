@@ -24,6 +24,7 @@ import BonLivraison from './components/BonLivraison';
 import Facture from './components/Facture';
 import Agence from './components/Agence';
 import Contrat from './components/Contrat';
+import Statistique from './components/Statistique';
 
 
 class App extends Component {
@@ -46,6 +47,7 @@ class App extends Component {
               <Route path="/bonlivraison/:id" component={BonLivraison} />
               <Route path="/contrat/:id" component={Contrat} />
               <Route path="/agence" component={Agence} />
+              <Route path="/statistique" component={Statistique} />
             </Switch>
           </div>
         </div>

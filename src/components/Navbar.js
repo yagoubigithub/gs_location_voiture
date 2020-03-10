@@ -34,6 +34,9 @@ class Navbar extends Component {
       <NavLink activeClassName="nav-active" to="/agence" className="nav-link">
         Agence{" "}
       </NavLink>
+      <NavLink activeClassName="nav-active" to="/statistique" className="nav-link">
+        Statistique{" "}
+      </NavLink>
         </div>
       </nav>
     );

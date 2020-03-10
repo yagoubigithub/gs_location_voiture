@@ -78,7 +78,9 @@ class AjouterLocation extends Component {
     }
     
     const v = [];
-    data.voiture_selected.map((voiture,index)=>{
+   
+      
+         data.voiture_selected.map((voiture,index)=>{
         // calcule prix totale
     const timeBetweenSOrtieENtree =
     new Date(data.date_entree[index]).getTime() -
@@ -102,6 +104,8 @@ class AjouterLocation extends Component {
 
     })
 
+    
+ 
     const location = {
       voiture: v,
       client: data.client_selected,

@@ -11,6 +11,7 @@ let db;
 
 app.on("ready", () => {
   mainWindow = new BrowserWindow({
+    show :false,
     webPreferences: {
       nodeIntegration: true,
       nativeWindowOpen: true
@@ -24,6 +25,7 @@ app.on("ready", () => {
   );
   mainWindow.maximize();
  // mainWindow.setMenu(null);
+  mainWindow.show();
   //fs.existsSync(path.join(__dirname, "../build/images")) || fs.mkdirSync(path.join(__dirname, "../build/images"));
 
   // devTools
@@ -253,7 +255,7 @@ app.on("ready", () => {
       deleteImages(value.id).then(()=>{
         db.run(
           `
-         UPDATE voiture SET nom='${value.nom}' , modele='${value.modele}' , marque='${value.marque}' , annee='${value.annee}' , coleur='${value.coleur}' , assurance_debut='${value.assurance_debut}' , assurance_fin='${value.assurance_fin}' , matricule='${value.matricule}' , disponibilite='${value.disponibilite}' , image='' WHERE  id=${value.id}  `,
+         UPDATE voiture SET nom='${value.nom}' , modele='${value.modele}' , marque='${value.marque}' , annee='${value.annee}' , coleur='${value.coleur}' , assurance_debut='${value.assurance_debut}' , assurance_fin='${value.assurance_fin}' , matricule='${value.matricule}', prix=${value.prix} , disponibilite='${value.disponibilite}' , image='' WHERE  id=${value.id}  `,
           function(err) {
             if (err) mainWindow.webContents.send("voiture:modifier", err);
             ajouterImages(value.id, value.images).then(()=>{
@@ -322,6 +324,20 @@ app.on("ready", () => {
                       */
     }
   });
+
+  //get voiture statistique
+
+    //get voiture
+    ipcMain.on("voiture:statistique", (event, value) => {
+  
+        //  get all voiture
+
+        db.all("SELECT v.nom nom, SUM(l.prix_totale) value FROM voiture v JOIN location l ON l.voiture_id=v.id GROUP BY 1 ORDER BY 1 DESC", function(err, rows) {
+          if (err) mainWindow.webContents.send("voiture:statistique", err);
+          mainWindow.webContents.send("voiture:statistique", rows);
+        });
+      
+    });
 
   /************************************************************************************************ */
 

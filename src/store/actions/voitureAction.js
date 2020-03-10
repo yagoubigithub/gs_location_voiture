@@ -410,3 +410,35 @@ export const getImages = (id) =>{
 
   }
 }
+
+export const getAllVoitureStatistique =() =>{
+  return (dispatch ,getState)=>{
+   
+    dispatch({
+      type : "LOADING_VOITURE"
+  })
+  ipcRenderer.send("voiture:statistique", {});
+
+  
+  ipcRenderer.once('voiture:statistique', function (event,data) {
+   
+    dispatch({
+      type : "STOP_LOADING_VOITURE"
+  });
+  if(Array.isArray(data)){
+    dispatch({
+        type : "STATISTIQUE_OF_ALL_VOITURE",
+        payload : data
+    });
+  }else{
+    dispatch({
+      type : "ERROR_VOITURE",
+      payload :data
+  });
+  }
+});
+    
+    
+
+}
+}

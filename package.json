@@ -12,8 +12,8 @@
     "win": {
       "icon": "public/logo512.png"
     },
-    "productName" : "Location de Voiture Confiance",
-    "copyright" : "yagoubi abdelkader"
+    "productName": "Location de Voiture Confiance",
+    "copyright": "yagoubi abdelkader"
   },
   "main": "public/electron.js",
   "homepage": "./",
@@ -27,14 +27,18 @@
     "electron-is-dev": "^1.1.0",
     "mkdirp": "^1.0.3",
     "python-shell": "^1.0.8",
+    "randomcolor": "^0.5.4",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-redux": "^7.1.1",
     "react-router-dom": "^5.1.0",
     "react-scripts": "3.2.0",
     "react-select": "^3.0.8",
+    "react-svg-donuts": "^1.0.0",
     "react-table": "^6.10.3",
     "react-tabs-css": "^1.0.2",
+    "react-vis": "^1.11.7",
+    "recharts": "^2.0.0-beta.2",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
     "sqlite": "^3.0.3",

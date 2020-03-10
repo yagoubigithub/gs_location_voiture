@@ -75,6 +75,11 @@ const VoitureReducer = (state = initStat, action) =>{
                     ...state,
                     voitureEntree : undefined
                 }
+                case 'STATISTIQUE_OF_ALL_VOITURE':
+                    return {
+                        ...state,
+                        allStatistique :  action.payload
+                    }
                 case 'REMOVE_VOITURE_EDITED' :
                     return {
                         ...state,
