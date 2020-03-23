@@ -140,31 +140,63 @@ handleSelectOneChange =  (voitureSelected) =>{
       {
         Header: 'Nom',
         accessor: 'nom',
+        filterMethod: (filter, row) =>
+        {
+          const regx =  `.*${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
+        
+        
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
       }, {
         Header: 'Modéle',
         accessor: 'modele',
+        filterMethod: (filter, row) =>
+        {
+          const regx =  `.*${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
       }, {
         Header: 'Marque',
         accessor: 'marque',
+        filterMethod: (filter, row) =>
+        {
+          const regx =  `.*${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
       }, {
         Header: "L'année",
         accessor: 'annee',
+        filterMethod: (filter, row) =>
+        {
+          const regx =  `.*${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
       }, {
         Header: "Coleur",
         accessor: 'coleur',
+        filterMethod: (filter, row) =>
+        {
+          const regx =  `.*${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
       }, {
         Header: 'Matricule',
         accessor: 'matricule',
+        filterMethod: (filter, row) =>
+        {
+          const regx =  `.*${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
         
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
@@ -172,6 +204,13 @@ handleSelectOneChange =  (voitureSelected) =>{
         Header: "Date de fin de l'assurance",
         accessor: 'assurance_fin',
         width : 200,
+        Filter: ({ filter, onChange }) =>
+        <input type="date"
+         onChange={event => onChange(event.target.value)}
+        style={{ width: "100%" }}
+        value={filter ? filter.value : new Date().toDateString()}/>
+      
+    ,
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
       }, {
@@ -306,8 +345,11 @@ if(this.state.images !== undefined){
           <ReactTable
             className="table"
             data={this.props.rows}
+            filterable
+          defaultFilterMethod={(filter, row) =>
+            String(row[filter.id]) === filter.value}
             columns={columns}
-            defaultPageSize={this.props.type=== "choose-one" ? 5 :20}
+            defaultPageSize={this.props.type=== "choose-one" ? 5 :8}
 
           />
         </div>

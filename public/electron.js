@@ -332,7 +332,7 @@ app.on("ready", () => {
   
         //  get all voiture
 
-        db.all("SELECT v.nom nom, SUM(l.prix_totale) value FROM voiture v JOIN location l ON l.voiture_id=v.id GROUP BY 1 ORDER BY 1 DESC", function(err, rows) {
+        db.all("SELECT v.nom nom, SUM(l.prix_totale) value FROM voiture v LEFT JOIN location l ON l.voiture_id=v.id GROUP BY 1 ORDER BY 1 DESC", function(err, rows) {
           if (err) mainWindow.webContents.send("voiture:statistique", err);
           mainWindow.webContents.send("voiture:statistique", rows);
         });

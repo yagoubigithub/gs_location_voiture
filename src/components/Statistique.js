@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import randomColor from "randomcolor";
 
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Bar, BarChart, Tooltip, Legend } from 'recharts';
+import {  XAxis, YAxis, Bar, BarChart, Tooltip, Legend, CartesianGrid } from 'recharts';
 //redux
 
 import { connect } from "react-redux";
@@ -41,15 +41,17 @@ class Statistique extends Component {
        
     
     return (
-      <div style={{backgroundColor : "#cca", padding : 25,paddingBottom : 200}}>
-      <BarChart width={800} height={500} data={this.state.statistique}>
+      <div style={{backgroundColor : "#fff", padding : 25,paddingBottom : 200}}>
+      <h1>Revenu</h1>
+      <BarChart width={800} height={600} data={this.state.statistique}>
     
    
     <XAxis dataKey="name" />
     <YAxis dataKey="revenu" />
-    <Tooltip />
+    <Tooltip /> 
+    <CartesianGrid strokeDasharray="3 3" />
         <Legend />
-    <Bar dataKey="revenu" fill="#8884d8" />
+    <Bar dataKey="revenu" fill="#8384d8" />
   </BarChart>
         
       </div>
