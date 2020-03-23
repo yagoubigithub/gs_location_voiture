@@ -98,17 +98,7 @@ class Voiture extends Component {
    
   }
 
-  handleSearchChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value
-    })
-
-  }
-  handleSearch = (e) => {
-    e.preventDefault();
-    const data = { nom : this.state.nom, marque : this.state.marque, modele :  this.state.modele, matricule :  this.state.matricule };
-    this.props.searchVoiture(data)
-  }
+ 
   handleCloseSnack = () =>{
     this.setState({openSnack : !this.state.openSnack})
   }
@@ -122,20 +112,8 @@ class Voiture extends Component {
         <SousNavVoiture />
         <Route path="/voiture/modifier/:id" component={ModifierVoiture} />
         
-        <form onSubmit={this.handleSearch} className="search-form">
-            <input onChange={this.handleSearchChange} type="text" name="nom" placeholder="Nom" />
-            <input onChange={this.handleSearchChange} type="text" name="matricule" placeholder="Matricule" />
-            <input onChange={this.handleSearchChange} type="text" name="modele" placeholder="Modéle" />
-            <input onChange={this.handleSearchChange} type="text" name="marque" placeholder="Marque" />
-          
-
-            <button type="submit" >
-              <SearchIcon />
-            </button>
-
-          </form>
         <Tabs >
-        <Tab index={0} title="tous les voitures">
+        <Tab  index={0} title="tous les voitures">
          
          <VoitureTable rows={this.state.voitures} />
         </Tab>

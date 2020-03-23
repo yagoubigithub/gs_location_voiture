@@ -23,6 +23,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import PermMediaIcon from '@material-ui/icons/PermMedia';
 import UndoIcon from '@material-ui/icons/Undo';
+import SearchIcon from '@material-ui/icons/Search';
+
 
 import LoadingComponent from '../../utils/loadingComponent';
 
@@ -149,6 +151,20 @@ handleSelectOneChange =  (voitureSelected) =>{
         
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
+          , width : 120,
+          Filter: ({ filter, onChange }) =>
+          <div className="searchtable-container">
+          <label htmlFor="date-input-nom">
+            <SearchIcon className="searchtable-icon" />
+          </label>
+          
+            <input type="text"
+            id="date-input-nom"
+            className="searchtable-input"
+           onChange={event => onChange(event.target.value)}
+         
+          value={filter ? filter.value : ""}/>
+          </div>
       }, {
         Header: 'Modéle',
         accessor: 'modele',
@@ -159,6 +175,20 @@ handleSelectOneChange =  (voitureSelected) =>{
         },
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
+          , width : 120,
+          Filter: ({ filter, onChange }) =>
+          <div className="searchtable-container">
+          <label htmlFor="date-input-modele">
+            <SearchIcon className="searchtable-icon" />
+          </label>
+          
+            <input type="text"
+            id="date-input-modele"
+            className="searchtable-input"
+           onChange={event => onChange(event.target.value)}
+         
+          value={filter ? filter.value : ""}/>
+          </div>
       }, {
         Header: 'Marque',
         accessor: 'marque',
@@ -169,6 +199,20 @@ handleSelectOneChange =  (voitureSelected) =>{
         },
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
+          , width : 120,
+          Filter: ({ filter, onChange }) =>
+          <div className="searchtable-container">
+          <label htmlFor="date-input-marque">
+            <SearchIcon className="searchtable-icon" />
+          </label>
+          
+            <input type="text"
+            id="date-input-marque"
+            className="searchtable-input"
+           onChange={event => onChange(event.target.value)}
+         
+          value={filter ? filter.value : ""}/>
+          </div>
       }, {
         Header: "L'année",
         accessor: 'annee',
@@ -179,6 +223,21 @@ handleSelectOneChange =  (voitureSelected) =>{
         },
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
+          , width : 120,
+          Filter: ({ filter, onChange }) =>
+          <div className="searchtable-container">
+          <label htmlFor="date-input-annee">
+            <SearchIcon className="searchtable-icon" />
+          </label>
+          
+            <input type="text"
+            id="date-input-annee"
+            className="searchtable-input"
+           onChange={event => onChange(event.target.value)}
+         
+          value={filter ? filter.value : ""}/>
+          </div>
+          
       }, {
         Header: "Coleur",
         accessor: 'coleur',
@@ -189,6 +248,20 @@ handleSelectOneChange =  (voitureSelected) =>{
         },
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
+          , width : 120,
+          Filter: ({ filter, onChange }) =>
+          <div className="searchtable-container">
+          <label htmlFor="date-input-coleur">
+            <SearchIcon className="searchtable-icon" />
+          </label>
+          
+            <input type="text"
+            id="date-input-coleur"
+            className="searchtable-input"
+           onChange={event => onChange(event.target.value)}
+         
+          value={filter ? filter.value : ""}/>
+          </div>
       }, {
         Header: 'Matricule',
         accessor: 'matricule',
@@ -200,15 +273,38 @@ handleSelectOneChange =  (voitureSelected) =>{
         
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
+          , width : 120,
+          Filter: ({ filter, onChange }) =>
+          <div className="searchtable-container">
+          <label htmlFor="date-input-matricule">
+            <SearchIcon className="searchtable-icon" />
+          </label>
+          
+            <input type="text"
+            id="date-input-matricule"
+            className="searchtable-input"
+           onChange={event => onChange(event.target.value)}
+         
+          value={filter ? filter.value : ""}/>
+          </div>
       }, {
         Header: "Date de fin de l'assurance",
         accessor: 'assurance_fin',
-        width : 200,
+        width : 190,
         Filter: ({ filter, onChange }) =>
-        <input type="date"
+        <div className="searchtable-container">
+        <label htmlFor="date-input-assurance_fin">
+          <SearchIcon className="searchtable-icon" />
+        </label>
+        
+          <input type="date"
+          id="date-input-assurance_fin"
+          className="searchtable-input"
          onChange={event => onChange(event.target.value)}
-        style={{ width: "100%" }}
+       
         value={filter ? filter.value : new Date().toDateString()}/>
+        </div>
+        
       
     ,
         Cell: props =>
@@ -216,19 +312,58 @@ handleSelectOneChange =  (voitureSelected) =>{
       }, {
         Header: 'Disponibilité',
         accessor: 'disponibilite',
+        width : 120,
         Cell: props =>{
           if(props.value === "enPane"){
             return(<div className="cell" >{props.value !== "undefined" ? "En Panne" : ""}</div>)
           }else{
             return(<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
           }
-        }
+        },
+        filterMethod: (filter, row) =>
+        {
+          if(filter.value === "all") return true;
+          else
+          return row[filter.id] === filter.value   ;
+        },
+        Filter: ({ filter, onChange }) =>
+          <select
+            onChange={event => onChange(event.target.value)}
+            style={{ width: "100%" }}
+            value={filter ? filter.value : "all"}
+          >
+            <option value="all">Afficher tout</option>
+            <option value="disponible">disponible</option>
+            <option value="loué">loué</option>
+            <option value="enPane">En Panne</option>
+          </select>
          
       }, {
         Header: 'Prix par jour',
-        accessor: 'prix',
+        accessor: 'prix'
+        , width : 120,
+        Filter: ({ filter, onChange }) =>
+        <div className="searchtable-container">
+        <label htmlFor="date-input-prix">
+          <SearchIcon className="searchtable-icon" />
+        </label>
+        
+          <input type="text"
+          id="date-input-prix"
+          className="searchtable-input"
+         onChange={event => onChange(event.target.value)}
+       
+        value={filter ? filter.value : ""}/>
+        </div>,
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
+          ,
+          filterMethod: (filter, row) =>
+          {
+            
+            const regx =  `.*${filter.value}.*`;
+            return row[filter.id].toString().match(regx)
+          }
       }]
 
       if( this.props.type !== "choose-one" ){
@@ -349,7 +484,7 @@ if(this.state.images !== undefined){
           defaultFilterMethod={(filter, row) =>
             String(row[filter.id]) === filter.value}
             columns={columns}
-            defaultPageSize={this.props.type=== "choose-one" ? 5 :8}
+            defaultPageSize={this.props.type=== "choose-one" ? 5 : 8}
 
           />
         </div>

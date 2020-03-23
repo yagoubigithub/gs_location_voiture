@@ -17,7 +17,7 @@
 
   /*size*/
 
-  --navbarWidth : 150px;
+  --navbarWidth : 120px;
 
 }
 .bg-dark{
@@ -202,6 +202,9 @@ padding: 15px;
   color: var(--black)
 }
 
+div[class^=react-tabs-css-module_content]{
+  padding  : 0px !important;
+}
 
 /*end table  styling*/
 
@@ -451,4 +454,33 @@ text-align: center;
 }
 .contrat-titre{
   margin : 0;
+}
+
+
+/***************************************************************************************/
+/* search in table-*/
+
+.searchtable-container{
+
+  border : 1px solid rgba(0,0,0,0.1);
+  display: flex;
+  border-radius: 3px;
+  
+}
+.searchtable-icon{
+  display: block;
+  height : 32px !important;
+  width : 30px !important;
+
+  color: rgba(0,0,0,0.3);
+ 
+  
+}
+
+.searchtable-input{
+  border : 0 !important;
+  background: transparent !important;
+;
+height : 32px;
+  overflow-x: auto;
 }
