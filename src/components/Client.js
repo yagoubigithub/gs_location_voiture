@@ -56,17 +56,7 @@ class Client extends Component {
    
   }
 
-  handleSearchChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value
-    })
-
-  }
-  handleSearch = (e) => {
-    e.preventDefault();
-    const data = { nom : this.state.nom , prenom : this.state.prenom, numero_cart : this.state.numero_cart};
-    this.props.searchClient(data)
-  }
+ 
   render() {
     if(this.props.auth.user ===  undefined){
       return (<Redirect to="/" />)
@@ -77,17 +67,8 @@ class Client extends Component {
         <SousNavClient />
         <Route path="/client/modifier/:id" component={ModifierClient} />
         
-        <form onSubmit={this.handleSearch} className="search-form">
-            <input onChange={this.handleSearchChange} type="text" name="nom" placeholder="Nom" />
-            <input onChange={this.handleSearchChange} type="text" name="prenom" placeholder="Prénom" />
-            <input onChange={this.handleSearchChange} type="text" name="numero_cart" placeholder="P.CN°" />
-          
-
-            <button type="submit" >
-              <SearchIcon />
-            </button>
-
-          </form>
+      
+      
      
       
 

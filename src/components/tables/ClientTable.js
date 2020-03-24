@@ -20,7 +20,7 @@ import PrintIconf from "@material-ui/icons/Print";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import UndoIcon from '@material-ui/icons/Undo';
-
+import SearchIcon from '@material-ui/icons/Search';
 import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
 import LoadingComponent from "../../utils/loadingComponent";
@@ -120,11 +120,29 @@ class ClientTable extends Component {
       {
         Header: "Nom",
         accessor: "nom",
-        Cell: props => (
-          <div className="cell">
-            {props.value !== "undefined" ? props.value : ""}
+       
+       
+        Cell: props =>
+        (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>),
+        width : 120,
+        filterMethod: (filter, row) =>
+        {
+          const regx =  `.*${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
+          Filter: ({ filter, onChange }) =>
+          <div className="searchtable-container">
+          <label htmlFor="date-input-nom">
+            <SearchIcon className="searchtable-icon" />
+          </label>
+          
+            <input type="text"
+            id="date-input-nom"
+            className="searchtable-input"
+           onChange={event => onChange(event.target.value)}
+         
+          value={filter ? filter.value : ""}/>
           </div>
-        )
       },
      
       {
@@ -134,7 +152,26 @@ class ClientTable extends Component {
           <div className="cell">
             {props.value !== "undefined" ? props.value : ""}
           </div>
-        )
+        ),
+        width : 120,
+        filterMethod: (filter, row) =>
+        {
+          const regx =  `.*${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
+          Filter: ({ filter, onChange }) =>
+          <div className="searchtable-container">
+          <label htmlFor="date-input-prenom">
+            <SearchIcon className="searchtable-icon" />
+          </label>
+          
+            <input type="text"
+            id="date-input-prenom"
+            className="searchtable-input"
+           onChange={event => onChange(event.target.value)}
+         
+          value={filter ? filter.value : ""}/>
+          </div>
       },
       {
         Header: "Date de naissance",
@@ -143,7 +180,26 @@ class ClientTable extends Component {
           <div className="cell">
             {props.value !== "undefined" ? props.value : ""}
           </div>
-        )
+        ),
+        width : 120,
+        filterMethod: (filter, row) =>
+        {
+          const regx =  `.*${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
+          Filter: ({ filter, onChange }) =>
+          <div className="searchtable-container">
+          <label htmlFor="date-input-date_naissance">
+            <SearchIcon className="searchtable-icon" />
+          </label>
+          
+            <input type="text"
+            id="date-input-date_naissance"
+            className="searchtable-input"
+           onChange={event => onChange(event.target.value)}
+         
+          value={filter ? filter.value : ""}/>
+          </div>
       },
       {
         Header: "P.CN°",
@@ -152,7 +208,26 @@ class ClientTable extends Component {
           <div className="cell">
             {props.value !== "undefined" ? props.value : ""}
           </div>
-        )
+        ),
+        width : 120,
+        filterMethod: (filter, row) =>
+        {
+          const regx =  `.*${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
+          Filter: ({ filter, onChange }) =>
+          <div className="searchtable-container">
+          <label htmlFor="date-input-numero_cart">
+            <SearchIcon className="searchtable-icon" />
+          </label>
+          
+            <input type="text"
+            id="date-input-numero_cart"
+            className="searchtable-input"
+           onChange={event => onChange(event.target.value)}
+         
+          value={filter ? filter.value : ""}/>
+          </div>
       },
       {
         Header: "Télephone",
@@ -161,7 +236,26 @@ class ClientTable extends Component {
           <div className="cell">
             {props.value !== "undefined" ? props.value : ""}
           </div>
-        )
+        ),
+        width : 120,
+        filterMethod: (filter, row) =>
+        {
+          const regx =  `.*${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
+          Filter: ({ filter, onChange }) =>
+          <div className="searchtable-container">
+          <label htmlFor="date-input-telephone">
+            <SearchIcon className="searchtable-icon" />
+          </label>
+          
+            <input type="text"
+            id="date-input-telephone"
+            className="searchtable-input"
+           onChange={event => onChange(event.target.value)}
+         
+          value={filter ? filter.value : ""}/>
+          </div>
       },
       {
         Header: "Email",
@@ -170,7 +264,26 @@ class ClientTable extends Component {
           <div className="cell">
             {props.value !== "undefined" ? props.value : ""}
           </div>
-        )
+        ),
+        width : 120,
+        filterMethod: (filter, row) =>
+        {
+          const regx =  `.*${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
+          Filter: ({ filter, onChange }) =>
+          <div className="searchtable-container">
+          <label htmlFor="date-input-email">
+            <SearchIcon className="searchtable-icon" />
+          </label>
+          
+            <input type="text"
+            id="date-input-email"
+            className="searchtable-input"
+           onChange={event => onChange(event.target.value)}
+         
+          value={filter ? filter.value : ""}/>
+          </div>
       },
       {
         Header: "Adresse",
@@ -179,7 +292,26 @@ class ClientTable extends Component {
           <div className="cell">
             {props.value !== "undefined" ? props.value : ""}
           </div>
-        )
+        ),
+        width : 200,
+        filterMethod: (filter, row) =>
+        {
+          const regx =  `.*${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
+          Filter: ({ filter, onChange }) =>
+          <div className="searchtable-container">
+          <label htmlFor="date-input-adresse">
+            <SearchIcon className="searchtable-icon" />
+          </label>
+          
+            <input type="text"
+            id="date-input-adresse"
+            className="searchtable-input"
+           onChange={event => onChange(event.target.value)}
+         
+          value={filter ? filter.value : ""}/>
+          </div>
       },
       {
         Header: "Confiance",
@@ -200,7 +332,33 @@ class ClientTable extends Component {
               );
             }
           }
-        }
+        },
+        filterMethod: (filter, row) =>
+        {
+         if(filter.value === "all"){
+           return true;
+         }
+         if(filter.value === "confiance"){
+          return row[filter.id] === filter.value   ;
+         }
+
+         if(filter.value === "pas de confiance"){
+           return row[filter.id] !== "confiance"
+         }
+
+         
+        },
+        Filter: ({ filter, onChange }) =>
+          <select
+            onChange={event => onChange(event.target.value)}
+            style={{ width: "100%" }}
+            value={filter ? filter.value : "all"}
+          >
+            <option value="all">Afficher tout</option>
+            <option value="confiance">Confiance</option>
+            <option value="pas de confiance">Pas de confiance</option>
+            
+          </select>
       }
     ];
 
@@ -296,7 +454,10 @@ columns.unshift(
             className="table"
             data={this.props.rows}
             columns={columns}
-            defaultPageSize={this.props.type=== "choose-one" ? 5 :20}
+            defaultPageSize={this.props.type=== "choose-one" ? 5 :8}
+            filterable
+          defaultFilterMethod={(filter, row) =>
+            String(row[filter.id]) === filter.value}
           />
         </div>
       </Fragment>

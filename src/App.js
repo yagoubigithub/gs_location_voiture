@@ -6,6 +6,10 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Connexion from './components/auth/Connexion';
 
+//date picker mui
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import MomentUtils from '@date-io/moment';
+
 
 import { Redirect } from 'react-router-dom';
 
@@ -30,6 +34,7 @@ import Statistique from './components/Statistique';
 class App extends Component {
   render() {
     return (
+      <MuiPickersUtilsProvider utils={MomentUtils}>
       <Router>
         <div className="container">
           {this.props.auth.user !== undefined ? <Navbar /> : <Redirect to="/" />}
@@ -54,6 +59,7 @@ class App extends Component {
 
 
       </Router>
+      </MuiPickersUtilsProvider>
     );
   }
 

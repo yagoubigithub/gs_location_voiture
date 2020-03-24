@@ -214,29 +214,10 @@ voiture_selected.map(v_selected=>{
   }
       
   };
-  handleSearchClientChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  };
+ 
 
-  handleSearchClient = e => {
-    e.preventDefault();
-    const data = { nom : this.state.nom_client , prenom : this.state.prenom, numero_cart : this.state.numero_cart};
-    this.props.searchClient(data);
-  };
 
-  handleSearchVoitureChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  };
 
-  handleSearchVoiture = e => {
-    e.preventDefault();
-    const data = { nom : this.state.nom_voiture, marque : this.state.marque, modele :  this.state.modele, matricule :  this.state.matricule };
-    this.props.searchVoiture(data);
-  };
   handleNumberChange = (e,index) => {
        const unite = this.state.unite[index];
       const number_unite = [...this.state.number_unite];
@@ -327,20 +308,7 @@ voiture_selected.map(v_selected=>{
           maxWidth="lg"
           onClose={this.handleClientClose}
         >
-          <form onSubmit={this.handleSearchClient} className="search-form">
-            <input
-              onChange={this.handleSearchClientChange}
-              type="text"
-              name="nom_client"
-              placeholder="Nom"
-            />
-             
-            <input onChange={this.handleSearchClientChange} type="text" name="prenom" placeholder="Prénom" />
-            <input onChange={this.handleSearchClientChange} type="text" name="numero_cart" placeholder="Numero de la cart d'identité" />
-          
-
-            <button type="submit">search</button>
-          </form>
+      
           <ClientTable
             sendData={this.getClientData}
             type="choose-one"
@@ -361,19 +329,7 @@ voiture_selected.map(v_selected=>{
           maxWidth="lg"
           onClose={this.handleVoitureClose}
         >
-          <form onSubmit={this.handleSearchVoiture} className="search-form">
-            <input
-              onChange={this.handleSearchVoitureChange}
-              type="text"
-              name="nom_voiture"
-              placeholder="Nom"
-            />
-              <input onChange={this.handleSearchVoitureChange} type="text" name="matricule" placeholder="Matricule" />
-            <input onChange={this.handleSearchVoitureChange} type="text" name="modele" placeholder="Modéle" />
-            <input onChange={this.handleSearchVoitureChange} type="text" name="marque" placeholder="Marque" />
-
-            <button type="submit">search</button>
-          </form>
+         
           <VoitureTable
             sendData={this.getVoitureData}
             type="choose-one"
@@ -438,33 +394,23 @@ voiture_selected.map(v_selected=>{
     <Grid item xs={12}>
     <Collapse in={this.state.client_selected.nom !== undefined}>
               <Paper style={{padding : 15, margin : 25}}>
-              <TextField
-                  label="Nom"
-                  margin="normal"
-                  
-                  disabled
-                  onChange={this.handleChange}
-                  name="nom_client"
-                  value={
-                    this.state.client_selected.nom !== undefined
+              <p>Nom : { this.state.client_selected.nom !== undefined
                       ? this.state.client_selected.nom
-                      : ""
-                  }
-                />
+                      : ""}</p>
 
-<TextField
-                  label="Prénom"
-                  margin="normal"
-                  disabled
-                  
-                  onChange={this.handleChange}
-                  name="prenom_client"
-                  value={
-                    this.state.client_selected.prenom !== undefined
+                      <p>Prénom : {  this.state.client_selected.prenom !== undefined
                       ? this.state.client_selected.prenom
-                      : ""
-                  }
-                />
+                      : ""}</p>
+                
+                      <p>Date de naissance : { this.state.client_selected.date_naissance !== undefined
+                      ? this.state.client_selected.date_naissance
+                      : ""}</p>
+                
+                      <p>N° P.C : { this.state.client_selected.numero_cart !== undefined
+                      ? this.state.client_selected.numero_cart
+                      : ""}</p>
+              
+
               </Paper>
           </Collapse>
 

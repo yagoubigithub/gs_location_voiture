@@ -8,9 +8,10 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Grid from "@material-ui/core/Grid";
+import { DatePicker } from "@material-ui/pickers";
 
 import Button from "@material-ui/core/Button";
-import UploadImage from 'yagoubi-upload-images';
+
 
 //icons
 import CloseIcon from "@material-ui/icons/Close";
@@ -26,6 +27,11 @@ import {ajouterClient} from '../store/actions/clientAction'
 import LoadingComponent from "../utils/loadingComponent";
 
 
+
+
+//utils
+
+import {getCurrentDateTime} from '../utils/methods'
 
 class AjouterClient extends Component {
   state = {
@@ -67,6 +73,9 @@ class AjouterClient extends Component {
           [e.target.name] : e.target.value
       })
   }
+  handleDateNaissanceChange = (a)  =>{
+this.setState({date_naissance : getCurrentDateTime(new Date(a._d).getTime()).split('T')[0]})
+  }
  
   render() {
     return (
@@ -94,8 +103,21 @@ class AjouterClient extends Component {
                 <TextField placeholder="Nom *" value={this.state.nom}  name="nom" variant="outlined" onChange={this.handleChange} fullWidth margin="normal" />
                 <TextField placeholder="Prénom" value={this.state.prenom} name="prenom" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
                
-                <TextField placeholder="Date de naissance" value={this.state.date_naissance} name="date_naissance" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
-
+  
+                <DatePicker
+        disableFuture
+        openTo="year"
+        format="DD-MM-YYYY"
+        label="Date de naissance"
+        views={["year", "month", "date"]}
+        fullWidth
+        inputVariant="outlined"
+        value={this.state.date_naissance === "" ?  getCurrentDateTime(new Date().getTime()).split('T')[0] : 
+        getCurrentDateTime(new Date(this.state.date_naissance).getTime()).split('T')[0]
+        }
+        
+        onChange={this.handleDateNaissanceChange}
+      />
                 <TextField placeholder="P.CN°" value={this.state.numero_cart} name="numero_cart" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
                 <TextField placeholder="Télephone" value={this.state.telephone} name="telephone" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
                 <TextField placeholder="Adresse" value={this.state.adresse} name="adresse" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
