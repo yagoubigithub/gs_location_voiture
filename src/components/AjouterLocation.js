@@ -8,6 +8,8 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+
 
 import Button from "@material-ui/core/Button";
 
@@ -21,7 +23,8 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
+  Collapse
 } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 import AddIcon from "@material-ui/icons/Add";
@@ -396,6 +399,15 @@ voiture_selected.map(v_selected=>{
 
           <h4 style={{ textAlign: "center" }}>Ajouter location</h4>
 
+          <Button
+              color="primary"
+              variant="contained"
+              
+              onClick={this.ajouter}
+             
+            >
+              <SaveIcon />
+            </Button>
             <Link to="/location/">
               <IconButton onClick={this.handleClose} style={{color : "white"}}>
                 <CloseIcon />
@@ -405,19 +417,31 @@ voiture_selected.map(v_selected=>{
           </Toolbar>
         </AppBar>
         <div style={{ marginTop: 50, padding: 15 }}></div>
-
-        <Grid container spacing={4} >
-
-          <Grid item xs={2}></Grid>
-          <Grid item xs={8}>
-          <span className="red">{this.state.error}</span>
-          <h3 style={{margin : 0}}>Client :</h3>
-            <Grid container>
-              <Grid item xs={5}>
-                <TextField
+        <span className="red">{this.state.error}</span>
+        <Grid container spacing={1} >
+              <Grid item xs={4}>
+           
+               <Paper style={{height : "100% !important",padding : 5}}>
+               <h3 >Client :</h3>
+               <Grid container>
+               <Grid item xs={12} style={{display : "flex", alignItems : "center"}}>
+      <Button
+        color="primary"
+        variant="contained"
+        
+        onClick={this.handleClientClose}
+      >
+        <AddIcon />
+      </Button>
+      <h3>Ajouter Client</h3>
+    </Grid>
+    <Grid item xs={12}>
+    <Collapse in={this.state.client_selected.nom !== undefined}>
+              <Paper style={{padding : 15, margin : 25}}>
+              <TextField
                   label="Nom"
                   margin="normal"
-                  fullWidth
+                  
                   disabled
                   onChange={this.handleChange}
                   name="nom_client"
@@ -427,13 +451,12 @@ voiture_selected.map(v_selected=>{
                       : ""
                   }
                 />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
+
+<TextField
                   label="Prénom"
                   margin="normal"
                   disabled
-                  fullWidth
+                  
                   onChange={this.handleChange}
                   name="prenom_client"
                   value={
@@ -442,168 +465,154 @@ voiture_selected.map(v_selected=>{
                       : ""
                   }
                 />
-              </Grid>
-              <Grid item xs={3}>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  style={{ marginTop: 25 }}
-                  onClick={this.handleClientClose}
-                >
-                  <AddIcon />
-                </Button>
-              </Grid>
-            </Grid>
-          </Grid>
+              </Paper>
+          </Collapse>
 
-          <Grid item xs={2}></Grid>
-
-         
-        
-        </Grid>
-
-<br />
-<Grid container spacing={4}>
-
-<Grid item xs={2}></Grid>
-  <Grid item xs={8}>
-  <h3 style={{margin : 0}}>Voiture {1} : </h3>
-    <Grid container>
-    
-     
-      <Grid item xs={3}>
-        <Button
-          color="primary"
-          variant="contained"
-          style={{ marginTop: 25 }}
-          onClick={this.handleVoitureClose}
-        >
-          <AddIcon />
-        </Button>
-      </Grid>
+              
     </Grid>
-  </Grid>
+               </Grid>
+             
+          
+               </Paper>
+              </Grid>
+             
+<Grid item xs={8}>
 
-  
-          {this.state.voiture_selected.map((voiture,index)=>{
+       <Paper style={{height : "100% !important",padding : 5}}>
 
-return (<Grid key={`grid_of_voiture_select${index }`} container spacing={4}
-  style={{padding : 50,margin : 5}}>
-<h3>Voiture nom : {voiture.nom}</h3>
-   <Grid item xs={2}></Grid>
-     
-
-     <Grid item xs={2}></Grid>
-     <Grid item xs={2}></Grid>
-     <Grid item xs={8}>
-     <h3 style={{margin : 0}}>Nombre de jours ou heurs :</h3>
-       <Grid container>
-         <Grid item xs={8}>
-
-           <TextField
-             margin="normal"
-             fullWidth
-             onChange={(e)=>this.handleNumberChange(e,index )}
-             type={"number"}
-             value={this.state.number_unite[index   ]}
-             name="number_unite"
-             inputProps={{ min: "0", step: "1" }}
-           />
-         </Grid>
-         <Grid item xs={2}>
-           <FormControl fullWidth>
-             <InputLabel id="unite-du-temps-select-label">
-               Unité du temps
-             </InputLabel>
-             <Select
-               labelId="unite-du-temps-select-label"
-               defaultValue="j"
-               onChange={(e)=>this.handleUniteChange(e,index)}
-               name="unite"
-             >
-               <MenuItem value={"h"}>Heurs</MenuItem>
-               <MenuItem value={"j"}>Jours</MenuItem>
-             </Select>
-           </FormControl>
-         </Grid>
-       </Grid>
-     </Grid>
-
-     <Grid item xs={2}></Grid>
-     <Grid item xs={2}></Grid>
-     <Grid item xs={8}>
        <Grid container spacing={1}>
-         <Grid item xs={5}>
-        <h3 style={{margin : 0}}>Date Sortie du Voiture :</h3>
-           <TextField
-             margin="normal"
-             style={{ flex: 1 }}
-             value={this.state.date_sortie[ index  ]}
-             onChange={(e)=>this.handleChangeArray(e,index )}
-             type="datetime-local"
-             name="date_sortie"
-             fullWidth
-           />
-         </Grid>
 
-         <Grid item xs={5}>
-         <h3 style={{margin : 0}}>Date Entrée du Voiture :</h3>
-           <TextField
-             margin="normal"
-             style={{ flex: 1 }}
-             value={this.state.date_entree[index ]}
-             onChange={(e)=>this.handleChangeArray(e,index )}
-             type="datetime-local"
-             name="date_entree"
-             fullWidth
-           />
-         </Grid>
+
+<Grid item xs={12}>
+<h3 style={{margin : 0}}>Voiture : </h3>
+</Grid>
+ 
+  
+   
+    <Grid item xs={12} style={{display : "flex", alignItems : "center"}}>
+      <Button
+        color="primary"
+        variant="contained"
+        
+        onClick={this.handleVoitureClose}
+      >
+        <AddIcon />
+      </Button>
+      <h3>Ajouter Voiture</h3>
+    </Grid>
+  
+
+
+
+        {this.state.voiture_selected.map((voiture,index)=>{
+
+return (<Collapse in={voiture.nom !== undefined}>
+            <Paper style={{padding : 15, margin : 25}}><Grid key={`grid_of_voiture_select${index }`} container spacing={1}
+>
+<h3>nom de la voiture : {voiture.nom}</h3>
+
+ 
+   <Grid item xs={12}>
+   <h3 style={{margin : 0}}>Nombre de jours ou heurs :</h3>
+     <Grid container>
+       <Grid item xs={12}>
+
+         <TextField
+           margin="normal"
+           fullWidth
+           onChange={(e)=>this.handleNumberChange(e,index )}
+           type={"number"}
+           value={this.state.number_unite[index   ]}
+           name="number_unite"
+           inputProps={{ min: "0", step: "1" }}
+         />
+       </Grid>
+       <Grid item xs={2}>
+         <FormControl fullWidth>
+           <InputLabel id="unite-du-temps-select-label">
+             Unité du temps
+           </InputLabel>
+           <Select
+             labelId="unite-du-temps-select-label"
+             defaultValue="j"
+             onChange={(e)=>this.handleUniteChange(e,index)}
+             name="unite"
+           >
+             <MenuItem value={"h"}>Heurs</MenuItem>
+             <MenuItem value={"j"}>Jours</MenuItem>
+           </Select>
+         </FormControl>
        </Grid>
      </Grid>
-     <Grid item xs={2}></Grid>
-     <Grid item xs={2}></Grid>
-     <Grid item xs={7}>
-     <h3 style={{margin : 0}}>Remise :</h3>
-       <TextField
-         margin="normal"
-         style={{ flex: 1 }}
-         variant="outlined"
-         onChange={(e)=>this.handleChangeArray(e,index )}
-         type={"number"}
-         value={this.state.remise[index  ]}
-         name="remise"
-         inputProps={{ min: "0", step: "1" }}
-         fullWidth
-       />
-     </Grid>
-     <Grid item xs={7}>
-     <h3 style={{margin : 0}}>Départ KM :</h3>
-       <TextField
-         margin="normal"
-         style={{ flex: 1 }}
-         variant="outlined"
-         onChange={(e)=>this.handleChangeArray(e,index )}
-         type={"number"}
-         value={this.state.km[index  ]}
-         name="km"
-         inputProps={{ min: "0", step: "1" }}
-         fullWidth
-       />
-     </Grid></Grid>)
-          })}
+   </Grid>
 
-        
-        </Grid>
-        <br />
-        <Button
-              color="primary"
-              variant="contained"
-              fullWidth
-              onClick={this.ajouter}
-              style={{width : "80%", margin : "0 auto"}}
-            >
-              <SaveIcon />
-            </Button>
+ 
+   <Grid item xs={12}>
+     <Grid container spacing={1}>
+       <Grid item xs={5}>
+      <h3 style={{margin : 0}}>Date Sortie du Voiture :</h3>
+         <TextField
+           margin="normal"
+           style={{ flex: 1 }}
+           value={this.state.date_sortie[ index  ]}
+           onChange={(e)=>this.handleChangeArray(e,index )}
+           type="datetime-local"
+           name="date_sortie"
+           fullWidth
+         />
+       </Grid>
+
+       <Grid item xs={5}>
+       <h3 style={{margin : 0}}>Date Entrée du Voiture :</h3>
+         <TextField
+           margin="normal"
+           style={{ flex: 1 }}
+           value={this.state.date_entree[index ]}
+           onChange={(e)=>this.handleChangeArray(e,index )}
+           type="datetime-local"
+           name="date_entree"
+           fullWidth
+         />
+       </Grid>
+     </Grid>
+   </Grid>
+  
+   <Grid item xs={12}>
+   <h3 style={{margin : 0}}>Remise :</h3>
+     <TextField
+       margin="normal"
+       style={{ flex: 1 }}
+       variant="outlined"
+       onChange={(e)=>this.handleChangeArray(e,index )}
+       type={"number"}
+       value={this.state.remise[index  ]}
+       name="remise"
+       inputProps={{ min: "0", step: "1" }}
+       fullWidth
+     />
+   </Grid>
+   <Grid item xs={12}>
+   <h3 style={{margin : 0}}>Départ KM :</h3>
+     <TextField
+       margin="normal"
+       style={{ flex: 1 }}
+       variant="outlined"
+       onChange={(e)=>this.handleChangeArray(e,index )}
+       type={"number"}
+       value={this.state.km[index  ]}
+       name="km"
+       inputProps={{ min: "0", step: "1" }}
+       fullWidth
+     />
+   </Grid></Grid></Paper></Collapse>)
+        })}
+
+      
+      </Grid>
+       </Paper>
+       
+</Grid>
+</Grid>
       </Dialog>
     );
   }
