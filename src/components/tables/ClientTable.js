@@ -124,7 +124,7 @@ class ClientTable extends Component {
        
         Cell: props =>
         (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>),
-        width : 120,
+        width : 110,
         filterMethod: (filter, row) =>
         {
           const regx =  `.*${filter.value}.*`;
@@ -153,7 +153,7 @@ class ClientTable extends Component {
             {props.value !== "undefined" ? props.value : ""}
           </div>
         ),
-        width : 120,
+        width : 110,
         filterMethod: (filter, row) =>
         {
           const regx =  `.*${filter.value}.*`;
@@ -181,25 +181,26 @@ class ClientTable extends Component {
             {props.value !== "undefined" ? props.value : ""}
           </div>
         ),
-        width : 120,
+       
         filterMethod: (filter, row) =>
         {
           const regx =  `.*${filter.value}.*`;
           return row[filter.id].match(regx)
         },
-          Filter: ({ filter, onChange }) =>
-          <div className="searchtable-container">
-          <label htmlFor="date-input-date_naissance">
-            <SearchIcon className="searchtable-icon" />
-          </label>
-          
-            <input type="text"
-            id="date-input-date_naissance"
-            className="searchtable-input"
-           onChange={event => onChange(event.target.value)}
-         
-          value={filter ? filter.value : ""}/>
-          </div>
+        width : 185,
+        Filter: ({ filter, onChange }) =>
+        <div className="searchtable-container">
+        <label htmlFor="date-input-date_naissance">
+          <SearchIcon className="searchtable-icon" />
+        </label>
+        
+          <input type="date"
+          id="date-input-date_naissance"
+          className="searchtable-input"
+         onChange={event => onChange(event.target.value)}
+       
+        value={filter ? filter.value : new Date().toDateString()}/>
+        </div>
       },
       {
         Header: "P.CN°",
@@ -209,7 +210,7 @@ class ClientTable extends Component {
             {props.value !== "undefined" ? props.value : ""}
           </div>
         ),
-        width : 120,
+        width : 110,
         filterMethod: (filter, row) =>
         {
           const regx =  `.*${filter.value}.*`;
@@ -237,7 +238,7 @@ class ClientTable extends Component {
             {props.value !== "undefined" ? props.value : ""}
           </div>
         ),
-        width : 120,
+        width : 110,
         filterMethod: (filter, row) =>
         {
           const regx =  `.*${filter.value}.*`;
@@ -265,7 +266,7 @@ class ClientTable extends Component {
             {props.value !== "undefined" ? props.value : ""}
           </div>
         ),
-        width : 120,
+        width : 110,
         filterMethod: (filter, row) =>
         {
           const regx =  `.*${filter.value}.*`;
@@ -293,7 +294,7 @@ class ClientTable extends Component {
             {props.value !== "undefined" ? props.value : ""}
           </div>
         ),
-        width : 200,
+        width : 190,
         filterMethod: (filter, row) =>
         {
           const regx =  `.*${filter.value}.*`;
@@ -318,7 +319,7 @@ class ClientTable extends Component {
         accessor: "confiance",
         Cell: props => {
           if (props.value !== undefined) {
-            if (props.value === "confiance") {
+            if (props.value === "") {
               return (
                 <div className="cell">
                   <CheckIcon />
@@ -339,15 +340,16 @@ class ClientTable extends Component {
            return true;
          }
          if(filter.value === "confiance"){
-          return row[filter.id] === filter.value   ;
+          return row[filter.id] === ""   ;
          }
 
          if(filter.value === "pas de confiance"){
-           return row[filter.id] !== "confiance"
+           return row[filter.id] !== ""
          }
 
          
         },
+        width:130,
         Filter: ({ filter, onChange }) =>
           <select
             onChange={event => onChange(event.target.value)}
@@ -392,7 +394,6 @@ columns.unshift(
             </IconButton>
             <IconButton size="small">
               <Link to={`/client/modifier/${props.value}`}>
-                {" "}
                 <EditIcon className="black" fontSize="small"></EditIcon>
               </Link>
             </IconButton>

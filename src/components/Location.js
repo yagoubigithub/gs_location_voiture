@@ -89,21 +89,8 @@ class Location extends Component {
     }
   }
 
-  handleSearchChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  };
-  handleSearch = e => {
-    e.preventDefault();
-    const data = {
-      client_nom: this.state.client_nom,
-      matricule: this.state.matricule,
-      numero_cart: this.state.numero_cart,
-      voiture_nom: this.state.voiture_nom
-    };
-    this.props.searchLocation(data);
-  };
+ 
+ 
   handleCloseSnack = () =>{
     this.setState({openSnack : !this.state.openSnack})
   }
@@ -121,37 +108,7 @@ class Location extends Component {
         <SousNavLocation />
         <Route path="/location/modifier/:id" component={ModifierClient} />
 
-        <form onSubmit={this.handleSearch} className="search-form">
-          <input
-            onChange={this.handleSearchChange}
-            type="text"
-            name="client_nom"
-            placeholder="Nom de client"
-          />
-          <input
-            onChange={this.handleSearchChange}
-            type="text"
-            name="numero_cart"
-            placeholder="P.C.N°"
-          />
-          <input
-            onChange={this.handleSearchChange}
-            type="text"
-            name="voiture_nom"
-            placeholder="Nom de voiture"
-          />
-          <input
-            onChange={this.handleSearchChange}
-            type="text"
-            name="matricule"
-            placeholder="Matricule"
-          />
-
-          <button type="submit">
-            <SearchIcon />
-          </button>
-        </form>
-
+     
         <Route path="/location/ajouter" component={AjouterLocation} />
 
         <Tabs>

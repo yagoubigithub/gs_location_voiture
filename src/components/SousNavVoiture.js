@@ -9,20 +9,19 @@ import { getAllVoiture } from '../store/actions/voitureAction';
  class SousNavVoiture extends Component {
     render() {
         return (
-            <div>
-          <Grid container className="sous-nav-container">
-          <Grid item xs={2}>
-                        <NavLink className="sous-nav-link" onClick={this.props.getAllVoiture}  to='/voiture'>Actualisé</NavLink>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <NavLink className="sous-nav-link" to='/voiture/ajouter'>Ajouter</NavLink>
-                    </Grid>
+          
+          <div className="sous-nav-container">
+       
+                        <NavLink  onClick={this.props.getAllVoiture}  to='/voiture'><button className="btn btn-nav">Actualisé</button></NavLink>
+                    
+                        <NavLink  to='/voiture/ajouter'><button className="btn btn-nav">Ajouter</button></NavLink>
+                 
                    
             
               
-                </Grid>
+                </div>
                 
-            </div>
+          
         )
     }
 }

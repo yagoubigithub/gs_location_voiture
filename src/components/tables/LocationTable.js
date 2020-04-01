@@ -18,11 +18,10 @@ import { addToCorbeille} from "../../store/actions/locationAction";
 
 import PrintIconf from "@material-ui/icons/Print";
 import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-import UndoIcon from '@material-ui/icons/Undo';
 
-import CheckIcon from "@material-ui/icons/Check";
-import CloseIcon from "@material-ui/icons/Close";
+import UndoIcon from '@material-ui/icons/Undo';
+import SearchIcon from '@material-ui/icons/Search';
+
 import LoadingComponent from "../../utils/loadingComponent";
 
 class LocationTable extends Component {
@@ -125,7 +124,26 @@ class LocationTable extends Component {
           <div className="cell">
             {props.value !== "undefined" ? props.value : ""}
           </div>
-        )
+        ),
+        width : 120,
+        filterMethod: (filter, row) =>
+        {
+          const regx =  `.*${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
+          Filter: ({ filter, onChange }) =>
+          <div className="searchtable-container">
+          <label htmlFor="date-input-nom">
+            <SearchIcon className="searchtable-icon" />
+          </label>
+          
+            <input type="text"
+            id="date-input-nom"
+            className="searchtable-input"
+           onChange={event => onChange(event.target.value)}
+         
+          value={filter ? filter.value : ""}/>
+          </div>
       },
       {
         Header: "Prénom",
@@ -134,7 +152,26 @@ class LocationTable extends Component {
           <div className="cell">
             {props.value !== "undefined" ? props.value : ""}
           </div>
-        )
+        ),
+        width : 120,
+        filterMethod: (filter, row) =>
+        {
+          const regx =  `.*${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
+          Filter: ({ filter, onChange }) =>
+          <div className="searchtable-container">
+          <label htmlFor="date-input-prenom">
+            <SearchIcon className="searchtable-icon" />
+          </label>
+          
+            <input type="text"
+            id="date-input-prenom"
+            className="searchtable-input"
+           onChange={event => onChange(event.target.value)}
+         
+          value={filter ? filter.value : ""}/>
+          </div>
       },
       {
         Header: "Nom de Voiture",
@@ -143,7 +180,30 @@ class LocationTable extends Component {
           <div className="cell">
             {props.value !== "undefined" ? props.value : ""}
           </div>
-        )
+        ),
+        filterMethod: (filter, row) =>
+        {
+          const regx =  `.*${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
+        
+        
+        Cell: props =>
+          (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
+          , width : 120,
+          Filter: ({ filter, onChange }) =>
+          <div className="searchtable-container">
+          <label htmlFor="date-input-nom-voiture">
+            <SearchIcon className="searchtable-icon" />
+          </label>
+          
+            <input type="text"
+            id="date-input-nom-voiture"
+            className="searchtable-input"
+           onChange={event => onChange(event.target.value)}
+         
+          value={filter ? filter.value : ""}/>
+          </div>
       },
       {
         Header: "Modéle",
@@ -152,7 +212,26 @@ class LocationTable extends Component {
           <div className="cell">
             {props.value !== "undefined" ? props.value : ""}
           </div>
-        )
+        ),
+        filterMethod: (filter, row) =>
+        {
+          const regx =  `.*${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
+        width:120,
+        Filter: ({ filter, onChange }) =>
+        <div className="searchtable-container">
+        <label htmlFor="date-input-modele">
+          <SearchIcon className="searchtable-icon" />
+        </label>
+        
+          <input type="text"
+          id="date-input-modele"
+          className="searchtable-input"
+         onChange={event => onChange(event.target.value)}
+       
+        value={filter ? filter.value : ""}/>
+        </div>
       },
       {
         Header: "Date sortie",
@@ -161,7 +240,26 @@ class LocationTable extends Component {
           <div className="cell">
             {props.value !== "undefined" ? props.value.replace('T', " ") : ""}
           </div>
-        )
+        ),
+        width: 185,
+        filterMethod: (filter, row) =>
+        {
+          const regx =  `${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
+        Filter: ({ filter, onChange }) =>
+        <div className="searchtable-container">
+        <label htmlFor="date-input-date_sortie">
+          <SearchIcon className="searchtable-icon" />
+        </label>
+        
+          <input type="date"
+          id="date-input-date_sortie"
+          className="searchtable-input"
+         onChange={event => onChange(event.target.value)}
+       
+        value={filter ? filter.value : new Date().toDateString()}/>
+        </div>
       },
       {
         Header: "Date Entrée",
@@ -171,7 +269,26 @@ class LocationTable extends Component {
             <div className="cell">
             {props.value !== "undefined" ? props.value.replace('T', " ") : ""}
           </div>
-        )
+        ),
+        width: 185,
+        filterMethod: (filter, row) =>
+        {
+          const regx =  `${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
+        Filter: ({ filter, onChange }) =>
+        <div className="searchtable-container">
+        <label htmlFor="date-input-date_entree">
+          <SearchIcon className="searchtable-icon" />
+        </label>
+        
+          <input type="date"
+          id="date-input-date_entree"
+          className="searchtable-input"
+         onChange={event => onChange(event.target.value)}
+       
+        value={filter ? filter.value : new Date().toDateString()}/>
+        </div>
       }
       ,
       {
@@ -182,7 +299,27 @@ class LocationTable extends Component {
             <div className="cell">
             {props.value !== "undefined" ? props.value : ""}
           </div>
-        )
+        ),
+        Filter: ({ filter, onChange }) =>
+        <div className="searchtable-container">
+        <label htmlFor="date-input-remise">
+          <SearchIcon className="searchtable-icon" />
+        </label>
+        
+          <input type="text"
+          id="date-input-remise"
+          className="searchtable-input"
+         onChange={event => onChange(event.target.value)}
+       
+        value={filter ? filter.value : ""}/>
+        </div>
+         ,
+         filterMethod: (filter, row) =>
+         {
+           
+           const regx =  `.*${filter.value}.*`;
+           return row[filter.id].toString().match(regx)
+         }
       }
       ,
       {
@@ -193,7 +330,27 @@ class LocationTable extends Component {
             <div className="cell">
             {props.value !== "undefined" ? props.value : ""}
           </div>
-        )
+        ),
+        Filter: ({ filter, onChange }) =>
+        <div className="searchtable-container">
+        <label htmlFor="date-input-prix">
+          <SearchIcon className="searchtable-icon" />
+        </label>
+        
+          <input type="text"
+          id="date-input-prix"
+          className="searchtable-input"
+         onChange={event => onChange(event.target.value)}
+       
+        value={filter ? filter.value : ""}/>
+        </div>
+         ,
+         filterMethod: (filter, row) =>
+         {
+           
+           const regx =  `.*${filter.value}.*`;
+           return row[filter.id].toString().match(regx)
+         }
       }
     ];
 
@@ -288,8 +445,11 @@ columns.unshift(
           <ReactTable
             className="table"
             data={this.props.rows}
+            filterable
+          defaultFilterMethod={(filter, row) =>
+            String(row[filter.id]) === filter.value}
             columns={columns}
-            defaultPageSize={this.props.type=== "choose-one" ? 5 :20}
+            defaultPageSize={this.props.type=== "choose-one" ? 5 :8}
           />
         </div>
       </Fragment>

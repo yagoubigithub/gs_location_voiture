@@ -395,7 +395,7 @@ handleSelectOneChange =  (voitureSelected) =>{
                   <DeleteIcon className="red" fontSize="small"></DeleteIcon>
                 </IconButton>
                 <IconButton size="small">
-                  <Link to={`/voiture/modifier/${props.value}`}>  <EditIcon className="black" fontSize="small"></EditIcon></Link>
+                  <Link to={`/voiture/modifier/${props.value}`}><EditIcon className="black" fontSize="small"></EditIcon></Link>
                 </IconButton>
       
               </div>)

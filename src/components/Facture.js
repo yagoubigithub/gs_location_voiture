@@ -66,12 +66,7 @@ class Facture extends Component {
        <SousNavFacture />
        
         
-        <form onSubmit={this.handleSearch} className="search-form">
-          { /*   <input onChange={this.handleSearchChange} type="text" name="nom" placeholder="Nom" />
-            <button type="submit" >
-              <SearchIcon />
-            </button> */}
-          </form>
+      
          
          
       

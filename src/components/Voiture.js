@@ -110,6 +110,8 @@ class Voiture extends Component {
       <div>
         <LoadingComponent loading={this.state.loading !== undefined ? this.state.loading : false} />
         <SousNavVoiture />
+        <br />
+       
         <Route path="/voiture/modifier/:id" component={ModifierVoiture} />
         
         <Tabs >

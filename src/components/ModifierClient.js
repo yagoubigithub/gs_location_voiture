@@ -62,7 +62,7 @@ class AjouterClient extends Component {
       }
       if(nextProps.client){
         console.log(nextProps.client.confiance)
-        this.setState({...nextProps.client,confianceChecked : nextProps.client.confiance === "confiance"})
+        this.setState({...nextProps.client,confianceChecked : nextProps.client.confiance === ""})
     }
 
   }
@@ -93,7 +93,7 @@ if(this.state.confianceChecked){
   this.handleOpenCloseConfianceDialog();
   this.setState({ confianceChecked : false})
 }else{
-  this.setState({confianceChecked : true,confiance: "confiance"})
+  this.setState({confianceChecked : true,confiance: ""})
 }
 
 }
@@ -116,7 +116,7 @@ handleClose = () =>{
 
           <Dialog open={this.state.confianceDialog} onClose={this.handleOpenCloseConfianceDialog}>
           <TextField multiline type="text" placeholder="Pour quoi?" 
-          value={this.state.confiance === "confiance" ? "" :this.state.confiance } name="confiance" variant="outlined" onChange={this.handleChange} fullWidth margin="normal"/>
+          value={this.state.confiance } name="confiance" variant="outlined" onChange={this.handleChange} fullWidth margin="normal"/>
           <button onClick={() => { this.handleOpenCloseConfianceDialog() }}>ok</button>
           <button onClick={this.handleOpenCloseConfianceDialog}>Cancel</button>
 
