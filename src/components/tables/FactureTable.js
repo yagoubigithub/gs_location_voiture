@@ -21,7 +21,7 @@ import PrintIconf from '@material-ui/icons/Print';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import PermMediaIcon from '@material-ui/icons/PermMedia';
-
+import SearchIcon from '@material-ui/icons/Search';
 import LoadingComponent from '../../utils/loadingComponent';
 
 
@@ -123,21 +123,98 @@ handleSelectOneChange =  (voitureSelected) =>{
         accessor: 'client_nom',
         Cell: props =>
           (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
+          ,
+        
+          filterMethod: (filter, row) =>
+          {
+            const regx =  `.*${filter.value}.*`;
+            return row[filter.id].match(regx)
+          },
+            Filter: ({ filter, onChange }) =>
+            <div className="searchtable-container">
+            <label htmlFor="date-input-nom">
+              <SearchIcon className="searchtable-icon" />
+            </label>
+            
+              <input type="text"
+              id="date-input-nom"
+              className="searchtable-input"
+             onChange={event => onChange(event.target.value)}
+           
+            value={filter ? filter.value : ""}/>
+            </div>
       }, {
         Header: 'Prénom ',
         accessor: 'client_prenom',
         Cell: props =>
-          (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
+          (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>),
+          
+      
+        filterMethod: (filter, row) =>
+        {
+          const regx =  `.*${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
+          Filter: ({ filter, onChange }) =>
+          <div className="searchtable-container">
+          <label htmlFor="date-input-prenom">
+            <SearchIcon className="searchtable-icon" />
+          </label>
+          
+            <input type="text"
+            id="date-input-prenom"
+            className="searchtable-input"
+           onChange={event => onChange(event.target.value)}
+         
+          value={filter ? filter.value : ""}/>
+          </div>
       },  {
         Header: "Télephone",
         accessor: 'client_telephone',
         Cell: props =>
-          (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>)
+          (<div className="cell" >{props.value !== "undefined" ? props.value : ""}</div>),
+          filterMethod: (filter, row) =>
+          {
+            const regx =  `.*${filter.value}.*`;
+            return row[filter.id].match(regx)
+          },
+            Filter: ({ filter, onChange }) =>
+            <div className="searchtable-container">
+            <label htmlFor="date-input-client_telephone">
+              <SearchIcon className="searchtable-icon" />
+            </label>
+            
+              <input type="text"
+              id="date-input-client_telephone"
+              className="searchtable-input"
+             onChange={event => onChange(event.target.value)}
+           
+            value={filter ? filter.value : ""}/>
+            </div>
       },{
         Header: 'Date Facture',
         accessor: 'facture_date',
         Cell: props =>
-          (<div className="cell" >{props.value !== "undefined" ? props.value.replace('T', " ") : ""}</div>)
+          (<div className="cell" >{props.value !== "undefined" ? props.value.replace('T', " ") : ""}</div>),
+          filterMethod: (filter, row) =>
+        {
+          const regx =  `.*${filter.value}.*`;
+          return row[filter.id].match(regx)
+        },
+        
+        Filter: ({ filter, onChange }) =>
+        <div className="searchtable-container">
+        <label htmlFor="date-input-facture_date">
+          <SearchIcon className="searchtable-icon" />
+        </label>
+        
+          <input type="date"
+          id="date-input-facture_date"
+          className="searchtable-input"
+         onChange={event => onChange(event.target.value)}
+       
+        value={filter ? filter.value : new Date().toDateString()}/>
+        </div>
       }]
 
       if( this.props.type !== "choose-one" ){
@@ -196,8 +273,10 @@ handleSelectOneChange =  (voitureSelected) =>{
             className="table"
             data={this.props.rows}
             columns={columns}
-            defaultPageSize={this.props.type=== "choose-one" ? 5 :20}
-
+            defaultPageSize={this.props.type=== "choose-one" ? 5 :8}
+            filterable
+          defaultFilterMethod={(filter, row) =>
+            String(row[filter.id]) === filter.value}
           />
         </div>
 

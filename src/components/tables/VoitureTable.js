@@ -420,8 +420,7 @@ handleSelectOneChange =  (voitureSelected) =>{
         )
       }
 
-      const loc = window.location.pathname;
-const dir = loc.substring(0, loc.lastIndexOf('/'));
+  
 
 let images = null;
 if(this.state.images !== undefined){
@@ -454,7 +453,7 @@ if(this.state.images !== undefined){
           <div>
             <Grid container>
             
-            {images}
+            {images.length > 0 ? images : <p>No  Images</p>}
             </Grid>
           </div>
         </DialogContent>

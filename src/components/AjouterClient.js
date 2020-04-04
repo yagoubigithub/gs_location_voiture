@@ -95,14 +95,21 @@ this.setState({date_naissance : getCurrentDateTime(new Date(a._d).getTime()).spl
         </AppBar>
         <div style={{ marginTop: 50, padding: 15 }}></div>
 
-    
-            <Grid container >
-                <Grid item xs={3}></Grid>
-              <Grid item xs={6}>
-              <span className="red">{this.state.error}</span>
-                <TextField placeholder="Nom *" value={this.state.nom}  name="nom" variant="outlined" onChange={this.handleChange} fullWidth margin="normal" />
-                <TextField placeholder="Prénom" value={this.state.prenom} name="prenom" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+        <span className="red">{this.state.error} abcd efgh</span>
+            <Grid container  spacing={1} style={{padding : 25}}>
+               <Grid  item xs={6}>
+               <h3 style={{margin : 0}}>Nom * </h3>
+                  <TextField placeholder="Nom *" value={this.state.nom}  name="nom" variant="outlined" onChange={this.handleChange} fullWidth margin="normal" />
+               </Grid>
+               <Grid item xs={6}>
+               <h3 style={{margin : 0}}>Prénom * </h3>
+                   <TextField placeholder="Prénom" value={this.state.prenom} name="prenom" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
                
+               </Grid>
+              <Grid item xs={6}>
+              
+              <h3 style={{margin : 0}}>Date de naissance</h3>
+              
   
                 <DatePicker
         disableFuture
@@ -118,10 +125,24 @@ this.setState({date_naissance : getCurrentDateTime(new Date(a._d).getTime()).spl
         
         onChange={this.handleDateNaissanceChange}
       />
-                <TextField placeholder="P.CN°" value={this.state.numero_cart} name="numero_cart" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+      </Grid>
+      <Grid item xs={6}>
+      <h3 style={{margin : 0}}>P.CN°</h3>        
+              <TextField placeholder="P.CN°" value={this.state.numero_cart} name="numero_cart" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+              </Grid>
+      <Grid item xs={6}> 
+      <h3 style={{margin : 0}}>Télephone</h3>
                 <TextField placeholder="Télephone" value={this.state.telephone} name="telephone" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+                </Grid>
+      <Grid item xs={6}> 
+      <h3 style={{margin : 0}}>Adresse</h3>
                 <TextField placeholder="Adresse" value={this.state.adresse} name="adresse" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+                </Grid>
+      <Grid item xs={6}> 
+      <h3 style={{margin : 0}}>Email</h3>
                 <TextField placeholder="Email" value={this.state.email} name="email" variant="outlined"  onChange={this.handleChange} fullWidth margin="normal" />
+                </Grid>
+      <Grid item xs={12}> 
               
                <br />
                <Button

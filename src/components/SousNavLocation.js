@@ -9,20 +9,16 @@ import { getAllClient } from '../store/actions/clientAction';
  class SousNavClient extends Component {
     render() {
         return (
-            <div>
-          <Grid container className="sous-nav-container">
-          <Grid item xs={2}>
-                        <NavLink className="sous-nav-link" onClick={this.props.getAllClient}  to='/location'>Actualisé</NavLink>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Link className="sous-nav-link" to='/location/ajouter/'>Ajouter</Link>
-                    </Grid>
-                   
-             
-              
-                </Grid>
-                
-            </div>
+            <div className="sous-nav-container">
+         
+            <NavLink  onClick={this.props.getAllClient}  to='/location'><button className="btn btn-nav">Actualisé</button></NavLink>
+       
+            <NavLink  to='/location/ajouter'><button className="btn btn-nav">Ajouter</button></NavLink>
+        
+       
+    
+  
+</div>
         )
     }
 }

@@ -43,7 +43,7 @@ class Statistique extends Component {
     return (
       <div style={{backgroundColor : "#fff", padding : 25,paddingBottom : 200}}>
       <h1>Revenu</h1>
-      <BarChart width={800} height={600} data={this.state.statistique}>
+      <BarChart width={800} height={550} data={this.state.statistique}>
     
    
     <XAxis dataKey="name" />
