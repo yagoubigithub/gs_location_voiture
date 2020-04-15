@@ -90,7 +90,9 @@ class ClientTable extends Component {
       rowsSelected.push(id);
     }
     if(rowsSelected.length === 0) this.setState({selectedAll : false})
-    this.setState({ rowsSelected });
+    this.setState({ rowsSelected }, ()=>{
+      this.props.sendData(rowsSelected)
+    });
   };
   checkRowIsSelected = id => {
     const rowsSelected = [...this.state.rowsSelected];
@@ -105,7 +107,9 @@ class ClientTable extends Component {
         rowsSelected.push(item.id);
       });
     }
-    this.setState({ selectedAll, rowsSelected });
+    this.setState({ selectedAll, rowsSelected }, ()=>{
+      this.props.sendData(rowsSelected)
+    });
   };
 
   handleSelectOneChange =  (clientSelected) =>{
@@ -365,7 +369,47 @@ class ClientTable extends Component {
       }
     ];
 
-   if( this.props.type !== "choose-one" ){
+    if( this.props.IconsColumn ){
+      columns.unshift(
+        {
+          Header: "  ",
+          accessor: "id",
+          width: 100,
+          sortable: false,
+          filterable: false,
+          Cell: props => {
+            if (this.props.type === "corbeille") {
+              return  <div className="cell"><IconButton
+              size="small"
+              onClick={() => this.props.undoDeleteClient(props.value)}
+            >
+              <UndoIcon className="black" fontSize="small"></UndoIcon>
+            </IconButton></div> ;
+            } else {
+              return (
+                <div className="cell">
+                
+                  <IconButton
+                    size="small"
+                    onClick={() => this.add_To_Corbeille(props.value)}
+                  >
+                    <DeleteIcon className="red" fontSize="small"></DeleteIcon>
+                  </IconButton>
+                  <IconButton size="small">
+                    <Link to={`/client/modifier/${props.value}`}>
+                      <EditIcon className="black" fontSize="small"></EditIcon>
+                    </Link>
+                  </IconButton>
+                </div>
+              );
+            }
+          }
+        }
+      );
+    }
+
+
+    if(this.props.checkBoxColumn){
 columns.unshift(
   {
     Header:<div style={{backgroundColor :'#E4E4E4',border : "1px solid rgba(0,0,0,0.45)"}}>
@@ -394,45 +438,13 @@ columns.unshift(
         
       />
     </div>
-  },
-
-  {
-    Header: "  ",
-    accessor: "id",
-    width: 100,
-    sortable: false,
-    filterable: false,
-    Cell: props => {
-      if (this.props.type === "corbeille") {
-        return  <div className="cell"><IconButton
-        size="small"
-        onClick={() => this.props.undoDeleteClient(props.value)}
-      >
-        <UndoIcon className="black" fontSize="small"></UndoIcon>
-      </IconButton></div> ;
-      } else {
-        return (
-          <div className="cell">
-          
-            <IconButton
-              size="small"
-              onClick={() => this.add_To_Corbeille(props.value)}
-            >
-              <DeleteIcon className="red" fontSize="small"></DeleteIcon>
-            </IconButton>
-            <IconButton size="small">
-              <Link to={`/client/modifier/${props.value}`}>
-                <EditIcon className="black" fontSize="small"></EditIcon>
-              </Link>
-            </IconButton>
-          </div>
-        );
-      }
-    }
   }
+
 )
-   }else{
-     columns.unshift(
+    }
+
+    if(this.props.chooseOneColumn){
+    columns.unshift(
       {
         Header: "  ",
         accessor: "id",

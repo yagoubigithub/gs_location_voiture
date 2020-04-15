@@ -117,7 +117,7 @@ class Voiture extends Component {
 
   Supprimer = () => {
     if (this.state.rowsSelected.length === 0) {
-      alert("Selectrionnner des voiture");
+      alert("Selectionnner des voitures");
     } else {
       if (this.state.tab !== "voitureCorebeille") {
         this.handleOpenCloseaddToCorbeilleDialog();
@@ -232,7 +232,7 @@ class Voiture extends Component {
             {this.state.enpane_button_text}
           </button>
         </div>
-        <br />
+        
 
         <Route path="/voiture/modifier/:id" component={ModifierVoiture} />
 
