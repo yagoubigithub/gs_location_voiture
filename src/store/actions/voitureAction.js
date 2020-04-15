@@ -442,3 +442,34 @@ export const getAllVoitureStatistique =() =>{
 
 }
 }
+
+
+
+export const setVoitureEnPanne  = (id) =>{
+  return (dispatch,getState) =>{
+    dispatch({
+      type : "LOADING_VOITURE"
+  })
+  ipcRenderer.send("voiture:modifier", {id , disponibilite :  "enPane"});
+
+  ipcRenderer.once('voiture:modifier', function (event,data) {
+   
+    dispatch({
+      type : "STOP_LOADING_VOITURE"
+  });
+  if(data){
+    dispatch({
+        type : "MODIFIER_VOITURE",
+        payload : data
+    });
+  }else{
+    dispatch({
+      type : "ERROR_VOITURE",
+      payload : data
+  });
+  }
+});
+
+  
+  }
+}

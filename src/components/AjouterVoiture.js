@@ -16,7 +16,7 @@ import Button from "@material-ui/core/Button";
 import CloseIcon from "@material-ui/icons/Close";
 import { TextField } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
-
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 //redux
 
 import { connect } from "react-redux";
@@ -125,12 +125,15 @@ class AjouterVoiture extends Component {
         />
         <AppBar className="bg-dark">
           <Toolbar style={{ display: "flax", justifyContent: "space-between" }}>
-            <h2 style={{ textAlign: "center" }}>Ajouter Voiture</h2>
-            <Link to="/voiture/">
+
+          <Link to="/voiture/">
               <IconButton onClick={this.handleClose} style={{ color: "white" }}>
-                <CloseIcon />
+               <ArrowBackIcon />
               </IconButton>
             </Link>
+
+            
+           
           </Toolbar>
         </AppBar>
         <div style={{ marginTop: 49, padding: 15 }}></div>
@@ -138,6 +141,7 @@ class AjouterVoiture extends Component {
         <Grid container>
           <Grid item xs={3}></Grid>
           <Grid item xs={6}>
+          <h1 style={{ textAlign: "center",  }}>Ajouter Voiture</h1>
             <span className="red">{this.state.error}</span>
            
             <Grid container spacing={2}>

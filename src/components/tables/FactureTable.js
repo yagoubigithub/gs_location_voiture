@@ -85,7 +85,7 @@ class FactureTable extends Component {
       //select
       rowsSelected.push(id);
     }
-
+    if(rowsSelected.length === 0) this.setState({selectedAll : false})
     this.setState({ rowsSelected })
 
   }
@@ -94,7 +94,7 @@ class FactureTable extends Component {
     return rowsSelected.filter(row => row == Number.parseInt(id)).length > 0
   }
 
-  handleSelectAllVoitureChange = () => {
+  handleSelectAllFactureChange = () => {
     let selectedAll = this.state.selectedAll ? false : true;
     const rowsSelected = [];
     if (selectedAll) {
@@ -105,16 +105,7 @@ class FactureTable extends Component {
     this.setState({ selectedAll, rowsSelected })
   }
 
-handleCloseOpenGallerieVoiture = ()=>{
-  this.setState({openGallerie : !this.state.openGallerie})
-}
 
-handleSelectOneChange =  (voitureSelected) =>{
-  this.setState({
-    voitureSelected
-
-  })
-}
   render() {
 
     const columns = [

@@ -81,6 +81,7 @@ class LocationTable extends Component {
       //select
       rowsSelected.push(id);
     }
+    if(rowsSelected.length === 0) this.setState({selectedAll : false})
     this.setState({ rowsSelected });
   };
   checkRowIsSelected = id => {
@@ -356,7 +357,34 @@ class LocationTable extends Component {
 
    if( this.props.type !== "choose-one" ){
 columns.unshift(
-  
+  {
+    Header:<div style={{backgroundColor :'#E4E4E4',border : "1px solid rgba(0,0,0,0.45)"}}>
+<Checkbox 
+    key={"check-all-location-key"}
+     id="check-all-location-id"   
+     style={{padding : 3}}
+     checked={this.state.selectedAll}
+     onChange={this.handleSelectAllLocationChange}
+     color="primary"
+  />
+    </div> ,
+  sortable: false,
+  filterable: false,
+    accessor: 'id',
+    width: 50,
+
+    Cell: props => <div className="cell">
+      <Checkbox 
+        value={props.value}
+        key={`key-checkbox-table-location-${props.value}`}
+        id={`id-checkbox-table-location-${props.value}`}
+        onChange={e => this.handeleCheckCheckboxRow(e, props.value)}
+        checked={this.checkRowIsSelected(props.value)}
+        style={{padding : 3}}
+        
+      />
+    </div>
+  },
   {
     Header: "  ",
     accessor: "id",
@@ -429,17 +457,7 @@ columns.unshift(
         </Dialog>
 
         <div className="table-container">
-          {/*
-            recherche
-            */}
-            {this.props.type!== "choose-one" ?  <Collapse in={this.state.rowsSelected.length > 0}>
-            <IconButton>
-              <PrintIconf className="black" fontSize="large"></PrintIconf>
-            </IconButton>
-            <IconButton>
-              <DeleteIcon className="red" fontSize="large"></DeleteIcon>
-            </IconButton>
-          </Collapse> :null}
+       
         
           <LoadingComponent loading={this.state.loading !== undefined ? this.state.loading : false} />
           <ReactTable

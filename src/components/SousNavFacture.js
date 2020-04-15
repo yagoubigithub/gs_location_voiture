@@ -9,16 +9,8 @@ import { getAllFacture } from '../store/actions/factureAction';
  class SousNavFacture extends Component {
     render() {
         return (
-            <div>
-          <Grid container className="sous-nav-container">
-          <Grid item xs={2}>
-                        <NavLink className="sous-nav-link" onClick={this.props.getAllFacture}  to='/facture'>Actualisé</NavLink>
-                    </Grid>
-               
-                   
-            
-              
-                </Grid>
+            <div className="sous-nav-container">
+           <NavLink  onClick={this.props.getAllFacture}  to='/facture'><button className="btn btn-nav">Actualisé</button></NavLink>
                 
             </div>
         )

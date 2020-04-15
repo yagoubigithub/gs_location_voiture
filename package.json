@@ -39,7 +39,7 @@
     "react-select": "^3.0.8",
     "react-svg-donuts": "^1.0.0",
     "react-table": "^6.10.3",
-    "react-tabs-css": "^1.0.2",
+    "react-tabs-css": "^1.1.2",
     "react-vis": "^1.11.7",
     "recharts": "^2.0.0-beta.2",
     "redux": "^4.0.4",

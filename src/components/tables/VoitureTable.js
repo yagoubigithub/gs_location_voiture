@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 
 import { Link } from "react-router-dom";
-
+import { NavLink } from 'react-router-dom';
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
 
@@ -10,7 +10,7 @@ import 'react-table/react-table.css'
 //Mui
 import IconButton from "@material-ui/core/IconButton";
 
-import { Dialog, Collapse, Grid, DialogContent } from '@material-ui/core';
+import { Dialog, Collapse, Grid, DialogContent, Checkbox } from '@material-ui/core';
 
 //redux
 import { connect } from 'react-redux';
@@ -36,10 +36,11 @@ class VoitureTable extends Component {
     openGallerie : false,
     addToCorbeilleDialog: false,
     voitureDeletedId: null,
-    rowsSelected: [],
+    rowsSelected: this.props.rowsSelected,
     selectedAll: false,
     images : [],
-    voitureSelected :{}
+    voitureSelected :{},
+    selectedAll : false
 
   }
   componentWillReceiveProps(nextProps){
@@ -48,6 +49,9 @@ class VoitureTable extends Component {
     }
     if(nextProps.images){
       this.setState({images : nextProps.images})
+    }
+    if (nextProps.rowsSelected) {
+      this.setState({ rowsSelected : nextProps.rowsSelected });
     }
   }
  
@@ -105,7 +109,10 @@ class VoitureTable extends Component {
       rowsSelected.push(id);
     }
 
-    this.setState({ rowsSelected })
+    if(rowsSelected.length === 0) this.setState({selectedAll : false})
+    this.setState({ rowsSelected }, ()=>{
+      this.props.sendData(rowsSelected)
+    })
 
   }
   checkRowIsSelected = (id) => {
@@ -121,11 +128,13 @@ class VoitureTable extends Component {
         rowsSelected.push(item.id)
       })
     }
-    this.setState({ selectedAll, rowsSelected })
+    this.setState({ selectedAll, rowsSelected },()=>{
+      this.props.sendData(rowsSelected)
+    })
   }
 
 handleCloseOpenGallerieVoiture = ()=>{
-  this.setState({openGallerie : !this.state.openGallerie})
+  this.setState({openGallerie : !this.state.openGallerie,images : []})
 }
 
 handleSelectOneChange =  (voitureSelected) =>{
@@ -139,6 +148,7 @@ handleSelectOneChange =  (voitureSelected) =>{
     
 
     const columns = [
+     
       {
         Header: 'Nom',
         accessor: 'nom',
@@ -366,9 +376,11 @@ handleSelectOneChange =  (voitureSelected) =>{
           }
       }]
 
-      if( this.props.type !== "choose-one" ){
+      
+    
+      if( this.props.IconsColumn ){
         columns.unshift(
-         
+        
           {
     
             Header: '  ',
@@ -404,8 +416,41 @@ handleSelectOneChange =  (voitureSelected) =>{
            
           }
         )
-      }else{
+      }
 
+      if(this.props.checkBoxColumn){
+        columns.unshift(
+          {
+            Header:<div style={{backgroundColor :'#E4E4E4',border : "1px solid rgba(0,0,0,0.45)"}}>
+    <Checkbox 
+            key={"check-all-voiture-key"}
+             id="check-all-voiture-id"   
+             style={{padding : 3}}
+             checked={this.state.selectedAll}
+             onChange={this.handleSelectAllVoitureChange}
+             color="primary"
+          />
+            </div> ,
+          sortable: false,
+          filterable: false,
+            accessor: 'id',
+            width: 50,
+    
+            Cell: props => <div className="cell">
+              <Checkbox 
+                value={props.value}
+                key={`key-checkbox-table-voiture-${props.value}`}
+                id={`id-checkbox-table-voiture-${props.value}`}
+                onChange={e => this.handeleCheckCheckboxRow(e, props.value)}
+                checked={this.checkRowIsSelected(props.value)}
+                style={{padding : 3}}
+                
+              />
+            </div>
+          }
+        )
+      }
+      if(this.props.chooseOneColumn){
         columns.unshift(
           {
             Header: "  ",
@@ -419,7 +464,6 @@ handleSelectOneChange =  (voitureSelected) =>{
           }
         )
       }
-
   
 
 let images = null;
@@ -435,6 +479,9 @@ if(this.state.images !== undefined){
 }
     return (
       <Fragment>
+
+
+
         <Dialog open={this.state.addToCorbeilleDialog} onClose={this.handleOpenCloseaddToCorbeilleDialog}>
           <h2>Deleted</h2>
           <button onClick={() => { this.props.addToCorbeille(this.state.voitureDeletedId); this.handleOpenCloseaddToCorbeilleDialog() }}>Delete</button>
@@ -466,16 +513,7 @@ if(this.state.images !== undefined){
 
          
 
-          <Collapse in={this.state.rowsSelected.length > 0}>
-            <IconButton >
-              <PrintIconf className="black" fontSize="large"></PrintIconf>
-            </IconButton>
-            <IconButton  >
-              <DeleteIcon className="red" fontSize="large"></DeleteIcon>
-            </IconButton>
-
-
-          </Collapse>
+          
           <ReactTable
             className="table"
             data={this.props.rows}

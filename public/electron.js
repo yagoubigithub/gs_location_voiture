@@ -301,6 +301,50 @@ app.on("ready", () => {
      
 
     
+    }else{
+
+      if(value.disponibilite !== undefined){
+        db.run(
+          `
+         UPDATE voiture SET  disponibilite='${value.disponibilite}'  WHERE  id=${value.id}  `,
+          function(err) {
+            if (err) mainWindow.webContents.send("voiture:modifier", err);
+           
+              db.all("SELECT * FROM voiture ORDER BY id DESC", function(err, rows) {
+              if (err) mainWindow.webContents.send("voiture:modifier", err);
+  
+              db.get("SELECT * FROM voiture WHERE id=" + value.id, function(
+                err,
+                row
+              ) {
+                if (err) mainWindow.webContents.send("voiture:modifier", err);
+  
+               
+                db.all(
+                  `SELECT image FROM image WHERE voiture_id=${value.id} ORDER BY id DESC`,
+                  function(err, images) {
+                    if (err) mainWindow.webContents.send("voiture:modifier", err);
+                  
+                    const data = {
+                    
+                      voitures: rows,
+                      voiture: row,
+                      images  : images ? images : []
+                    };
+                    
+                    mainWindow.webContents.send("voiture:modifier", data);
+                  }
+                );
+               
+              
+              });
+            });
+           
+  
+           
+          }
+        );
+      }
     }
   });
 
