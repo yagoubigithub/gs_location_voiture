@@ -30,7 +30,8 @@ class ClientTable extends Component {
     openGallerie: false,
     addToCorbeilleDialog: false,
     clientDeletedId: null,
-    rowsSelected: [],
+    
+    rowsSelected: this.props.rowsSelected,
     selectedAll: false,
     images: [],
     clientSelected : {}
@@ -38,6 +39,12 @@ class ClientTable extends Component {
   componentWillReceiveProps(nextProps) {
    
       this.setState({ loading : nextProps.loading});
+
+      if(nextProps.rows.length !== this.props.rows.length)
+      {
+        this.setState({selectedAll  : false})
+  
+      }
     
   }
   componentWillUnmount(){
@@ -417,7 +424,7 @@ columns.unshift(
     key={"check-all-client-key"}
      id="check-all-client-id"   
      style={{padding : 3}}
-     checked={this.state.selectedAll}
+     checked={this.state.selectedAll }
      onChange={this.handleSelectAllClientChange}
      color="primary"
   />

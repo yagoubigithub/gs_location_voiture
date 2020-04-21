@@ -49,8 +49,7 @@ import {removeFactureId} from '../store/actions/locationAction';
 
   
   print =() =>{
-      
-    
+    const ROW_NUMBER  = 8;
     const head=[{ access : "numero", value: "Numero" },{ access : "voiture_nom", value: "Voiture" },{ access : "voiture_matricule", value: "Matricule" },{ access : "date_sortie", value: "Date Sortie" },{ access : "date_entree", value: "Date Entrée" },{ access : "remise", value: "Remise" },{ access : "prix_totale", value: "Prix " }]
     
     let rows_to_print = [];
@@ -63,16 +62,17 @@ import {removeFactureId} from '../store/actions/locationAction';
       factures.map(f=>{
         prix_totale_t = prix_totale_t + parseInt(f.prix_totale);
       })
-      for (let i = 0; i < factures.length; i = i + 3) {
+      for (let i = 0; i < factures.length; i = i + ROW_NUMBER) {
       const r = [];
-      r.push(factures[i], factures[i+1] ,factures[i+2]);
+      for (let j = 0; j < ROW_NUMBER; j++) {
+        
+         r.push(factures[i + j] );
+         if(factures[i + j  ] !== undefined)
+         factures[i+j].numero =  i+j+1;
+      }
+     
 
-      if(factures[i] !== undefined)
-      factures[i].numero =  i+1;
-      if(factures[i + 1] !== undefined)
-      factures[i + 1].numero = i+2;
-      if(factures[i + 2] !== undefined)
-      factures[i +2 ].numero = i+3;
+     
    
       rows_to_print.push(r);
       
@@ -81,35 +81,87 @@ import {removeFactureId} from '../store/actions/locationAction';
     }
      const myPages =  rows_to_print.map((row,index)=>{
       
-        return (<PageComponent facture_date={row[0].facture_date} prix_totale_t={prix_totale_t} facture_number={row[0].facture_number } client={{nom : row[0].client_nom,prenom : row[0].client_prenom,telephone :  row[0].client_telephone}} entreprise={this.props.entreprise} head={head} key={`pageCompnent-${index}`} index={index} rows_to_print={row}/>)
+        return (<PageComponent facture_date={row[0].facture_date} prix_totale_t={prix_totale_t} facture_number={row[0].facture_number } client={{nom : row[0].client_nom,prenom : row[0].client_prenom,telephone :  row[0].client_telephone}} entreprise={this.props.entreprise} head={head} key={`pageCompnent-${index}`} index={index} rows_to_print={row} page_number={index+1}/>)
         
       })
       const w = window.open();
     
       w.document.write( `<style>
-
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+       
+        
+    }
+    * {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+    }
+      @page {
+        size: A4;
+        margin: 0;
+    }
+    @media print {
+        html, body {
+            width: 210mm;
+            height: 297mm;        
+        }
+        .print-page-container {
+            margin: 0;
+            border: initial;
+            border-radius: initial;
+            width: initial;
+            min-height: initial;
+            box-shadow: initial;
+            background: initial;
+            page-break-after: always;
+        }
+    }
+      
      
       .print-page-container{
-        box-sizing: border-box;
+       
+       
+        width: 210mm;
+        min-height: 297mm;
+      }
+      .print-sub-page-container{
+        padding: 1cm;
+        height: 277mm;
+       box-sizing: border-box;
       display: flex;;
       flex-direction: column;
       background: white;
-      min-height: 1170px;
-      max-height: 1170px;
-      height: 1170px;
-      width : 827px;
-      margin-bottom: 15px;
-      
       }
+
+      .print-page-footer{
+  
+        text-align: right;
+        padding-right: 1cm;
+      }
+
       .print-page-head{
-        flex :5;
-       
+        flex-direction: column;
+        flex :5;   
+      }
+      .print-page-head h1{
+        width : 100%;
+        text-align: center;
+      }
+      .print-sub-page-head{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        margin-bottom : 20px;
       }
       .print-page-content{
-        flex : 14;
-       
+        flex : 14;       
       }
       .print-page-footer{
+        
         flex : 1;
         
       }
@@ -204,6 +256,7 @@ import {removeFactureId} from '../store/actions/locationAction';
         font-size: 45px;
        border-bottom: 1px solid rgba(0,0,0,0.3);
        padding-bottom: 15px;
+       margin : 0;
       }
       </style>
       ${ ReactDOMServer.renderToString(myPages)}
@@ -217,6 +270,7 @@ import {removeFactureId} from '../store/actions/locationAction';
   
     }
   render() {
+    const ROW_NUMBER  = 8;
     const head=[{ access : "numero", value: "Numero" },{ access : "voiture_nom", value: "Voiture" },{ access : "voiture_matricule", value: "Matricule" },{ access : "date_sortie", value: "Date Sortie" },{ access : "date_entree", value: "Date Entrée" },{ access : "remise", value: "Remise" },{ access : "prix_totale", value: "Prix " }]
     
     let rows_to_print = [];
@@ -229,16 +283,17 @@ import {removeFactureId} from '../store/actions/locationAction';
       factures.map(f=>{
         prix_totale_t = prix_totale_t + parseInt(f.prix_totale);
       })
-      for (let i = 0; i < factures.length; i = i + 3) {
+      for (let i = 0; i < factures.length; i = i + ROW_NUMBER) {
       const r = [];
-      r.push(factures[i], factures[i+1] ,factures[i+2] );
+      for (let j = 0; j < ROW_NUMBER; j++) {
+        
+         r.push(factures[i + j] );
+         if(factures[i + j  ] !== undefined)
+         factures[i+j].numero =  i+j+1;
+      }
+     
 
-      if(factures[i] !== undefined)
-      factures[i].numero =  i+1;
-      if(factures[i + 1] !== undefined)
-      factures[i + 1].numero = i+2;
-      if(factures[i + 2] !== undefined)
-      factures[i +2 ].numero = i+3;
+     
    
       rows_to_print.push(r);
       
@@ -246,7 +301,7 @@ import {removeFactureId} from '../store/actions/locationAction';
     
     }
     return (
-      <Dialog fullScreen open={this.state.open}>
+      <Dialog fullScreen open={this.state.open} style={{backgroundColor : "gray"}}>
         <AppBar className="bg-dark">
           <Toolbar style={{display : "flax", justifyContent : "space-between"}}>
             <Link to={`/${this.props.match.params.returnPath}/`}>
@@ -270,7 +325,7 @@ import {removeFactureId} from '../store/actions/locationAction';
           </Toolbar>
         </AppBar>
 
-        <div style={{ background: "gray", paddingTop : 70, height: "100%", display: "flex", flexDirection: "column", alignItems: "center", overflow: "auto" }}>
+        <div style={{ background: "gray",marginTop : 70, paddingTop : 70, height: "100%", display: "flex", flexDirection: "column", alignItems: "center", overflow: "auto" }}>
 
 {
   
@@ -278,7 +333,7 @@ import {removeFactureId} from '../store/actions/locationAction';
   rows_to_print.map((row,index)=>{
  
   
-    return (<PageComponent facture_date={row[0].facture_date} prix_totale_t={prix_totale_t} facture_number={row[0].facture_number } client={{nom : row[0].client_nom,prenom : row[0].client_prenom,telephone :  row[0].client_telephone}} entreprise={this.props.entreprise} head={head} key={`pageCompnent-${index}`} index={index} rows_to_print={row}/>)
+    return (<PageComponent facture_date={row[0].facture_date} prix_totale_t={prix_totale_t} facture_number={row[0].facture_number } client={{nom : row[0].client_nom,prenom : row[0].client_prenom,telephone :  row[0].client_telephone}} entreprise={this.props.entreprise} head={head} key={`pageCompnent-${index}`} index={index} rows_to_print={row} page_number={index+1}/>)
     
   })
 }

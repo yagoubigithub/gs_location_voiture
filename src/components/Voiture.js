@@ -90,7 +90,7 @@ class Voiture extends Component {
       });
 
       if (voitureAlarte.length > 0) {
-        this.setState({ openSnack: true, error: "vérifier assurance" });
+        this.setState({ openSnack: true, error: "vérifier l'assurance" });
       }
       this.setState({
         voitures,
@@ -279,9 +279,10 @@ class Voiture extends Component {
           </Tab>
           <Tab
             index={3}
-            title="Les alertes"
+            title="Liste noire"
             onClick={() => this.handleChangeTab("voitureAlarte")}
           >
+          <h2>L'assurance automobile a expiré</h2>
             <VoitureTable
               IconsColumn
               rowsSelected={this.state.rowsSelected}
@@ -320,29 +321,13 @@ class Voiture extends Component {
 
         <Route path="/voiture/ajouter" component={AjouterVoiture} />
 
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-          open={this.state.openSnack}
-          autoHideDuration={6000}
-          onClose={this.handleCloseSnack}
-          message={this.state.error}
-          color="error"
-          action={
-            <React.Fragment>
-              <IconButton
-                size="small"
-                aria-label="close"
-                color="inherit"
-                onClick={this.handleCloseSnack}
-              >
-                <CloseIcon />
-              </IconButton>
-            </React.Fragment>
-          }
-        />
+
+{this.state.openSnack ?
+<div className="alert">
+
+{this.state.error}
+</div> :null}
+      
       </div>
     );
   }

@@ -11,6 +11,7 @@ import {
   getAllClient,
   searchClient,
   addToCorbeille,
+  undoDeleteClient
 } from "../store/actions/clientAction";
 
 import Dialog from "@material-ui/core/Dialog";
@@ -190,6 +191,7 @@ class Client extends Component {
               checkBoxColumn
               sendData={this.getData}
               IconsColumn
+              rowsSelected={this.state.rowsSelected}
               rows={this.state.clients}
             />
           </Tab>
@@ -203,6 +205,7 @@ class Client extends Component {
               checkBoxColumn
               sendData={this.getData}
               IconsColumn
+              rowsSelected={this.state.rowsSelected}
               rows={this.state.clientConfiance}
             />
           </Tab>
@@ -215,6 +218,7 @@ class Client extends Component {
               checkBoxColumn
               sendData={this.getData}
               IconsColumn
+              rowsSelected={this.state.rowsSelected}
               rows={this.state.clientPasConfiance}
             />
           </Tab>
@@ -227,6 +231,7 @@ class Client extends Component {
               checkBoxColumn
               sendData={this.getData}
               IconsColumn
+              rowsSelected={this.state.rowsSelected}
               rows={this.state.clientCorebeille}
               type="corbeille"
             />
@@ -250,6 +255,7 @@ const mapActionToProps = (dispatch) => {
     getAllClient: () => dispatch(getAllClient()),
     searchClient: (data) => dispatch(searchClient(data)),
     addToCorbeille: (id) => dispatch(addToCorbeille(id)),
+    undoDeleteClient :  id=>dispatch(undoDeleteClient(id)),
   };
 };
 export default connect(mapStateToProps, mapActionToProps)(Client);

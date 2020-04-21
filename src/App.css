@@ -244,28 +244,70 @@ div[class^="react-tabs-css-module_content"] {
 
 /**************************************************************************************/
 /*print page coponenet*/
-
-.print-page-container {
+@page {
+  size: A4;
+  margin: 0;
+}
+@media print {
+  html, body {
+      width: 210mm;
+      height: 297mm;        
+  }
+  .print-page-container {
+      margin: 0;
+      border: initial;
+      border-radius: initial;
+      width: initial;
+      min-height: initial;
+      box-shadow: initial;
+      background: initial;
+      page-break-after: always;
+  }
+}
+* {
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  background: white;
-  min-height: 1170px;
-  max-height: 1170px;
-  height: 1170px;
-  width: 827px;
-  margin-bottom: 15px;
+  -moz-box-sizing: border-box;
 }
-.print-page-head {
-  flex: 5;
+.print-page-container{
+       
+       
+  width: 210mm;
+  min-height: 297mm;
+  background-color: var(--white);
+  margin-bottom: 20px;
 }
-.print-page-content {
-  flex: 14;
-}
-.print-page-footer {
-  flex: 1;
+.print-sub-page-container{
+  padding: 1cm;
+  height: 277mm;
+ box-sizing: border-box;
+display: flex;;
+flex-direction: column;
+
 }
 
+.print-page-head{
+  flex-direction: column;
+  flex :5;   
+}
+.print-page-head h1{
+  width : 100%;
+  text-align: center;
+}
+.print-sub-page-head{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  margin-bottom : 20px;
+}
+.print-page-content{
+  flex : 14;       
+}
+.print-page-footer{
+  
+  text-align: right;
+  padding-right: 1cm;
+}
 .print-page-content table,
 .print-page-content table thead,
 .print-page-content table tbody,
@@ -300,6 +342,17 @@ div[class^="react-tabs-css-module_content"] {
   position: absolute;
   bottom: 5px;
   right: 15px;
+}
+.print-page-head h1{
+  width : 100%;
+  text-align: center;
+}
+.print-sub-page-head{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  margin-bottom : 20px;
 }
 .entreprise-information {
   padding: 5px;
@@ -455,4 +508,17 @@ h4 {
   background: transparent !important;
   height: 32px;
   overflow-x: auto;
+}
+
+
+
+.alert{
+  background-color: red;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  color: var(--white);
+  z-index: 100;
+
+  padding: 4px;
 }

@@ -8,13 +8,14 @@ import React, { Component } from "react";
   render() {
     return (
       <div className="print-page-container">
-      <div className={"logo-facture"}></div>
-        <div>
-        <h1 >Facture N°{this.props.facture_number}</h1>
-        </div>
+      <div className="print-sub-page-container">
+       
+       
         <div className="print-page-head">
-
-          <div className="entreprise-information">
+        <div className={"logo-facture"}></div>
+        <h1 >Facture N°{this.props.facture_number}</h1>
+        <div className="print-sub-page-head" >
+             <div className="entreprise-information">
             <p><b>Agence</b> : {this.props.entreprise.nom}</p>
             <p><b>N.RC : </b><span dir="rtl">{"91 ا 0086165 - 00/31"}</span></p>
             <p><b>Email</b> : {this.props.entreprise.email}</p>
@@ -34,6 +35,8 @@ import React, { Component } from "react";
 </div>
 
         </div>
+        </div>
+       
         <div className="print-page-content">
           <table>
             <thead>
@@ -65,7 +68,13 @@ import React, { Component } from "react";
           <div className="prix-totale"><span>Prix Totale : {this.props.prix_totale_t}</span></div>
         </div>
        
+     
       </div>
+      <div className="print-page-footer">
+{this.props.page_number}
+      </div>
+      </div>
+    
     );
   }
 }

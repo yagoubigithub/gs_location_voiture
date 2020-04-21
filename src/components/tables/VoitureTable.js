@@ -53,7 +53,14 @@ class VoitureTable extends Component {
     if (nextProps.rowsSelected) {
       this.setState({ rowsSelected : nextProps.rowsSelected });
     }
+    if(nextProps.rows.length !== this.props.rows.length)
+    {
+      this.setState({selectedAll  : false})
+
+    }
+    
   }
+
  
   componentWillUnmount(){
     switch(this.props.type){
@@ -426,7 +433,7 @@ handleSelectOneChange =  (voitureSelected) =>{
             key={"check-all-voiture-key"}
              id="check-all-voiture-id"   
              style={{padding : 3}}
-             checked={this.state.selectedAll}
+             checked={this.state.selectedAll }
              onChange={this.handleSelectAllVoitureChange}
              color="primary"
           />

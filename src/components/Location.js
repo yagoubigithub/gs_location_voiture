@@ -73,7 +73,7 @@ class Location extends Component {
         }
       });
       if(locationAlarte.length > 0 ){
-        this.setState({openSnack : true, error : "vérifier Les Alertes de location"});
+        this.setState({openSnack : true, error : "vérifier la liste noire"});
       }
 
       this.setState({
@@ -116,7 +116,7 @@ class Location extends Component {
             <LocationTable rows={this.state.locations} />
           </Tab>
 
-          <Tab index={1} title="Les Alertes">
+          <Tab index={1} title="Liste Noire">
             <LocationTable rows={this.state.locationAlarte} />
           </Tab>
           <Tab index={2} title="les locations actuale">
@@ -124,25 +124,13 @@ class Location extends Component {
           </Tab>
         </Tabs>
         
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        open={this.state.openSnack}
-        autoHideDuration={6000}
-        onClose={this.handleCloseSnack}
-        message={this.state.error}
-        color="error"
-        action={
-          <React.Fragment>
-           
-            <IconButton size="small" aria-label="close" color="inherit" onClick={this.handleCloseSnack}>
-             <CloseIcon />
-            </IconButton>
-          </React.Fragment>
-        }
-      />
+
+        {this.state.openSnack ?
+<div className="alert">
+
+{this.state.error}
+</div> :null}
+    
       </div>
     );
   }
