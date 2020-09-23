@@ -16,14 +16,13 @@ import {
   addToCorbeille,
   setVoitureEnPanne,
 } from "../store/actions/voitureAction";
-import SousNavVoiture from "./SousNavVoiture";
+
 import AjouterVoiture from "./AjouterVoiture";
 
 //icons
-import SearchIcon from "@material-ui/icons/Search";
-import CloseIcon from "@material-ui/icons/Close";
+
 import ModifierVoiture from "./ModifierVoiture";
-import { Snackbar, IconButton, Dialog } from "@material-ui/core";
+import  Dialog from "@material-ui/core/Dialog";
 
 class Voiture extends Component {
   state = {

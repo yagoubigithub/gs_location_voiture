@@ -155,7 +155,7 @@ export const undoDeleteVoiture = (id) =>{
     });
   }else{
     dispatch({
-      type : "ERROR_CLIENT",
+      type : "ERROR_VOITURE",
       payload :data
   });
   }
@@ -232,40 +232,6 @@ export const searchVoiture =(data) =>{
   }
 }
 
-export const searchCorbeillePersonne=(data) =>{
-  return (dispatch ,getState) =>{
-    
-    dispatch({
-      type : "LOADING_PERSONNE"
-  })
-   
-
-    axios.post('/personne/search.php',{
-     ...data
-     
-    }).then(res=>{
-      dispatch({
-        type : "STOP_LOADING_PERSONNE"
-    });
-
-      dispatch({
-        type : "SEARCH_IN_PERSONNE",
-        payload : res.data
-    })
-    
-  })
-  .catch(error=>{
-      
-    dispatch({
-      type : "STOP_LOADING_PERSONNE"
-  });
-      dispatch({
-          type : "ERROR_PERSONNE",
-          payload : error
-      })
-  })
-  }
-}
 
 
 //delete (mettre dans le corbeille)

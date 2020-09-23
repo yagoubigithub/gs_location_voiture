@@ -24,7 +24,7 @@ app.on("ready", () => {
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
   mainWindow.maximize();
- // mainWindow.setMenu(null);
+  mainWindow.setMenu(null);
   mainWindow.show();
   //fs.existsSync(path.join(__dirname, "../build/images")) || fs.mkdirSync(path.join(__dirname, "../build/images"));
 

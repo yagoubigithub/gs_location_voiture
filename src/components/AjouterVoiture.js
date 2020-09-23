@@ -297,7 +297,7 @@ const mapActionToProps = dispatch => {
   };
 };
 const mapStateToProps = state => {
-  console.log("ajouter voiture", state);
+ 
   return {
     loading: state.voiture.loading,
     voitureCreated: state.voiture.voitureCreated

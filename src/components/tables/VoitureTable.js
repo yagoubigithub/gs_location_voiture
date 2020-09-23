@@ -544,7 +544,7 @@ const mapActionToProps = dispatch => {
     addToCorbeille: (id) => dispatch(addToCorbeille(id)),
     getImages: id => dispatch(getImages(id)),
     undoDeleteVoiture :  (id) => dispatch(undoDeleteVoiture(id)),
-    getVoiture: id => dispatch(getVoiture , getImages(id))
+    getVoiture: id => dispatch(getVoiture(id))
   }
 }
 
