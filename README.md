@@ -1,4 +1,4 @@
-# Logeciel de pour gestion de location de voiture
+# Logeciel pour gestion de location de voiture
 
 ## Install
 
