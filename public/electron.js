@@ -83,7 +83,7 @@ app.on("ready", () => {
     let alert = new Alert();
     
     alert.fireFrameless(swalOptions, null, true, false);*/
-/*
+
        db.run('DROP TABLE image');
         db.run('DROP TABLE facture');
         db.run('DROP TABLE client');
@@ -92,7 +92,7 @@ app.on("ready", () => {
         db.run('DROP TABLE entreprise');
         
   db.run('DROP TABLE location');
-*/
+
     db.run(`CREATE TABLE IF NOT EXISTS voiture (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nom TEXT NOT NULL,
